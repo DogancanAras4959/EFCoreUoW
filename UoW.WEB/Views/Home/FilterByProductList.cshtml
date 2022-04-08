@@ -1,0 +1,365 @@
+﻿@using UoW.DOMAIN.Models
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common;
+
+@{
+    Bayi b = ViewBag.Bayi as Bayi;
+
+    List<SliderBannerItem> sliderbannerItems = ViewBag.SliderBannerItems as List<SliderBannerItem>;
+    PagedList<Urun> digerUrunler = ViewBag.Urunler as PagedList<Urun>;
+    string KategoriAdi = TempData["KategoriAdi"].ToString();
+    List<Marka> markaListToFilter = ViewBag.MarkalarListToFilter as List<Marka>;
+    int id = Convert.ToInt32(TempData["KategoriId"]);
+    int indirimOran = 0;
+}
+
+<link href="~/slick/slick.css" rel="stylesheet" />
+<link href="~/slick/slick-theme.css" rel="stylesheet" />
+<link href="~/assets/libs/ion-rangeslider/css/ion.rangeSlider.min.css" rel="stylesheet" type="text/css" />
+
+<div class="container-fluid">
+
+    @*<div class="row" style="margin:0 auto;">
+            @{await Html.RenderPartialAsync("SliderViewPartial");}
+        </div>*@
+
+    @if (digerUrunler.Count() == 0)
+    {
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="text-center jumbotron">Ürünlerimiz çok yakında bu bölümde yayınlanacaktır. Takipte Kalın!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row" style="margin:0 auto;">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">ÜRÜNLERİMİZ</h4>
+                    <div class="page-title-right">
+                        <div class="dropdown" style="float:left; right:15px;">
+                            <button class="btn btn-secondary dropdown-toggle" style="padding:6px; font-size:12px" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Sıralama Yap <i class="mdi mdi-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="@Url.Action("FilterByProductList", "Home", new { KategoriID = id, sortType = "priceAsc" })">En Düşük Fiyat</a>
+                                <a class="dropdown-item" href="@Url.Action("FilterByProductList", "Home", new { KategoriID = id, sortType = "priceDesc" })">En Yüksek Fiyat</a>
+                                <a class="dropdown-item" href="@Url.Action("FilterByProductList", "Home", new { KategoriID = id, sortType = "topSeller" })">En Çok Satanlar</a>
+                                <a class="dropdown-item" href="@Url.Action("FilterByProductList", "Home", new { KategoriID = id, sortType = "nameDesc" })">İsme Göre Sırala</a>
+                            </div>
+                        </div>
+                        <ol class="breadcrumb m-0">
+                            <li>
+                                <a class="btn btn-sm btn-light" href="@Url.Action("FilterByProductList", "Home", new { KategoriID = id })"><span class="fa fa-list"></span></a>
+                            </li>
+
+                            <li style="padding-left:2px;">
+                                <a class="btn btn-sm btn-light" href="@Url.Action("FilterByProduct", "Home", new { KategoriID = id })">
+                                    <span class="fa fa-solar-panel"></span>
+                                </a>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin:0 auto;">
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title mb-4">Filtreler</h5>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item">Ana Sayfa</li>
+                                    <li class="breadcrumb-item active">@KategoriAdi</li>
+                                </ol>
+                                <h5 class="card-title mb-4">Markalar</h5>
+                                <div>
+                                    <ul class="list-unstyled product-list">
+                                        @foreach (var item in markaListToFilter)
+                                        {
+                                            <li><a href="@Url.Action("FilterByBrand","Home", new { MarkaID = item.ID })"><i class="mdi mdi-chevron-right mr-1"></i> @item.MarkaAdi</a></li>
+                                        }
+                                    </ul>
+                                </div>
+
+                                <div class="mt-4 pt-3">
+                                    @if (ViewBag.UstKategori != null || ViewBag.UstKategori != "")
+                                    {
+                                        <h5 class="font-size-14 mb-3">@ViewBag.UstKategori</h5>
+                                    }
+
+                                    <ul class="list-unstyled product-list">
+                                        @foreach (var item in ViewBag.AltKategoriler)
+                                        {
+                                            <li><a href="@Url.Action("FilterByProduct","Home", new { KategoriID = item.ID })"><i class="mdi mdi-chevron-right mr-1"></i> @item.KategoriAdi</a></li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table" id="productsTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Ürün Adı</th>
+                                        <th>Kategori</th>
+                                        <th>Liste Fiyatı</th>
+                                        <th>İskonto</th>
+                                        <th>Adet</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in digerUrunler)
+                                    {
+                                        indirimOran = (int)b.musteriGrubu.IskontoOrani;
+                                        decimal _indirim = item.KDVFiyat * b.musteriGrubu.IskontoOrani / 100;
+                                        decimal toplam = item.KDVFiyat - _indirim;
+                                        item.KDVFiyat = toplam;
+
+                                        <tr>
+                                            <td>
+                                                <a href="@Url.Action("DetailProduct", "BayiUrun", new { Id = item.ID })">
+                                                    <img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@item.Resim" alt="" style="max-width:36px;" class="mx-auto d-block">
+                                                </a>
+                                            </td>
+                                            <td>
+                                                @if (item.UrunAdi.Length > 20)
+                                                {
+                                                    <a href="@Url.Action("DetailProduct", "BayiUrun", new { Id = item.ID })" class="text-dark" data-toggle="tooltip" data-placement="top" title="" data-original-title="@item.UrunAdi">@item.UrunAdi.Substring(0, 30)<span>...</span> </a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="@Url.Action("DetailProduct", "BayiUrun", new { Id = item.ID })" class="text-dark" data-toggle="tooltip" data-placement="top" title="" data-original-title="@item.UrunAdi">@item.UrunAdi<span>...</span> </a>
+                                                }
+
+                                            </td>
+                                            <td>
+                                                @item.kategori.KategoriAdi
+                                            </td>
+                                            <td><span class="text-muted mr-2">@string.Format("{0:c}", item.KDVFiyat)</span><input class="price" value="@item.KDVFiyat" style="display:none;" /></td>
+                                            <td>%@indirimOran</td>
+
+                                            @if (item.Adet >= 450)
+                                            {
+
+                                                <td>
+                                                    450<span>+</span>
+                                                </td>
+                                            }
+                                            else if (item.Adet > 20)
+                                            {
+
+                                                <td>
+                                                    20 <span>+</span>
+                                                </td>
+                                            }
+                                            else if (item.Adet > 150)
+                                            {
+                                                <td>
+                                                    150 <span>+</span>
+                                                </td>
+                                            }
+                                            else if (item.Adet > 500)
+                                            {
+
+                                                <td>
+                                                    500 <span>+</span>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                if (item.Adet == 0)
+                                                {
+                                                    <td>Stokta Tükendi!</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>@item.Adet</td>
+                                                }
+                                            }
+                                            <td>
+                                                @if (item.Adet != 0)
+                                                {
+                                                    if (item.ID == id)
+                                                    {
+                                                        <input type="text" class="form-control" placeholder="Adet..." disabled />
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="text" class="form-control" style="padding:5px !important;" placeholder="Adet..." />
+                                                        <input type="hidden" value="@item.ID" />
+                                                    }
+                                                }
+
+                                            </td>
+                                            <td>
+                                                @{
+                                                    if (item.begeniler.Where(x => x.BayiID == b.ID).Count() > 0)
+                                                    {
+                                                        <a href="@Url.Action("DissLikeHomePageList", "BayiUrun", new { ID = item.ID })" data-toggle="tooltip" data-placement="top" title="" data-original-title="Favorilerden Çıkar"><img src="~/Files/Bayi/icon_star_full.png" /></a>//dolu olacak - deletelike yapacağız
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <a href="@Url.Action("InsertLike", "BayiUrun", new { ID = item.ID })" data-toggle="tooltip" data-placement="top" title="" data-original-title="Favorilere Ekle"><img src="/Files/Bayi/icon_star_empty.png" /></a>//boş olacak
+                                                    }
+                                                }
+
+                                            </td>
+                                            <td>
+                                                <a href="@Url.Action("NotificateProductWhenStock", "BayiUrun", new { ID = item.ID })" data-toggle="tooltip" data-placement="top" title="" data-original-title="Stokta Bildir"><i class="fa fa-bell bell-position"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td colspan="5">
+                                        </td>
+                                        <td colspan="3">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <button style="margin-top:5px;" type="button" onclick="InsertSepet();" class="btn btn-primary btn-block btn-sm right"><i class="bx bx-cart"></i> Sepete Ekle</button>
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        @Html.PagedListPager((IPagedList<Urun>)ViewBag.Urunler,
+                                                        page => Url.Action("FilterByProductList", new { page }),
+                                                        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+                                                        {
+                                                            MaximumPageNumbersToDisplay = 10,
+                                                            DisplayPageCountAndCurrentLocation = true,
+                                                            UlElementClasses = new[] { "pagination pagination-rounded justify-content-center mt-4" },
+                                                            LiElementClasses = new[] { "page-link" },
+                                                            EllipsesFormat = "&#8230;",
+                                                            DisplayLinkToIndividualPages = true,
+                                                            ActiveLiElementClass = "page-item",
+                                                            DisplayLinkToFirstPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                                                            DisplayLinkToLastPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                                                            DisplayLinkToPreviousPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                                                            DisplayLinkToNextPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                                                            PageCountAndCurrentLocationFormat = "",
+                                                            ContainerDivClasses = new[] { "pagination-container" }
+                                                        },
+                                                         new AjaxOptions() { HttpMethod = "GET" }))
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+
+
+</div> <!-- end row -->
+<div class="container-fluid">
+    <div class="row" style="margin:0 auto;">
+        <div class="col-12">
+            @await Component.InvokeAsync("News")
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+
+    <script src="~/assets/libs/jquery/jquery.min.js"></script>
+    <script src="~/slick/slick.js"></script>
+    <script src="~/slick/slick.min.js"></script>
+    <script src="~/assets/libs/ion-rangeslider/js/ion.rangeSlider.min.js"></script>
+    <script src="~/assets/js/pages/product-filter-range.init.js"></script>
+
+    <script>
+    $('.slick-table').slick({
+        dots: false,
+        infinite: false,
+        speed: 300,
+        slidesToShow: 12,
+        slidesToScroll: 12,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    infinite: true,
+                    dots: true
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+            // You can unslick at a given breakpoint now by adding:
+            // settings: "unslick"
+            // instead of a settings object
+        ]
+    });
+
+      var InsertSepet = function () {
+        var products = [];
+        $('#productsTable > tbody > tr').each(function (i, row) {
+            var id = $(row).find('input[type=hidden]').val();
+            var miktar = $(row).find('input[type=text]').val();
+            var fiyat = $(row).find('input.price').val();
+
+            if (miktar) {
+                var item = { id: id, adet: miktar, BirimFiyat: fiyat.replace(',', '.')};
+                products.push(item);
+                console.log(products);
+            }
+        });
+
+       $.ajax({
+
+            url: "/Siparis/SepeteEkle",
+            type: "POST",
+            data: { products: JSON.stringify(products) },
+            success: function (response) {
+                if (response == true) {
+                    window.location.assign('@Url.Action("Basket","Siparis")');
+                }
+            }, error: function (e, j, k) {
+                let responseText = e.responseText.replace("UoW.CORE.Exceptions.BorcVarException:", "");
+                toastr["warning"](responseText, "Uyarı !");
+                console.log(e.responseJSON);
+            }
+        });
+    }
+
+    </script>
+
+}

@@ -1,0 +1,89 @@
+﻿@using UoW.DATA.Toastr
+@model UoW.WEB.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Kıraç Bayim Elektrik | Giriş Sayfası</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Kıraç Bayi Giriş Sayfası" name="description" />
+    <meta content="Kıraç Bayi" name="author" />
+    <link href="~/assets/css/login.css" type="text/css" rel="stylesheet" />
+    <link href="~/assets/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
+</head>
+
+<body>
+
+    <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+        <div class="container">
+            <div class="card login-card">
+                <div class="row no-gutters">
+                    <div class="col-md-5">
+                        <div class="card-body">
+                            <div class="brand-wrapper">
+                                <img src="~/assets/images/logo.svg" alt="logo" class="logo">
+                            </div>
+                            <p class="login-card-description">Bayi Sistemi</p>
+                            <form action="@Url.Action("SellerLoginWeb","Bayi")" method="post">
+                                <div class="form-group">
+                                    <label for="email" class="sr-only">Kullanıcı Adınız</label>
+                                    <input type="text" name="username" id="username" class="form-control" placeholder="Kullanıcı Adınız...">
+                                </div>
+                                <div class="form-group mb-4">
+                                    <label for="password" class="sr-only">Şifreniz</label>
+                                    <input type="password" name="password" id="password" class="form-control" placeholder="***********">
+                                </div>
+                                <button id="btn_login" onclick="btn_changed();" class="btn btn-block login-btn mb-4" type="submit">Giriş Yap</button>
+                            </form>
+                            <p class="login-card-footer-text"><a href="@Url.Action("MakeToApplySystem","Bayi")" class="text-reset">Başvurunuzu Yapın!</a></p>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <img src="~/assets/images/login.jpg" alt="login" class="login-card-img">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="~/assets/libs/jquery/jquery.min.js"></script>
+    <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/libs/metismenu/metisMenu.min.js"></script>
+    <script src="~/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/assets/libs/node-waves/waves.min.js"></script>
+
+    <!-- App js -->
+    <script src="~/assets/js/app.js"></script>
+    <script src="~/assets/js/jquery-3x.min.js"></script>
+    <script src="~/assets/js/bootstrap.min.js"></script>
+
+    @*<script>
+
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('label[class=text-danger]').delay(500).fadeOut();
+            }, 3000);
+        });
+
+        function btn_changed() {
+            window.setTimeout(function () {
+                $("#login_btn").attr("disabled", true);
+            }, 500);
+            document.getElementById("login_btn").innerText = "Giriş Yapılıyor...";
+        }
+    </script>*@
+
+</body>
+</html>
+

@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewData["Title"] = "Test";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Test</h1>
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        @using (Html.BeginForm("Test", "Urun", FormMethod.Post, new { ecntype = "multipart/form-data" }))
+                        {
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <img src="~/Files/Urun/pp.jpg" style="border:1px solid #000;" height="90" />
+                                </div>
+                                <div class="col-md-9">
+                                    <div style="margin-top:10px;"></div>
+                                    <label>(Fotoğrafınızı 150x150 ve 600x600 boyutlarında yükleyin!)</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="file" multiple>
+                                        <label class="custom-file-label" for="customFile">Foto Seçin</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row" style="padding-left:10px;">
+                                <button type="submit" class="btn btn-secondary col-sm-4 waves-effect">İptal</button>
+                                <div class="col-sm-8">
+                                    <button type="submit" class="btn btn-block btn-primary mr-1 waves-effect waves-light">Ürünü Ekle</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+    {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="~/assets/js/pages/crypto-orders.init.js"></script>
+    <script src="~/assets/js/pages/ecommerce-select2.init.js"></script>
+    <script src="~/assets/libs/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <script src="~/assets/js/pages/form-element.init.js"></script>
+        }

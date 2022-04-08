@@ -1,0 +1,116 @@
+﻿@using UoW.DOMAIN.Models
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common;
+
+@section Styles{
+    <style>
+        .page-link {
+            position: relative;
+            display: block;
+            padding: .5rem .75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #fff;
+            background-color: #34509d;
+            border: 1px solid #34509d;
+        }
+
+            .page-link a {
+                color: #fff;
+            }
+
+                .page-link a:hover {
+                    color: #34509d;
+                }
+    </style>
+}
+
+@{
+    ViewData["Title"] = "ListProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int id = Convert.ToInt32(TempData["Id"]);
+    int indirimOran = 0;
+    IPagedList<Begeni> begeniler = ViewBag.BegeniList as IPagedList<Begeni>;
+}
+
+    <div class="container-fluid">
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">İLGİLENDİĞİM ÜRÜNLER</h4>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-xl-12 col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Ürün No</th>
+                                            <th>Ürün Adı</th>
+                                            <th>Fiyat</th>
+                                            <th>İşlem</th>                    
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in begeniler)
+                                        {
+                                        <tr>
+                                           
+                                            <td><img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@item.urunBegeni.Resim" width="50" height="50" class="img img-thumbnail" /></td>
+                                            <td>@item.urunBegeni.UrunNo</td>
+                                            <td><a href="@Url.Action("DetailProduct","BayiUrun", new { ID =item.urunBegeni.ID })">@item.urunBegeni.UrunAdi</a></td>
+                                            @if (item.urunBegeni.IndirimOrani > 0)
+                                            {
+                                                <td><span class="text-muted"><del>@item.urunBegeni.KDVFiyat</del></span> <b class="text-success">@item.urunBegeni.IndirimliFiyat</b></td>
+                                            }
+                                            else
+                                            {
+                                                <td>@item.urunBegeni.KDVFiyat</td>
+                                            }
+                                           
+                                            <td>
+                                                <a href="@Url.Action("DissLikeHomePageList","BayiUrun", new { ID = item.urunBegeni.ID })" data-toggle="tooltip" data-placement="top" title="" data-original-title="Favorilerden Çıkar"><img src="~/Files/Bayi/icon_star_full.png" /></a>
+                                            </td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        @Html.PagedListPager((IPagedList<Begeni>)ViewBag.BegeniList,
+                       page => Url.Action("ListProductLikes", new { page }),
+                       PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+                       {
+                                MaximumPageNumbersToDisplay = 10,
+                           DisplayPageCountAndCurrentLocation = true,
+                           UlElementClasses = new[] { "pagination pagination-rounded justify-content-center mt-4" },
+                           LiElementClasses = new[] { "page-link" },
+                           EllipsesFormat = "&#8230;",
+                           DisplayLinkToIndividualPages = true,
+                           ActiveLiElementClass = "page-item",
+                           DisplayLinkToFirstPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                           DisplayLinkToLastPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                           DisplayLinkToPreviousPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                           DisplayLinkToNextPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                           PageCountAndCurrentLocationFormat = "",
+                           ContainerDivClasses = new[] { "pagination-container" }
+                            },
+                        new AjaxOptions() { HttpMethod = "GET" }))
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

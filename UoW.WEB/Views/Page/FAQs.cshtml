@@ -1,0 +1,218 @@
+﻿
+@{
+    ViewData["Title"] = "FAQs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <div class="checkout-tabs">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" id="v-pills-gen-ques-tab" data-toggle="pill" href="#v-pills-gen-ques" role="tab" aria-controls="v-pills-gen-ques" aria-selected="true">
+                        <i class="bx bx-question-mark d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">Sıkça Sorulanlar</p>
+                    </a>
+                    <a class="nav-link" id="v-pills-privacy-tab" data-toggle="pill" href="#v-pills-privacy" role="tab" aria-controls="v-pills-privacy" aria-selected="false">
+                        <i class="bx bx-check-shield d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">Gizlilik Sözleşmesi</p>
+                    </a>
+                    <a class="nav-link" id="v-pills-support-tab" data-toggle="pill" href="#v-pills-support" role="tab" aria-controls="v-pills-support" aria-selected="false">
+                        <i class="bx bx-support d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">Satış Sözleşmesi</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-gen-ques" role="tabpanel" aria-labelledby="v-pills-gen-ques-tab">
+                                <h4 class="card-title mb-5">General Questions</h4>
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Siparişim ne zaman gelir?</h5>
+                                        <p class="text-muted">Satın aldığınız ürünler ürün detay sayfasında belirtilen teslimat tarih aralığında teslim edilir. Satın aldığınız ürünlerin teslimat tarihine "Hesabım" bölümünde “Siparişlerim“ sayfasından da ulaşabilirsiniz.</p>
+                                    </div>
+                                </div>
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Şifremi unuttum nasıl giriş ypaabilirim?</h5>
+                                        <p class="text-muted">
+                                            Şifrenizi unuttuysanız eğer, şifre sıfırlama işlemi yaparak hesabınıza giriş yapabilirsiniz.Bunun için takip edeceğiniz adımlar;'Üye Girişi' sayfasından 'Şifremi unuttum' yazısına tıklayın. Üyeliğinize ait e-posta adresinizi girerek 'Gönder' dediğinizde ilgili e-posta adresinize bir link gelecek.Gelen linke tıklayarak yeni şifre oluşturma işleminizi yapabilirsiniz.Eğer link size ulaşmadı ise spam klasörünüzü kontrol edin. Ayrıca dilediğiniz zaman 'Hesabım>Kullanıcı Bilgilerim>Şifre Güncelleme' kısmından şifre değişiklik işleminizi yapabilirsiniz.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Nasıl başvuru yaparım?</h5>
+                                        <p class="text-muted">Online alışveriş sistemimize girdikten sonra giriş formunun altındaki, "Başvuru formu" linkinden sayfaya giderek istenilen bilgileri eksiksiz ve doğru girerek başvuru gerçekleştirebilirsiniz</p>
+                                    </div>
+                                </div>
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Nereden sipariş verebilirim?</h5>
+                                        <p class="text-muted">Tüm ihtiyaçlarınıza 600'den fazla yerel ve ulusal zincir market ağımızla hizmet veriyoruz. Konumunuza bağlı olarak hizmet alabileceğiniz marketler farklılık gösterebilir. Uygulama üzerinden adres bilgilerinizi girerek bölgenizde hizmet veren mağazalarımızı görüntüleyebilirsiniz.</p>
+                                    </div>
+                                </div>
+                                <div class="faq-box media">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Ödememi nasıl yapabilirim?</h5>
+                                        <p class="text-muted">
+                                            demeyi kredi kartı, banka kartı ve Trendyol Cüzdanım ile gerçekleştirebilirsiniz. Kart bilgilerinizi girdikten sonra eğer taksit yapılabilen ürünlerse taksit seçeneklerinden birini seçip alışverişinizi tamamlayabilirsiniz. Kapıda ödeme ve havale yoluyla ödeme seçenekleri bulunmamaktadır.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-privacy" role="tabpanel" aria-labelledby="v-pills-privacy-tab">
+                                <h4 class="card-title mb-5">Gizlilik Sözleşmesi</h4>
+
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Kişisel verilerin işlenip işlenmediğini öğrenme,</h5>
+                                    </div>
+                                </div>
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Kişisel verileri işlenmişse buna ilişkin bilgi talep etme,</h5>
+                                    </div>
+                                </div>
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Kişisel verilerin işlenme amacını ve bunların amacına uygun kullanılıp kullanılmadığını öğrenme,</h5>
+                                    </div>
+                                </div>
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Yurt içinde veya yurt dışında kişisel verilerin aktarıldığı üçüncü kişileri bilme,</h5>
+                                    </div>
+                                </div>
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Kişisel verilerin eksik veya yanlış işlenmiş olması halinde bunların düzeltilmesini isteme,</h5>
+                                    </div>
+                                </div>
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">İlgili mevzuatta öngörülen şartlar çerçevesinde kişisel verilerin silinmesini veya yok edilmesini isteme,</h5>
+                                    </div>
+                                </div>
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">İlgili mevzuat uyarınca yapılan düzeltme, silme ve yok edilme işlemlerinin, kişisel verilerin aktarıldığı üçüncü kişilere bildirilmesini isteme,</h5>
+                                    </div>
+                                </div>
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">İşlenen verilerin münhasıran otomatik sistemler vasıtasıyla analiz edilmesi suretiyle kişinin kendisi aleyhine bir sonucun ortaya çıkmasına itiraz etme,</h5>
+                                    </div>
+                                </div>
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Kişisel verilerin kanuna aykırı olarak işlenmesi sebebiyle zarara uğraması halinde zararın giderilmesini talep etme,</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-support" role="tabpanel" aria-labelledby="v-pills-support-tab">
+                                <h4 class="card-title mb-5">Satış Sözleşmesi</h4>
+
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Satıcı</h5>
+                                        <p class="text-muted">KIRAÇ ELEKTRİK İNŞAAT MÜHENDİSLİK SAN. TİC. LTD. ŞTİ.</p>
+                                    </div>
+                                </div>
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">ALICI</h5>
+                                        <p class="text-muted">Müşteri olarak bayi.kiracelektrik.com.tr alışveriş sitesine üye olan kişi ve sipariş veren kişi. Üye olurken girilen adres ve iletişim bilgileri esas alınır.</p>
+                                    </div>
+                                </div>
+
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">SATIŞA KONU ÜRÜNÜN ÖZELLİKLERİ</h5>
+                                        <p class="text-muted">Mal ya da hizmetlerin temel özelliklerini www.bayi.kiracelektrik.com.tr adresinde yer almaktadır. Ürünün temel özelliklerini internet sitesinde inceleyebilirsiniz.</p>
+                                    </div>
+                                </div>
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">GENEL HÜKÜMLER</h5>
+                                        <p class="text-muted"> Sözleşme konusu ürün, yasal 30 günlük süreyi aşmamak koşulu ile her bir ürün için ALICI'nın yerleşim yerinin uzaklığına bağlı olarak internet sitesinde yer ön bilgiler içinde açıklanan süre içinde ALICI veya gösterdiği adresteki kişi/kuruluşa teslim edilir.</p>
+                                    </div>
+                                </div>
+
+                                <div class="faq-box media">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">CAYMA HAKKI</h5>
+                                        <p class="text-muted">Cayma hakkının kullanılması için 14 günlük süre içinde SATICI'ya iadeli taahhütlü posta, faks veya eposta ile yazılı bildirimde bulunulması ve ürünün 5. madde hükümleri çerçevesinde kullanılmamış olması şarttır. Bu hakkın kullanılması halinde,</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
+
+</div> <!-- container-fluid -->

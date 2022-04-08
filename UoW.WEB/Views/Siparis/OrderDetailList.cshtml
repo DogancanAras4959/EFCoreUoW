@@ -1,0 +1,92 @@
+﻿@model UoW.DOMAIN.Models.Siparis
+@*
+   
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{ 
+    decimal AraTutar = 0;
+    decimal Indirim = 0;
+    decimal NetTutar = 0;
+}
+
+<p class="mb-2">Sipariş Numarası: <span class="text-primary">#@Model.SiparisNo | Ref No: @Model.ReferansNo</span></p>
+<p class="mb-4">Bayi <span class="text-primary">@Model.bayiSiparis.BayiAdi</span></p>
+
+<div class="table-responsive">
+    <table class="table table-centered table-nowrap">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Ürün Numarası</th>
+                <th scope="col">Ürün Adı</th>
+                <th scope="col">Fiyat</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (UoW.DOMAIN.Models.Sepet item in ViewBag.SiparisDetaylari)
+            {
+
+                decimal fiyat = item.BirimFiyat;
+                AraTutar += item.UrunSepet.KDVFiyat * item.Adet;
+                NetTutar += item.ToplamSatır;
+                Indirim = AraTutar - NetTutar;
+                <tr>
+                    <th scope="row">
+                        <div>
+                            <img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@item.UrunSepet.Resim" alt="" class="avatar-sm">
+                        </div>
+                    </th>
+                    <td>@item.UrunSepet.UrunNo</td>
+                    <td>
+                        <div>
+                            <h5 class="text-truncate font-size-14">@item.UrunSepet.UrunAdi.Substring(0, 20)</h5>
+                            @if (item.UrunSepet.IndirimOrani > 0)
+                            {
+                                <p class="text-muted mb-0"><del>@string.Format("{0:c}", item.UrunSepet.KDVFiyat)</del> @string.Format("{0:C}", item.BirimFiyat) x @item.Adet</p>
+                            }
+                            else
+                            {
+                                <p class="text-muted mb-0">@string.Format("{0:c}", item.BirimFiyat) x @item.Adet</p>
+                            }
+
+                        </div>
+                    </td>
+                    <td>@string.Format("{0:c}", item.ToplamSatır)</td>
+                </tr>
+            }
+            @*<tr>
+                <td colspan="2">
+                    <h6 class="m-0 text-right">Ara Tutar:</h6>
+                </td>
+                <td>
+                    @string.Format("{0:c}", AraTutar)
+                </td>
+            </tr>*@
+            <tr>
+                <td colspan="2">
+                    <h6 class="m-0 text-right">Kargo Ücreti:</h6>
+                </td>
+                <td>
+                    @string.Format("{0:C}", Model.KargoBedeli)
+                </td>
+            </tr>
+            @*<tr>
+                <td colspan="2">
+                    <h6 class="m-0 text-right">İndirim:</h6>
+                </td>
+                <td>
+                    -@string.Format("{0:c}", Indirim)
+                </td>
+            </tr>*@
+
+            <tr>
+                <td colspan="2">
+                    <h6 class="m-0 text-right">Toplam Tutar:</h6>
+                </td>
+                <td>
+                    @string.Format("{0:c}", NetTutar + Model.KargoBedeli)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

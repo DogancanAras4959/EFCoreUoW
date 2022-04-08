@@ -1,0 +1,123 @@
+﻿@using UoW.DOMAIN.Models
+
+@section Styles{
+    <style>
+        .page-link {
+            position: relative;
+            display: block;
+            padding: .5rem .75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #fff;
+            background-color: #34509d;
+            border: 1px solid #34509d;
+        }
+
+            .page-link a {
+                color: #fff;
+            }
+
+                .page-link a:hover {
+                    color: #34509d;
+                }
+    </style>
+}
+
+
+@{
+    ViewData["Title"] = "ListProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">ÜRÜNLER</h4>
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li style="padding-right:20px;">
+                                @using (Html.BeginForm("ExportProductExcel", "Urun", FormMethod.Post))
+                                {
+                                    <button id="btn_export" onclick="export_urun()" type="submit" class="btn btn-sm btn-success">Ürünleri Dışa Aktar</button>
+                                }
+                            </li>
+                            <li>
+                                <a class="btn btn-sm btn-light" href="@Url.Action("ListProduct","Urun")"><span class="fa fa-list"></span></a>
+                            </li>
+
+                            <li style="padding-left:2px;">
+                                <a class="btn btn-sm btn-light" href="@Url.Action("ListProductGrid","Urun")">
+                                    <span class="fa fa-solar-panel"></span>
+                                </a>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-bordered dt-responsive nowrap"
+                               style="border-collapse: collapse;
+                       border-spacing: 0; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>#</th>
+                                    <th>Ürün Barkod No</th>
+                                    <th>Ürün Adı</th>
+                                    <th>Ürün No</th>
+                                    <th>Fiyat</th>
+                                    <th>Adet</th>
+                                    <th>Durum</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var item in ViewBag.Urunler)
+                                {
+                                    <tr>
+                                        <td><img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@item.Resim" class="rounded-circle" width="40" /></td>
+                                        <td class="text-body font-weight-bold">#@item.ID</td>
+                                        <td>@item.UrunBarkodNo</td>
+                                        <td><a href="@Url.Action("DetailProduct","Urun", new { ID = item.ID })">@item.UrunAdi</a></td>
+                                        <th>@item.UrunNo</th>
+                                        <th>@string.Format("{0:c}", item.Fiyat) </th>
+                                        <th>@item.Adet</th>
+                                        <td>
+                                            @if (item.Durum == true)
+                                            {<span class="badge badge-pill badge-soft-success font-size-12">Aktif</span> }
+                                            else
+                                            { <span class="badge badge-pill badge-soft-danger font-size-12">Pasif</span>}
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts
+    {
+    <script src="~/assets/libs/select2/js/select2.min.js"></script>
+    <script src="~/assets/js/pages/ecommerce-select2.init.js"></script>
+    <script src="~/assets/libs/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <script src="~/assets/js/pages/form-element.init.js"></script>
+    <script>
+        function export_urun() {
+            var btn = document.getElementById("btn_export");
+            btn.innerText = "Ürün Dışa Aktarılıyor...";
+        }
+    </script>
+}

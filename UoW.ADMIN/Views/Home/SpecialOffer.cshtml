@@ -1,0 +1,123 @@
+﻿@model IPagedList<UoW.DOMAIN.Models.OzelTeklif>
+@using UoW.DOMAIN.Models;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common;
+
+@section Styles{
+    <style>
+        .page-link {
+            position: relative;
+            display: block;
+            padding: .5rem .75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #fff;
+            background-color: #34509d;
+            border: 1px solid #34509d;
+        }
+
+            .page-link a {
+                color: #fff;
+            }
+
+                .page-link a:hover {
+                    color: #34509d;
+                }
+    </style>
+}
+@{
+    IPagedList<OzelTeklif> teklifler = ViewBag.OzelTeklifler as IPagedList<OzelTeklif>;
+    decimal nettoplam = 0;
+}
+
+<div class="row">
+    <div class="col-12">
+
+        <div class="card">
+            <div class="card-body">
+                <h4 class="page-title-box">Bayi Özel Teklifleri</h4>
+               
+                @if (teklifler.Count == 0)
+                {
+                    <div class="jumbotron">
+                        <h4 class="text-center">Herhangi bir özel teklif bulunmuyor! Teklif arşivini görmek için <a href="@Url.Action("AllSpecialOffers","Home")">tıklayınız</a></h4>
+                    </div>
+                }
+                else
+                {
+                    <table class="table table-bordered dt-responsive nowrap"
+                           style="border-collapse: collapse;
+                       border-spacing: 0; width: 100%;" id="teklifTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tarih</th>
+                                <th>İşlem</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in teklifler)
+                            {
+                                <tr>
+                                    <td class="text-body font-weight-bold">@item.ID</td>
+                                    <td>@item.bayiOzelTeklif.BayiAdi</td>
+                                    <td>@item.TeklifTarih.ToLongDateString() @item.TeklifTarih.ToLongTimeString()</td>
+                                    @if (item.Durum == true)
+                                    {
+                                        <td><button class="btn btn-sm btn-success" disabled>Teklif işleme alındı</button></td>
+                                    }
+                                    else
+                                    {
+                                        <td><a href="@Url.Action("MakeOfferToSeller","Home", new { ID = item.ID })" class="btn btn-sm btn-info" style="color:#fff;">TEKLİFİ DÜZENLE</a></td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div> <!-- end col -->
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        @Html.PagedListPager((IPagedList<OzelTeklif>)ViewBag.OzelTeklifler,
+       page => Url.Action("Index", new { page }),
+       PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+       {
+                MaximumPageNumbersToDisplay = 10,
+           DisplayPageCountAndCurrentLocation = true,
+           UlElementClasses = new[] { "pagination pagination-rounded justify-content-center mt-4" },
+           LiElementClasses = new[] { "page-link" },
+           EllipsesFormat = "&#8230;",
+           DisplayLinkToIndividualPages = true,
+           ActiveLiElementClass = "page-item",
+           DisplayLinkToFirstPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+           DisplayLinkToLastPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+           DisplayLinkToPreviousPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+           DisplayLinkToNextPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+           PageCountAndCurrentLocationFormat = "",
+           ContainerDivClasses = new[] { "pagination-container" }
+            },
+        new AjaxOptions() { HttpMethod = "GET" }))
+    </div>
+</div>
+
+<script>
+    var TeklifVer = function (ID) {
+        var Id = ID;
+        var fiyat = $("#teklifMiktar").val();
+        $.ajax({
+            url: "/Home/EditSpecialOffer",
+            type: "POST",
+            data: { ID: Id, Fiyat:fiyat},
+            success: function (response) {
+                if (response == true) {
+                    window.location.assign('@Url.Action("Index", "Home")');
+                }
+            }
+        });
+    };
+</script>

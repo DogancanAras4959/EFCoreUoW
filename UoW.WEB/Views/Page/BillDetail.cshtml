@@ -1,0 +1,170 @@
+﻿@model UoW.DOMAIN.Models.Fatura
+
+@{
+    ViewData["Title"] = "BillDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    decimal indirim = 0;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <div class="page-title-left">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="@Url.Action("HomePageList","Home")">Ana Sayfa</a></li>
+                        <li class="breadcrumb-item active">Fatura Detay</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="invoice-title">
+                        <h4 class="float-right font-size-16">Fatura No # @Model.FaturaNo</h4>
+                        <div class="mb-4">
+                            <img src="~/assets/images/logo-dark.png" alt="logo" height="20" />
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-6">
+
+                        </div>
+                        <div class="col-sm-6 text-sm-right">
+                            <address class="mt-2 mt-sm-0">
+                                <strong>Teslim Edilen:</strong><br>
+                               @Model.bayiFatura.BayiAdi<br>
+                            </address>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 mt-3">
+                            <address>
+                                <strong>Fatura Tarihi:</strong><br>
+                                @Model.EklenmeTarih.ToShortDateString() @Model.EklenmeTarih.ToShortTimeString()<br><br>
+                            </address>
+                        </div>
+                        <div class="col-sm-6 mt-3 text-sm-right">
+                            <address>
+                                <strong>Teslim Tarihi:</strong><br>
+                                @Model.siparisFatura.HazirlanmaTarih.ToShortDateString() @Model.siparisFatura.HazirlanmaTarih.ToShortTimeString()<br><br>
+                            </address>
+                        </div>
+                    </div>
+                    <div class="py-2 mt-3">
+                        <h3 class="font-size-15 font-weight-bold">Sipariş</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <div class="table-responsive">
+                                <table class="table table-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 70px;">Ürün No</th>
+                                            <th>Ürün Adı</th>
+                                            <th>Fiyat</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (UoW.DOMAIN.Models.Sepet item in ViewBag.Sepetler)
+                                        {
+
+                                            decimal fiyat = item.UrunSepet.IndirimliFiyat + item.UrunSepet.KDVFiyat;
+                                            indirim = ViewBag.TotalPrice - Model.ToplamFiyat;
+                                        <tr>
+                                            <td>@item.UrunSepet.UrunNo</td>
+                                            <td>
+                                                <div>
+                                                    @if (item.UrunSepet.UrunAdi.Length > 20)
+                                                        {
+                                                    <h5 class="text-truncate font-size-14">@item.UrunSepet.UrunAdi.Substring(0, 30)</h5>
+                                                        }
+
+                                                    @if (item.UrunSepet.IndirimOrani > 0)
+                                                        {
+                                                    <p class="text-muted mb-0"><del>@string.Format("{0:c}", item.UrunSepet.KDVFiyat)</del> @string.Format("{0:C}", item.BirimFiyat) x @item.Adet</p>
+                                                        }
+                                                        else
+                                                        {
+                                                    <p class="text-muted mb-0">@string.Format("{0:c}", item.UrunSepet.KDVFiyat) x @item.Adet</p>
+                                                        }
+
+                                                </div>
+                                            </td>
+                                            <td>@string.Format("{0:c}", item.ToplamSatır)</td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="table-responsive">
+                                <table class="table table-nowrap">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="1">
+                                                <h6 class="m-0 text-right">Ara Toplam:</h6>
+                                            </td>
+                                            <td>
+                                                @string.Format("{0:c}", Model.ToplamFiyat - Model.siparisFatura.KargoBedeli)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td colspan="1">
+                                                    <h6 class="m-0 text-right">İndirim:</h6>
+                                                </td>
+                                                <td>
+                                                    -@string.Format("{0:c}", Model.siparisFatura.Indirim)
+                                                </td>
+                                            </tr>
+                                        <tr>
+                                            <td colspan="1">
+                                                <h6 class="m-0 text-right">Kargo Bedeli:</h6>
+                                            </td>
+                                            <td>
+                                                @string.Format("{0:c}", Model.siparisFatura.KargoBedeli)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="1">
+                                                <h6 class="m-0 text-right">Toplam Tutar:</h6>
+                                            </td>
+                                            <td>
+                                                @string.Format("{0:c}", Model.siparisFatura.ToplamFiyat)
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-print-none">
+                        <div class="float-right">
+                            <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light mr-1"><i class="fa fa-print"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="invoice-title">
+                        <h4 class="float-left font-size-16">Kargo Bilgisi</h4>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

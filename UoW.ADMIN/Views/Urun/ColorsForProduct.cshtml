@@ -1,0 +1,120 @@
+﻿@using UoW.DOMAIN.Models
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common;
+
+@section Styles{
+    <style>
+        .page-link {
+            position: relative;
+            display: block;
+            padding: .5rem .75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #fff;
+            background-color: #34509d;
+            border: 1px solid #34509d;
+        }
+
+            .page-link a {
+                color: #fff;
+            }
+
+                .page-link a:hover {
+                    color: #34509d;
+                }
+    </style>
+}
+
+@{
+    ViewData["Title"] = "ColorsForProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">Renkler</h4>
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Ana Sayfa</a></li>
+                            <li class="breadcrumb-item active">Renkler</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-sm-4">
+            </div>
+            <div class="col-sm-8">
+                <div class="text-sm-right">
+                    <a href="@Url.Action("CreateNewColor","Urun")" class="btn btn-success btn-rounded waves-effect waves-light mb-2 mr-2"><i class="mdi mdi-plus mr-1"></i> Renk Oluştur</a>
+                </div>
+            </div><!-- end col-->
+        </div>
+        <div class="row">
+
+            @if(ViewBag.Data != null)
+            {
+                <div class="card">
+                    <div class="card-body text-center">
+                        <div class="alert alert-danger">
+                            <h5>@ViewBag.Hata</h5>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @foreach (var item in ViewBag.Renkler)
+            {
+
+                <div class="col-xl-3 col-md-6">
+                    <a href="@Url.Action("EditColor","Urun", new { ColorID = item.ID })" data-toggle="tooltip" data-placement="top" title="" data-original-title="Rengi Düzenle">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <div class="color-box p-4 rounded" style="background-color:@item.RenkKodu;">
+                                    <h5 class="my-2 text-white">@item.RenkKodu</h5>
+                                </div>
+                                @if (item.RenkAdi != "")
+                                {
+                                    <h5 class="mb-0 mt-3">@item.RenkAdi</h5>
+                                }
+                            </div>
+                         
+                        </div>
+                    </a>
+                </div>
+
+            }
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                @Html.PagedListPager((IPagedList<Renk>)ViewBag.Renkler,
+            page => Url.Action("ColorsForProduct", new { page }),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+            {
+                     MaximumPageNumbersToDisplay = 10,
+                DisplayPageCountAndCurrentLocation = true,
+                UlElementClasses = new[] { "pagination pagination-rounded justify-content-center mt-4" },
+                LiElementClasses = new[] { "page-link" },
+                EllipsesFormat = "&#8230;",
+                DisplayLinkToIndividualPages = true,
+                ActiveLiElementClass = "page-item",
+                DisplayLinkToFirstPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                DisplayLinkToLastPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                DisplayLinkToPreviousPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                DisplayLinkToNextPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                PageCountAndCurrentLocationFormat = "",
+                ContainerDivClasses = new[] { "pagination-container" }
+                 },
+             new AjaxOptions() { HttpMethod = "GET" }))
+            </div>
+        </div>
+
+    </div>
+</div>

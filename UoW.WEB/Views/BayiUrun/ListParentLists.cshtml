@@ -1,0 +1,44 @@
+﻿@model IEnumerable<UoW.DOMAIN.Models.UstListe>
+@{
+    ViewData["Title"] = "ListSubItems";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <td>#</td>
+                                    <td>Liste Adı</td>                                  
+                                    <td>Eklenme Tarih</td>
+                                    <td>Güncellenme Tarih</td>
+                                    <td>Bayi</td>
+                                    <td>İşlem</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.ID</td>
+                                        <td>@item.ListeAdi</td>                                      
+                                        <td>@item.EklenmeTarih.ToShortDateString() @item.EklenmeTarih.ToShortTimeString()</td>
+                                        <td>@item.GuncellenmeTarih.ToShortDateString() @item.GuncellenmeTarih.ToShortTimeString()</td>
+                                        <td>@item.bayiListUst.BayiAdi</td>
+                                        <td><a href="@Url.Action("ListSubItems","BayiUrun", new { ID= item.ID })" class="btn btn-sm btn-danger">Kaldır</a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

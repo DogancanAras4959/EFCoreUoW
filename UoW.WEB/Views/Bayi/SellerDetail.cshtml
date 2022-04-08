@@ -1,0 +1,251 @@
+﻿@model UoW.DOMAIN.Models.Bayi
+@{
+    ViewData["Title"] = "SellerDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    string bakiye = string.Format("{0:c}", ViewBag.Bakiye);
+    string harcanan = string.Format("{0:c}", ViewBag.ToplamTutarIslem);
+    int toplamStok = Convert.ToInt32(ViewBag.ToplamStok);
+    int toplamYetkili = Convert.ToInt32(ViewBag.Yetkililer);
+}
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">BAYİ HESABI</h4>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="card overflow-hidden">
+                    <div class="bg-soft-primary">
+                        <div class="row">
+                            <div class="col-7">
+                                <div class="text-primary p-3">
+                                    <h5 class="text-primary">Bayi Hesabı</h5>
+                                    <p>Bayi Hesabını inceleyin ve kontrol edin</p>
+                                </div>
+                            </div>
+                            <div class="col-5 align-self-end">
+                                <img src="~/assets/images/profile-img.png" alt="" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="avatar-md profile-user-wid mb-4">
+                                    <img src="https://bayi.kiracelektrik.com.tr/Files/Bayi/@Model.Logo" alt="" height="50" class="img-thumbnail rounded-circle">
+                                </div>
+                                <h5 class="font-size-15 text-truncate">@Model.BayiAdi</h5>
+                                <p class="text-muted mb-0 text-truncate">@Model.UyeNo</p>
+                            </div>
+
+                            <div class="col-sm-8">
+                                <div class="pt-4">
+
+                                    <div class="row">
+                                        <div class="col-6">
+                                            @if (Model.AltBayiHakki == true)
+                                            {<h5 class="font-size-15 text-success">Aktif</h5>}
+                                            else
+                                            {
+                                                <h5 class="font-size-15 text-danger">Pasif</h5>
+                                            }
+                                            <p class="text-muted mb-0">Alt Bayi</p>
+                                        </div>
+                                        <div class="col-6">
+                                            <h5 class="font-size-15">@toplamYetkili</h5>
+                                            <p class="text-muted mb-0">Yetkililer</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card overflow-hidden">
+                    <div class="card-body">
+                        <div class="table-responsive mt-1">
+                            <table class="table table-condensed table-nowrap">
+                                <tbody>
+                                    @if (ViewBag.Durum == true)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a href="@Url.Action("EditCommercialSellerDataWeb","Islem")" class="btn btn-block btn-primary">Ticari Bilgilerimi Güncelle</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a href="@Url.Action("InsertCommercialSellerDataWeb","Islem")" class="btn btn-block btn-primary">Ticari Bilgilerinizi Oluşturun</a>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                    <tr>
+                                        <td>
+                                            <a href="@Url.Action("SellerCompetentListWeb","Islem")" class="btn btn-block btn-primary">Yetkili Kişi Bilgileri</a>
+                                        </td>
+                                    </tr>
+                                    @if (ViewBag.BultenDurum == false)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a href="@Url.Action("BulletinMemberCreateSellerWeb", "Islem")" class="btn btn-block btn-primary">Bülten Üyeliği Oluştur</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a href="@Url.Action("BulletinMemberEditSellerWeb", "Islem")" class="btn btn-block btn-primary">Bülten Üyeliği Güncelle</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td>
+                                            <a href="@Url.Action("TradeWithCreditSellerWeb","Islem")" class="btn btn-block btn-primary">Kredili Ticaret İmkanı</a>
+                                        </td>
+                                    </tr>
+                                    @*<tr>
+                                        @if (Model.KargoYonet == true)
+                                        {
+                                            <td>
+                                                <a href="@Url.Action("KargolariYonetWeb","Islem")" class="btn btn-block btn-primary">Kargoları Yönet</a>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <a href="javascript:void(0)" class="btn btn-block btn-default disabled">Kargoları Yönet</a>
+                                            </td>
+                                        }
+
+                                    </tr>*@
+                                    <tr>
+                                        @if (ViewBag.Adresler == true)
+                                        {
+                                            <td>
+                                                <a href="@Url.Action("SellerAdressList","Bayi")" class="btn btn-block btn-primary">Adreslerim</a>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <a href="@Url.Action("InsertSellerAdress","Bayi")" class="btn btn-block btn-primary">Adres Ekle</a>
+                                            </td>
+                                        }
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-8">
+                <div class="row">
+                    <div class="col-md-12">
+                        @if (Model.RiskLimiti == 2500)
+                        {
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="alert alert-warning">
+                                        <h5>Kredi Limitiniz @string.Format("{0:c}", Model.RiskLimiti) kadardır. Limitinizi bitirmeniz halinde Cüzdan hesabınızda yer alan bakiyeniz üzerinden siparişlerinizi gerçekleştirebileceksiniz...</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else if (Model.RiskLimiti == 0)
+                        {
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="alert alert-warning">
+                                        <h5>Kredi Limitiniz tükenmiştir. Cüzdan hesabınızda yer alan bakiyeniz üzerinden siparişlerinizi gerçekleştirebilirsiniz...</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
+                                        @if (Model.RiskLimiti >= 2500)
+                                        {
+                                            <p class="text-muted font-weight-medium">Kredi</p>
+                                            <h4 class="mb-0 text-success">@string.Format("{0:c}", Model.RiskLimiti)</h4>
+                                        }
+                                        else
+                                        {
+                                            <p class="text-muted font-weight-medium">Bakiye</p>
+                                            <h4 class="mb-0 text-success">@bakiye</h4>
+                                        }
+                                    </div>
+
+                                    <div class="mini-stat-icon avatar-sm align-self-center rounded-circle bg-primary">
+                                        <span class="avatar-title">
+                                            <i class="bx bx-check-circle font-size-24"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <p class="text-muted font-weight-medium">Stoktaki Ürünler</p>
+                                        <h4 class="mb-0">@toplamStok</h4>
+                                    </div>
+
+                                    <div class="avatar-sm align-self-center mini-stat-icon rounded-circle bg-primary">
+                                        <span class="avatar-title">
+                                            <i class="bx bx-hourglass font-size-24"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mini-stats-wid">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <p class="text-muted font-weight-medium">Harcanan</p>
+                                        <h4 class="mb-0 text-danger">-@harcanan</h4>
+                                    </div>
+
+                                    <div class="avatar-sm align-self-center mini-stat-icon rounded-circle bg-primary">
+                                        <span class="avatar-title">
+                                            <i class="bx bx-package font-size-24"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        @{await Html.RenderPartialAsync("LiveOrderListWeb", Model.ID);}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

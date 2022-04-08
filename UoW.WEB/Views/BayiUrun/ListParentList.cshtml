@@ -1,0 +1,14 @@
+﻿@model IEnumerable<UoW.DOMAIN.Models.UstListe>
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<table class="table table-condensed">
+    <tbody>
+        @foreach (var item in Model) { 
+            <tr>
+                <td><a href="@Url.Action("ListToSubList","BayiUrun", new { ID = item.ID })" class="btn btn-link">@item.ListeAdi</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

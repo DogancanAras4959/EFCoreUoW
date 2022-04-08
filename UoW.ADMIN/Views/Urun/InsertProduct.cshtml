@@ -1,0 +1,337 @@
+﻿@using Newtonsoft.Json
+@using UoW.DOMAIN.Models
+@model UoW.DOMAIN.Models.Urun
+@{ ViewData["Title"] = "InsertProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{ public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    } }
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Ürün Ekle</h4>
+                        <p class="card-title-desc">Ürünlerinizi ekleyin, ürünlerinizi yönetin</p>
+                        @using (Html.BeginForm("InsertProduct", "Urun", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+                        {
+            <div class="row">
+
+                <div class="col-sm-7">
+
+                    <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#all-order" role="tab">
+                                Ürün Bilgileri
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#single-order" role="tab">
+                                Fiyat Bilgileri
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#options" role="tab">
+                                Seçenekli Fiyatlar
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#desc" role="tab">
+                                Ürün Açıklaması
+                            </a>
+                        </li>
+
+                    </ul>
+
+
+                    <div class="tab-content p-3">
+
+                        <div class="tab-pane active" id="all-order" role="tabpanel">
+                            <div class="form-group">
+                                <label for="productname">Web Servis Kodu</label>
+                                @Html.TextBoxFor(x => x.WebServisKodu, new { @class = "form-control", maxlength = "45", autocomplete = "off" })
+                                <label class="text-danger">@Html.ValidationMessageFor(x => x.WebServisKodu)</label>
+                            </div>
+                            <div class="form-group">
+                                <label for="productname">Ürün Adı</label>
+                                @Html.TextBoxFor(x => x.UrunAdi, new { @class = "form-control", autocomplete = "off" })
+                                <label class="text-danger">@Html.ValidationMessageFor(x => x.UrunAdi)</label>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="manufacturername">Ürün Numarası</label>
+                                @Html.TextBoxFor(x => x.UrunNo, new { @class = "form-control", autocomplete = "off" })
+                                <label class="text-danger">@Html.ValidationMessageFor(x => x.UrunNo)</label>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="manufacturerbrand">Ürün Barkod Numarası</label>
+                                @Html.TextBoxFor(x => x.UrunBarkodNo, new { @class = "form-control", autocomplete = "off" })
+                                <label class="text-danger">@Html.ValidationMessageFor(x => x.UrunBarkodNo)</label>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="price">Ürün Anahtar Kelimeleri</label>
+                                @Html.TextBox("etiketler", null, new { @class = "form-control", name = "etiketler", id = "etiketler", autocomplete = "off" })
+                            </div>
+                            <div class="form-group">
+                                <label for="price">Desi hesaplaması için en boy ve derinlik oranlarını giriniz (Ağırlık hesaba katılmaz)...</label>
+                            </div>
+                            <div class="form-group row" style="margin-left:0px;">
+                                @Html.TextBoxFor(x => x.Agirlik, new { @class = "form-control col-sm-2", @style = "margin-left:3px;", autocomplete = "off", placeholder = "Ağırlık..." })
+                                @Html.TextBoxFor(x => x.En, new { @class = "form-control col-sm-2", @style = "margin-left:8px;", autocomplete = "off", placeholder = "En..." })
+                                @Html.TextBoxFor(x => x.Boy, new { @class = "form-control col-sm-2", @style = "margin-left:10px;", autocomplete = "off", placeholder = "Boy..." })
+                                @Html.TextBoxFor(x => x.Derinlik, new { @class = "form-control col-sm-2", @style = "margin-left:10px;", autocomplete = "off", placeholder = "Derinlik..." })
+                                @Html.TextBoxFor(x => x.Desi, new { @class = "form-control col-sm-2", @style = "margin-left:10px;", autocomplete = "off", placeholder = "Desi..." })
+                            </div>
+                        </div>
+
+                        <div id="single-order" class="tab-pane">
+                            <div class="form-group">
+                                <label for="price">Fiyat</label>
+                                @Html.TextBoxFor(x => x.Fiyat, new { @class = "form-control", maxlength = "15", id = "price", autocomplete = "off" })
+                                <label class="text-danger">@Html.ValidationMessageFor(x => x.Fiyat)</label>
+                            </div>
+                            <div class="form-group">
+                                <label for="price">KDV Oranı</label>
+                                @Html.TextBoxFor(x => x.KDV, new { @class = "form-control", maxlength = "2", autocomplete = "off" })
+                            </div>
+                            <div class="form-group">
+                                <label for="price">İndirim Oranı</label>
+                                @Html.TextBoxFor(x => x.IndirimOrani, new { @class = "form-control", maxlength = "2", autocomplete = "off" })
+                            </div>
+                            <div class="form-group">
+                                <label for="price">Ürün Stok</label>
+                                @Html.TextBoxFor(x => x.Adet, new { @class = "form-control", type = "text", maxlength = "10", autocomplete = "off" })
+                            </div>
+                            <div class="form-group">
+                                <label for="price">Satın alınabilecek Maximum Ürün</label>
+                                @Html.TextBoxFor(x => x.MaxAdet, new { @class = "form-control", type = "text", maxlength = "10", autocomplete = "off" })
+                            </div>
+                            <div class="form-group">
+                                <label for="price">Satın alınabilecek Minimum Ürün</label>
+                                @Html.TextBoxFor(x => x.MinAdet, new { @class = "form-control", type = "text", maxlength = "10", autocomplete = "off" })
+                            </div>
+                        </div>
+
+                        <div id="options" class="tab-pane">
+                            <div id="SecenekGrubu">
+                                <div class="form-group row">
+                                    @Html.TextBox("AdetBaslangic", null, new { @class = "form-control col-sm-3", name = "AdetBaslangic", autocomplete = "off", placeholder = "Adet Ekle..." })
+                                    @Html.TextBox("AdetBitis", null, new { @class = "form-control col-sm-3", @style = "margin-left:10px;", name = "AdetBitis", autocomplete = "off", placeholder = "Son Adet Ekle..." })
+                                    @Html.TextBox("UrunFiyati", null, new { @class = "form-control col-sm-5", @style = "margin-left:10px;", name = "UrunFiyati", autocomplete = "off", placeholder = "Fiyat Ekle..." })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <button type="button" class="btn btn-primary btn-sm col-sm-12" onclick="GrupOpsiyonEkle();"><span class="fa fa-plus"></span></button>
+                            </div>
+                        </div>
+
+                        <div id="desc" class="tab-pane">
+                            <div class="form-group">
+                                <label for="productdesc">Ürün Spot</label>
+                                @Html.TextAreaFor(x => x.UrunSpot, new { @class = "form-control", maxlength = "345", @row = "5" })
+                            </div>
+                            <div class="form-group">
+                                <label for="productdesc">Ürün Açıklama</label>
+                                @Html.TextArea("Aciklama", null, new { @class = "ckeditor" })
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <img src="~/Files/Admin/pp.jpg" style="border:1px solid #000;" height="90" />
+                        </div>
+                        <div class="col-md-9">
+                            <div style="margin-top:10px;"></div>
+                            <label>(Fotoğrafınızı 600x600 boyutlarında yükleyin!)</label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" accept="image/*" name="file" id="customFile">
+                                <label class="custom-file-label" for="customFile">Fotonuzu Seçin</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <img src="~/Files/Admin/pp.jpg" style="border:1px solid #000;" height="90" />
+                        </div>
+                        <div class="col-md-9">
+                            <div style="margin-top:10px;"></div>
+                            <label>(Fotoğrafınızı 150x150 boyutlarında yükleyin!)</label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" accept="image/*" name="fileDetail" id="customFile">
+                                <label class="custom-file-label" for="customFile">Önizleme Fotonuzu Seçin</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Marka</label>
+                        @Html.DropDownList("MarkaID", (SelectList)ViewBag.MarkaID, new { @class = "form-control select2", id = "drp_ustmarka" })
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Alt Marka</label>
+                        @Html.DropDownList("AltMarkaID", new SelectList(new List<Marka>()), "Alt Alt Marka Seç", new { @class = "form-control select2", id = "drp_altmarka" })
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Üst Kategori</label>
+                        @Html.DropDownList("KategoriID", (SelectList)ViewBag.KategoriID, "Kategori Seç", new { @class = "form-control select2", id = "drp_ustkategori" })
+                        <label class="text-danger">@Html.ValidationMessageFor(x => x.KategoriID)</label>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Alt Kategori</label>
+                        @Html.DropDownList("AltKategoriID", new SelectList(new List<Kategori>()), "Alt Kategori Seç", new { @class = "form-control select2", id = "drp_altkategori" })
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Stok Birimi Seçin</label>
+                        @Html.DropDownList("StokBirimID", (SelectList)ViewBag.StokBirimID, "Birim Seç", new { @class = "form-control" })
+                        <label class="text-danger">@Html.ValidationMessageFor(x => x.StokBirimID)</label>
+
+                    </div>
+                    <div class="form-group row" style="padding-left:10px;">
+                        <button type="submit" class="btn btn-secondary col-sm-4 waves-effect">İptal</button>
+                        <div class="col-sm-8">
+                            <button id="btn_insert" onclick="insert_urun()" type="submit" class="btn btn-block btn-primary mr-1 waves-effect waves-light">Ürünü Ekle</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="jstree_demo_div">
+                    </div>
+                </div>
+            </div>}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+    {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="~/assets/libs/select2/js/select2.min.js"></script>
+    <script src="~/assets/js/pages/ecommerce-select2.init.js"></script>
+    <script src="~/assets/libs/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <script src="~/assets/js/pages/form-element.init.js"></script>
+    <script src="~/assets/libs/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.2.6/jquery.inputmask.bundle.min.js"></script>
+
+    <script>
+        $("#Fiyat").inputmask({
+            alias: "decimal",
+            integerDigits: 18,
+            digits: 5,
+            allowMinus: false
+        });
+    </script>
+
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+
+            setTimeout(function () {
+                $('label[class=text-danger]').delay(500).fadeOut();
+            }, 3000);
+
+            $('#dropdown1').select2();
+            $('#drp_ustkategori').select2();
+            $('#drp_altmarka').select2();
+        });
+
+        function insert_urun() {
+            window.setTimeout(function () {
+                $("#btn_insert").attr("disabled", true);
+            }, 500);
+            var btn = document.getElementById("btn_insert");
+            btn.innerText = "Ürün Oluşturuluyor...";
+        }
+
+        function secenekDinamikVeri() {
+            return '<div class="form-group row">@Html.TextBox("AdetBaslangic", null, new { @class = "form-control col-sm-3", name = "AdetBaslangic", type = "text", placeholder = "Adet Ekle..." }) @Html.TextBox("AdetBitis", null, new { @class = "form-control col-sm-3", @style = "margin-left:10px;", name = "AdetBitis", type = "text", placeholder = "Son Adet Ekle..." }) @Html.TextBox("UrunFiyati", null, new { @class = "form-control col-sm-5", @style = "margin-left:10px;", name = "UrunFiyati", placeholder = "Fiyat Ekle..." })</div>';
+        }
+
+        function GrupOpsiyonEkle() {
+
+            var div = document.createElement('div');
+            div.innerHTML = secenekDinamikVeri("");
+            document.getElementById("SecenekGrubu").appendChild(div);
+        }
+
+
+
+        altKategoriGetir();
+
+        $("#drp_ustkategori").change(function ()
+        {
+            altKategoriGetir();
+        })
+
+        function altKategoriGetir()
+        {
+            $("#drp_altkategori").html('');
+
+            let kategoriID = $("#drp_ustkategori").val();
+            $.ajax({
+                url: "/Urun/GetAltKategori/" + kategoriID,
+                type: "GET",
+                success: function (data) {
+                    data.forEach(x => {
+
+                        let option = '<option value="' + x.id + '">' + x.kategoriAdi + '</option>';
+                        $("#drp_altkategori").append(option);
+
+                    })
+                },
+                error: function (e, j, k) {
+                    let responseText = e.responseText.replace("UoW.CORE.Exceptions.BorcVarException:", "");
+                    toastr["warning"](responseText, "Uyarı !");
+                    console.log(e.responseJSON);
+                }
+            });
+        }
+
+        altMarkaGetir();
+
+        $("#drp_ustmarka").change(function () {
+            altMarkaGetir();
+        })
+
+        function altMarkaGetir() {
+            $("#drp_altmarka").html('');
+
+            let markaID = $("#drp_ustmarka").val();
+            $.ajax({
+                url: "/Urun/GetAltMarka/" + markaID,
+                type: "GET",
+                success: function (data) {
+                    data.forEach(x => {
+
+                        let option = '<option value="' + x.id + '">' + x.markaAdi + '</option>';
+                        $("#drp_altmarka").append(option);
+
+                    })
+                },
+                error: function (e, j, k) {
+                    let responseText = e.responseText.replace("UoW.CORE.Exceptions.BorcVarException:", "");
+                    toastr["warning"](responseText, "Uyarı !");
+                    console.log(e.responseJSON);
+                }
+            });
+        }
+
+    </script>
+}

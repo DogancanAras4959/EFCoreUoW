@@ -1,0 +1,260 @@
+﻿@model UoW.DOMAIN.Models.Siparis
+@using UoW.SERVICE.Dtos
+@{
+    ViewData["Title"] = "KargoDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    decimal indirim = 0;
+}
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+<div class="page-content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">Sipariş Detayı</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Sipariş</a></li>
+                            <li class="breadcrumb-item active">Detay</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="invoice-title">
+                            <h4 class="float-right font-size-16">Sipariş No # @Model.SiparisNo</h4>
+                            <div class="mb-4">
+                                <img src="~/assets/images/logo-dark.png" alt="logo" height="20" />
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-6">
+
+                            </div>
+                            <div class="col-sm-6 text-sm-right">
+                                <address class="mt-2 mt-sm-0">
+                                    <strong>Teslim Edilen:</strong><br>
+                                    @Model.bayiSiparis.BayiAdi<br>
+                                </address>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 mt-3">
+                                <address>
+                                    <strong>Sipariş Tarihi:</strong><br>
+                                    @Model.HazirlanmaTarih.ToShortDateString() @Model.HazirlanmaTarih.ToShortTimeString()<br><br>
+                                </address>
+                            </div>
+                            <div class="col-sm-6 mt-3 text-sm-right">
+                                <address>
+                                    <strong>Sipariş Tarihi:</strong><br>
+                                    @Model.SiparisTarih.ToShortDateString() @Model.SiparisTarih.ToShortTimeString()<br><br>
+                                </address>
+                            </div>
+                        </div>
+                        <div class="py-2 mt-3">
+                            <h3 class="font-size-15 font-weight-bold">Sipariş</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <div class="table-responsive">
+                                    <table class="table table-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th style="width: 70px;">Ürün No</th>
+                                                <th>Ürün Adı</th>
+                                                <th>Fiyat</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (UoW.DOMAIN.Models.Sepet item in ViewBag.SiparisDetaylari)
+                                            {
+
+                                                decimal fiyat = item.UrunSepet.IndirimliFiyat + item.UrunSepet.KDVFiyat;
+                                                indirim = ViewBag.TotalPrice - Model.ToplamFiyat;
+                                                <tr>
+                                                    <th scope="row">
+                                                        <div>
+                                                            <img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@item.UrunSepet.Resim" alt="" class="avatar-sm">
+                                                        </div>
+                                                    </th>
+                                                    <td>@item.UrunSepet.UrunNo</td>
+                                                    <td>
+                                                        <div>
+                                                            @if (item.UrunSepet.UrunAdi.Length > 20)
+                                                            {
+                                                                <h5 class="text-truncate font-size-14">@item.UrunSepet.UrunAdi.Substring(0, 30)</h5>
+                                                            }
+
+                                                            @if (item.UrunSepet.IndirimOrani > 0)
+                                                            {
+                                                                <p class="text-muted mb-0"><del>@string.Format("{0:c}", item.UrunSepet.KDVFiyat)</del> @string.Format("{0:C}", item.BirimFiyat) x @item.Adet</p>
+                                                            }
+                                                            else
+                                                            {
+                                                                <p class="text-muted mb-0">@string.Format("{0:c}", item.UrunSepet.KDVFiyat) x @item.Adet</p>
+                                                            }
+
+                                                        </div>
+                                                    </td>
+                                                    <td>@string.Format("{0:c}", item.ToplamSatır)</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="table-responsive">
+                                    <table class="table table-nowrap">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="1">
+                                                    <h6 class="m-0 text-right">Ara Toplam:</h6>
+                                                </td>
+                                                <td>
+                                                    @string.Format("{0:c}", Model.ToplamFiyat - Model.KargoBedeli)
+                                                </td>
+                                            </tr>
+                                            @*<tr>
+                                                    <td colspan="1">
+                                                        <h6 class="m-0 text-right">İndirim:</h6>
+                                                    </td>
+                                                    <td>
+                                                        -@string.Format("{0:c}", Model.Indirim)
+                                                    </td>
+                                                </tr>*@
+                                            <tr>
+                                                <td colspan="1">
+                                                    <h6 class="m-0 text-right">Kargo Bedeli:</h6>
+                                                </td>
+                                                <td>
+                                                    @string.Format("{0:c}", Model.KargoBedeli)
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="1">
+                                                    <h6 class="m-0 text-right">Toplam Tutar:</h6>
+                                                </td>
+                                                <td>
+                                                    @string.Format("{0:c}", Model.ToplamFiyat)
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-print-none">
+                            <div class="float-right">
+                                <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light mr-1"><i class="fa fa-print"></i></a>
+                            </div>
+                        </div>
+                        <div class="d-print-none">
+                            @if (((CargoTrackingInformation)ViewBag.CargoTracking).CargoFirmType == UoW.SERVICE.Builders.Enums.CargoFirmType.Surat)
+                            {
+                                <h4 class="mb-0 font-size-18">
+                                    @{
+                                        var cargoTrackingNo = Enumerable.FirstOrDefault(Model.kargoSiparis)?.KargoReferansNo;
+                                    }
+                                    Kargo bilgisi -
+                                    <a target="_blank" href="@Configuration["SuratKargo:CargoTrackingUrl"].Replace("{cargoTrackingNumber}", cargoTrackingNo)" > @cargoTrackingNo</a>
+                                </h4>
+                            }
+                            else
+                            {
+                                <h4 class="mb-0 font-size-18">
+                                    Kargo bilgisi
+                                </h4>
+                            }
+                            <div class="col-lg-12">
+                                <div class="table-responsive">
+                                    @if (((CargoTrackingInformation)ViewBag.CargoTracking).CargoFirmType == UoW.SERVICE.Builders.Enums.CargoFirmType.Yurtici)
+                                    {
+                                        var cargoTracking = (YurticiCargoTrackingInformation)ViewBag.CargoTracking;
+                                        <a href="@cargoTracking.TrackingUrl" target="_blank" class="btn btn-sm btn-primary">Kargo Takip Bilgisi</a>
+                                    }
+                                    else if (((CargoTrackingInformation)ViewBag.CargoTracking).CargoFirmType == UoW.SERVICE.Builders.Enums.CargoFirmType.Surat)
+                                    {
+                                        var cargoTracking = (SuratCargoTrackingInformation)ViewBag.CargoTracking;
+
+                                        <table class="table table-sm table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Son Hareket Zamanı
+                                                    </th>
+                                                    <th>
+                                                        Son Hareket Açıklama
+                                                    </th>
+                                                    <th>
+                                                        Son Hareket Yer
+                                                    </th>
+                                                    <th>
+                                                        Son Hareket Durum
+                                                    </th>
+                                                    <th>
+                                                        Teslim Alan
+                                                    </th>
+                                                    <th>
+                                                        Teslim Durumu
+                                                    </th>
+                                                    <th>
+                                                        Teslim Zamanı
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        @cargoTracking.LastMovementDate
+                                                    </td>
+                                                    <td>
+                                                        @cargoTracking.LastMovementExplanation
+                                                    </td>
+                                                    <td>
+                                                        @cargoTracking.LastLocation
+                                                    </td>
+                                                    <td>
+                                                        @cargoTracking.LastStatus
+                                                    </td>
+                                                    <td>
+                                                        @cargoTracking.DeliveryReceiver
+                                                    </td>
+                                                    <td>
+                                                        @cargoTracking.DeliveryExplanation
+                                                    </td>
+                                                    <td>
+                                                        @cargoTracking.DeliveryDate
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

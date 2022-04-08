@@ -1,0 +1,31 @@
+﻿@model UoW.DOMAIN.Models.UstListe
+
+@{
+    UoW.DOMAIN.Models.Urun urun = ViewBag.Urun as UoW.DOMAIN.Models.Urun;
+    int ID = urun.ID;
+}
+    <div class="form-group">       
+        <input type="text" class="form-control" id="ListeAdi" name="ListeAdi" />
+        <input type="hidden" name="ID" id="ID"/>
+    </div>
+    <div class="form-group">
+        <button type="button" onclick="insertList" class="btn btn-block btn-sm btn-primary">Liste Oluştur</button>
+    </div>
+
+    <script>
+    var insertList = function () {
+        var ID = $("#ID").val();
+        var ListeAdi = $("#ListeAdi").val();
+        $.ajax({
+            type: "POST",
+            data: '{}',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            url:"/BayiUrun/CreateList/" + ID + "/" +
+             success: function (response) {
+                    if (response == true) {
+                      window.location.assign('@Url.Action("Basket","Siparis")');
+                    }
+        });
+    }
+    </script>

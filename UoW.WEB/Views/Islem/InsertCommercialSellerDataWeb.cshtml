@@ -1,0 +1,206 @@
+﻿@model UoW.DOMAIN.Models.BayiTicari
+@{
+    ViewData["Title"] = "EditBayi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">TİCARİ BİLGİLERİNİZİ OLUŞTURUN</h4>
+
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="@Url.Action("SellerDetail","Bayi", new { ID = ViewBag.ID })">Bayi Hesabı</a></li>
+                        <li class="breadcrumb-item active">Ticari Bilgileri Oluşturun</li>
+                    </ol>
+                </div>
+
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-12 col-lg-10 col-xl-9">
+                    <div class="card overflow-hidden">
+                        <div class="card-body pt-3">
+                            <div class="p-3">
+                                <h4 class="card-title">Bilgileriniz oluşturun!</h4>
+                                <p class="card-title-desc">
+                                    Ticari bilgilerinizi oluşturmak istiyorsanız aşağıda istenilen bilgileri eksiksiz doldurun
+                                </p>
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-md-2 col-form-label">Firma Unvanı</label>
+                                    <div class="col-md-10">
+                                        @Html.TextBoxFor(x => x.FirmaUnvani, new { @class = "form-control", maxlength = "70", id = "firmaUnvani", autocomplete = "off", placeholder = "Vergi dairesi giriniz..." })
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-md-2 col-form-label">Vergi Dairesi</label>
+                                    <div class="col-md-10">
+                                        @Html.TextBoxFor(x => x.VergiDairesi, new { @class = "form-control", maxlength = "175", id = "vergiDairesi", autocomplete = "off", placeholder = "Vergi dairesi giriniz..." })
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-md-2 col-form-label">Vergi No</label>
+                                    <div class="col-md-10">
+                                        @Html.TextBoxFor(x => x.VergiNo, new { @class = "form-control", maxlength = "25", id = "vergiNo", autocomplete = "off", placeholder = "Vergi Numarası giriniz..." })
+                                        <label class="text-danger">@Html.ValidationMessageFor(x => x.VergiNo)</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-md-2 col-form-label">Eposta Adresi</label>
+                                    <div class="col-md-10">
+                                        @Html.TextBoxFor(x => x.EpostaAdresi, new { @class = "form-control", maxlength = "70", id = "epostaAdresi", type = "email", autocomplete = "off", placeholder = "Eposta Adresi giriniz..." })
+                                        <label class="text-danger">@Html.ValidationMessageFor(x => x.EpostaAdresi)</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-md-2 col-form-label">Telefon No</label>
+                                    <div class="col-md-10">
+                                        @Html.TextBoxFor(x => x.Telefon, new { @class = "form-control", id = "telefon", maxlength = "25", autocomplete = "off", placeholder = "Telefon Numarası giriniz..." })
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-md-2 col-form-label">Web Sitesi</label>
+                                    <div class="col-md-10">
+                                        @Html.TextBoxFor(x => x.WebSiteAdresi, new { @class = "form-control", id = "webSiteAdresi", maxlength = "80", autocomplete = "off", placeholder = "Web Sitenizi belirtin..." })
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-md-2 col-form-label">Adres</label>
+                                    <div class="col-md-10">
+                                        @Html.TextAreaFor(x => x.Adres, new { @class = "form-control", row = "5", id = "adres", maxlength = "400", placeholder = "Adres giriniz..." })
+                                        <label class="text-danger">@Html.ValidationMessageFor(x => x.Adres)</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-md-2 col-form-label">Posta Kodu</label>
+                                    <div class="col-md-10">
+                                        @Html.TextBoxFor(x => x.PostaKodu, new { @class = "form-control", id = "postaKodu", maxlength = "10", autocomplete = "off", placeholder = "Posta Kodu giriniz..." })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="username">Firma Tipi</label>
+                                            @Html.TextBoxFor(x => x.FirmaTipi, new { @class = "form-control", maxlength = "150", id = "firmaTipi", autocomplete = "off", placeholder = "Firma tipi giriniz..." })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="username">Faks Numarası</label>
+                                            @Html.TextBoxFor(x => x.Faks, new { @class = "form-control", maxlength = "20", id = "faks", autocomplete = "off", placeholder = "Faks numaraınız giriniz..." })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="username">IBAN Numarası - TL</label>
+                                            @Html.TextBoxFor(x => x.IBanNoTL, new { @class = "form-control", maxlength = "30", id = "ibanNoTL", autocomplete = "off", placeholder = "IBAN No giriniz..." })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="username">IBAN Numarası - EURO</label>
+                                            @Html.TextBoxFor(x => x.IBanNoEUR, new { @class = "form-control", maxlength = "30", id = "ibanNoEUR", autocomplete = "off", placeholder = "IBAN Nogiriniz..." })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="username">IBAN Numarası - USD</label>
+                                            @Html.TextBoxFor(x => x.IBanNoUSD, new { @class = "form-control", maxlength = "30", id = "ibanNoUSD", autocomplete = "off", placeholder = "IBAN No giriniz..." })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="username">İl Seçiniz</label>
+                                            @Html.DropDownList("SehirID", (SelectList)ViewBag.SehirID, "İl Seçiniz", new { @class = "form-control", id = "SehirID" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="username">İlçe Seçiniz</label>
+                                            <select id="ilceler" class="form-control"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="username">Yetkili Seçiniz</label>
+                                            @Html.DropDownList("FirmaYetkiliID", (SelectList)ViewBag.FirmaYetkiliID, "Yetkili Seçiniz", new { @class = "form-control", id = "FirmaYetkiliID" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <button id="btn_insert" class="btn btn-primary btn-block waves-effect waves-light" type="submit">Ticari Bilgileri Oluştur</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/assets/libs/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="~/assets/libs/jquery/jquery.min.js"></script>
+
+    <script>
+
+        getIlceler();
+
+        function getIlceler() {
+            $("#ilceler").html('');
+            var sehirID = $("#SehirID").val();
+            $.ajax({
+                url: "/Islem/GetIlcelerBySehirIDToSeller/" + sehirID,
+                type: "GET",
+                success: function (data) {
+                    data.forEach(x => {
+
+                        let option = '<option value="' + x.id + '">' + x.ilceAdi + '</option>';
+                        $("#ilceler").append(option);
+
+                    })
+                },
+                error: function (e, j, k) {
+                    let responseText = e.responseText.replace("UoW.CORE.Exceptions.BorcVarException:", "");
+                    toastr["warning"](responseText, "Uyarı !");
+                    console.log(e.responseJSON);
+                }
+            });
+        }
+
+        $("#SehirID").change(function () {
+            getIlceler();
+        })
+
+        $("#btn_insert").click(function () {
+
+            let formData = { firmaUnvani: $("#firmaUnvani").val(), vergiDairesi: $("#vergiDairesi").val(), vergiNo: $("#vergiNo").val(), firmaTipi: $("#firmaTipi").val(), epostaAdresi: $("#epostaAdresi").val(), telefon: $("#telefon").val(), webSiteAdresi: $("#webSiteAdresi").val(), adres: $("#adres").val(), postaKodu: $("#postaKodu").val(), faks: $("#faks").val(), iBanNoTL: $("#ibanNoTL").val(), iBanNoEUR: $("#ibanNoEUR").val(), iBanNoUSD: $("#ibanNoUSD").val(), sehirID: Number.parseInt($("#SehirID").val()), ilceID: Number.parseInt($("#ilceler").val()), firmaYetkiliID: Number.parseInt($("#FirmaYetkiliID").val()) };
+
+            console.log(formData);
+            $.ajax({
+                type: "post",
+                url: "/islem/InsertCommercialSellerDataWeb",
+                data: JSON.stringify(formData),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    toastr["success"]("Bilgileri ekleme işlemi başarılı!", "Başarılı");
+                },
+                error: function (e, j, k) {
+                    let responseText = e.responseText.replace("UoW.CORE.Exceptions.BorcVarException:", "");
+                    toastr["error"](responseText, "Uyarı");
+                    console.log(e.responseJSON);
+                }
+
+            });
+        })
+
+    </script>
+}

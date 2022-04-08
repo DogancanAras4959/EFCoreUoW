@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewData["Title"] = "ResultToApply";
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Başvuru işlemi başarısız</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Kıraç Bayi Giriş Sayfası" name="description" />
+    <meta content="Kıraç Bayi" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/assets/images/favicon.ico">
+
+    <!-- Bootstrap Css -->
+    <!-- Icons Css -->
+    <link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="~/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+    <link href="~/assets/css/toastr/build/toastr.css" rel="stylesheet" />
+
+</head>
+
+<body>
+    <div class="home-btn d-none d-sm-block">
+        <a href="index.html" class="text-dark"><i class="fas fa-home h2"></i></a>
+    </div>
+    <div class="account-pages my-5 pt-sm-5">
+        <div class="container">
+            <div class="page-content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-8" style="margin:auto 0;">
+                            <h1 class="text-danger">Başvuru Tamamlanamadı</h1>
+                            <h4>Başvurunuzla ilgili sorun için sistem yöneticisine başvurun veya tekrardan başvuru yapma işlemini gerçekleştirin. Başvuru sayfasına dönmek için <a href="@Url.Action("MakeToApplySystem","Bayi")">tıklayınız</a></h4>
+                            <br />
+                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

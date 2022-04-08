@@ -1,0 +1,263 @@
+﻿@model List<UoW.DOMAIN.Models.Sepet>
+@using UoW.WEB.Controllers
+
+@{
+    ViewData["Title"] = "Basket";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Bildirim> mesajlar = ViewBag.Uyarilar as List<Bildirim>;
+    SepetFiyatlari fiyatlar = ViewBag.OdemeTutarlari as SepetFiyatlari;
+    int indirimOrani = 0;
+    decimal fark = 0;
+    decimal araToplam = 0;
+    decimal netToplam = 0;
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">SEPET</h4>
+
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Sepet</a></li>
+                        <li class="breadcrumb-item active">Alışveriş</li>
+                    </ol>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    @if (mesajlar != null)
+    {
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+
+                    @foreach (var item in mesajlar)
+                    {
+                        <div class="alert alert-success">@item.MesajAdi</div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    }
+    @if (ViewBag.Alert != null)
+    {
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <div class="alert alert-danger">
+                        @ViewBag.Alert
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <!-- end page title -->
+    <div class="row">
+        <div class="col-xl-8">
+            <div class="card">
+                <div class="card-body">
+
+                    @if (Model != null)
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-centered mb-0 table-nowrap">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th></th>
+                                        <th>Ürün Adı</th>
+                                        <th>KDV</th>
+                                        <th>Fiyat</th>
+                                        <th>İskonto</th>
+                                        <th>Adet</th>
+                                        <th>Toplam</th>
+                                        <th colspan="2">İşlem</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (UoW.DOMAIN.Models.Sepet item in Model)
+                                    {
+                                        int id = item.UrunSepet.ID;
+                                        indirimOrani = Convert.ToInt32(ViewBag.Iskonto);
+                                        int KDV = Convert.ToInt32(item.UrunSepet.KDV);
+                                        <tr>
+                                            <td>
+                                                <img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@item.UrunSepet.Resim" alt="" title="product-img" class="avatar-md">
+                                            </td>
+                                            <td>
+                                                @if (item.UrunSepet.UrunAdi.Length > 20)
+                                                {
+                                                    <h5 class="font-size-14 text-truncate"><a href="@Url.Action("DetailProduct","BayiUrun", new { Id = item.UrunSepet.ID })">@item.UrunSepet.UrunAdi.Substring(0, 20)</a></h5>
+                                                }
+
+                                            </td>
+                                            <td>%@KDV</td>
+
+                                            @if (item.UrunSepet.IndirimOrani > 0)
+                                            {
+                                                <td>
+                                                    <span class="text-muted mr-2"><del>@string.Format("{0:c}", item.UrunSepet.KDVFiyat)</del></span> @string.Format("{0:C}", item.BirimFiyat)
+                                                </td>
+                                            }
+
+                                            else
+                                            {
+                                                <td>
+                                                    @string.Format("{0:c}", item.BirimFiyat)
+                                                    <input type="hidden" value="@item.BirimFiyat" />
+                                                </td>
+                                            }
+                                            <td>%@indirimOrani</td>
+                                            <td>
+                                                <div style="width: 120px;">
+                                                    <div class="input-group bootstrap-touchspin bootstrap-touchspin-injected">
+                                                        <input type="text" value="@item.Adet" name="demo_vertical" class="form-control">
+                                                        <span class="input-group-btn-vertical">
+                                                            <a style="margin-left:3px;" href="~/Siparis/RemoveFromBasket/@item.UrunSepet.ID?remove=false" class="btn btn-primary bootstrap-touchspin-up">+</a><a style="margin-left:3px;" href="~/Siparis/RemoveFromBasket/@item.UrunSepet.ID?remove=true" class="btn btn-primary bootstrap-touchspin-down">-</a>
+                                                        </span>
+
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            @{ decimal toplam = 0;
+                                                toplam += item.Adet * item.BirimFiyat; 
+                                                fark += (item.Adet * item.UrunSepet.KDVFiyat) - toplam;
+                                                araToplam += (item.Adet * item.UrunSepet.KDVFiyat);
+                                                netToplam += toplam;
+                                                }
+                                            <td>@string.Format("{0:c}",toplam)</td>
+                                            <td>
+                                            </td>
+                                            <td>
+                                                <a href="@Url.Action("RemoveBasket","Siparis", new { ID = item.UrunSepet.ID })" class="action-icon text-danger"> <i class="mdi mdi-trash-can font-size-18"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-sm-6">
+                                <a href="@Url.Action("HomePageList","Home")" class="btn btn-secondary">
+                                    <i class="mdi mdi-arrow-left mr-1"></i> Alışverişe devam edin
+                                </a>
+                            </div> <!-- end col -->
+                            @if (Model.Count != 0)
+                            {
+                                <div class="col-sm-6">
+                                    <div class="text-sm-right mt-2 mt-sm-0">
+                                        <a id="btn_ozelteklif" onclick="ozel_teklif_olustur()" href="@Url.Action("CreateSpecialOfferToSeller","Siparis")" class="btn btn-pink">
+                                            <i class="mdi mdi-account-plus mr-1"></i> ÖZEL TEKLİF OLUŞTUR
+                                        </a>
+                                        <a href="@Url.Action("BuyProduct","Siparis")" class="btn btn-success">
+                                            <i class="mdi mdi-cart-arrow-right mr-1"></i> Satın Alın
+                                        </a>
+                                    </div>
+                                </div> <!-- end col -->
+                            }
+
+                        </div> <!-- end row-->
+                    }
+                    else
+                    {
+                        <div style="margin:0 auto">
+                            <h4 style="text-align:center">Sepetiniz boştur. Ürünlerinizi sepete atın ve alışverişinizi gerçekleştirin...</h4>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4">
+
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-3">Sipariş Tutarı</h4>
+                    <a href="@Url.Action("ExportCards","Siparis")" style=" position: absolute; top: 10px; right: 50px;" class="btn btn-success waves-effect waves-light mr-1"><i class="fa fa-file-excel"></i></a>
+                    <a href="javascript:window.print()" style=" float: left; position: absolute; top: 10px; right: 6px;" class="btn btn-success waves-effect waves-light mr-1"><i class="fa fa-print"></i></a>
+                    <div class="table-responsive">
+                        <table class="table mb-0">
+                            <tbody>
+                                <tr>
+                                    <td>Ara Toplam:</td>
+                                    <td>@string.Format("{0:c}", araToplam)</td>
+                                </tr>
+                                <tr>
+                                    <td>İndirim: </td>
+                                    <td>@string.Format("{0:c}", fark)</td>
+                                </tr>
+                                <tr>
+                                    <td>KDV:</td>
+                                    @*<td>@string.Format("{0:c}", fiyatlar.)</td>*@
+                                </tr>
+                                <tr>
+                                    <td>Kargo Bedeli:</td>
+                                    @if (fiyatlar.KargoBedeliSepet == 0)
+                                    {
+                                        if (Model.Count == 0)
+                                        {
+                                            <td>0,00₺</td>
+                                        }
+                                        else
+                                        {
+                                            <td>Ücretsiz</td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td>@string.Format("{0:c}", fiyatlar.KargoBedeliSepet)</td>
+                                    }
+                                </tr>
+                                <tr>
+                                    <th>Toplam Tutar :</th>
+                                    <th>@string.Format("{0:c}", (netToplam + fiyatlar.KargoBedeliSepet))</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- end table-responsive -->
+                </div>
+            </div>
+            <!-- end card -->
+        </div>
+    </div>
+
+</div>
+
+
+@section scripts{
+
+    <script src="~/assets/libs/jquery/jquery.min.js"></script>
+
+    <script>
+
+        function ozel_teklif_olustur() {
+            var btn = document.getElementById("btn_ozelteklif");
+            btn.innerText = "Özel Teklif Oluşturuluyor...";
+        }
+
+        function sepetEkle(id) {
+
+            var _fiyat = $('input[type=hidden]').val();
+            var _id = id;
+            console.log(_fiyat, _id);
+        $.ajax({
+            url: "/Siparis/SepeteEkle",
+            type: "POST",
+            data: { id: _id, fiyat: _fiyat },
+            success: function (response) {
+                window.location.assign('@Url.Action("Basket","Siparis")');
+            }
+        });
+
+        };
+
+    </script>
+
+}

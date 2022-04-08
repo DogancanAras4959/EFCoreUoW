@@ -1,0 +1,17 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+UoW.ADMIN/bin/*
+UoW.ADMIN/obj/*
+/UoW.SERVICE/bin
+/UoW.SERVICE/obj
+/UoW.WEB/bin
+/UoW.WEB/obj
+/UoW.DOMAIN/bin
+/UoW.DOMAIN/obj
+/UoW.DATA/bin
+/UoW.DATA/obj
+/UoW.CORE/bin
+/UoW.CORE/obj

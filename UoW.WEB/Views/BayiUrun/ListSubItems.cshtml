@@ -1,0 +1,57 @@
+﻿@model IEnumerable<UoW.DOMAIN.Models.Liste>
+@{
+    ViewData["Title"] = "ListSubItems";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <td>#</td>
+                                    <td>Liste Adı</td>
+                                    <td>Ürün Adı</td>
+                                    <td>Ürün Fiyatı</td>
+                                    <td>Ürün Adeti</td>
+                                    <td>Eklenme Tarih</td>
+                                    <td>Bayi</td>
+                                    <td>İşlem</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                <tr>
+                                    <td>@item.ID</td>
+                                    <td>@item.listeUst.ListeAdi</td>
+                                    <td>@item.urunListe.UrunAdi</td>
+                                    @if (item.urunListe.IndirimOrani > 0)
+                                    {
+                                        <td><del>@item.urunListe.KDVFiyat</del> @item.urunListe.IndirimliFiyat</td>
+
+                                    }
+                                    else
+                                    {
+                                        <td>@item.urunListe.KDVFiyat</td>
+                                    }
+                                    <td>@item.urunListe.Adet</td>
+                                    <td>@item.EklenmeTarih.ToShortDateString() @item.EklenmeTarih.ToShortTimeString()</td>
+                                    <td>@item.bayiList.BayiAdi</td>
+                                    <td><a href="@Url.Action("RemoveFromList","BayiUrun", new { ID= item.ID })" class="btn btn-sm btn-danger">Kaldır</a></td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+

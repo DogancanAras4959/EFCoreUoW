@@ -1,0 +1,85 @@
+﻿@using UoW.DOMAIN.Models;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common;
+
+@{
+    ViewData["Title"] = "News";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    IPagedList<Haber> haberler = ViewBag.HaberList as IPagedList<Haber>;
+}
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <div class="small-title">Dünya'dan ve Türkiye'den</div>
+                        <h4>Finans Haberleri</h4>
+                    </div>
+                </div>
+            </div>
+            @if (haberler.Count == 0)
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <h5 style="text-align:center;">Sistemimizde haber bulunmamaktadır. Haberlerimiz yüklendikten sonra sayfamızda listelenecektir</h5>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    @foreach (var item in ViewBag.HaberList)
+                    {
+                        <div class="col-xl-4 col-sm-6">
+                            <div class="blog-box mb-4 mb-xl-0">
+                                <div class="position-relative">
+                                    <img src="https://bayi.kiracelektrik.com.tr/Files/Bayi/@item.HaberFoto" alt="" class="rounded img-fluid mx-auto d-block">
+                                    <div class="badge badge-success blog-badge font-size-11">@item.kategori.HaberKategoriAdi</div>
+                                </div>
+
+                                <div class="mt-4 text-muted">
+                                    <p class="mb-2"><i class="bx bx-calendar mr-1"></i> @item.EklenmeTarih.ToShortDateString() @item.EklenmeTarih.ToShortTimeString()</p>
+                                    <h5 class="mb-3">@item.HaberAdi</h5>
+                                    <p>@item.HaberSpot.Substring(0, 40)<span><a href="@Url.Action("NewsDetail","Home",new { Id = item.ID })">...</a></span></p>
+
+                                    <div>
+                                        <a href="@Url.Action("NewsDetail","Home",new { Id = item.ID })">Haberi Oku</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        @Html.PagedListPager((IPagedList<Haber>)ViewBag.HaberList,
+                       page => Url.Action("News", new { page }),
+                       PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+                       {
+                                MaximumPageNumbersToDisplay = 10,
+                           DisplayPageCountAndCurrentLocation = true,
+                           UlElementClasses = new[] { "pagination pagination-rounded justify-content-center mt-4" },
+                           LiElementClasses = new[] { "page-link" },
+                           EllipsesFormat = "&#8230;",
+                           DisplayLinkToIndividualPages = true,
+                           ActiveLiElementClass = "page-item",
+                           DisplayLinkToFirstPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                           DisplayLinkToLastPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                           DisplayLinkToPreviousPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                           DisplayLinkToNextPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                           PageCountAndCurrentLocationFormat = "",
+                           ContainerDivClasses = new[] { "pagination-container" }
+                            },
+                        new AjaxOptions() { HttpMethod = "GET" }))
+                    </div>
+                </div>
+            }
+            <!-- end row -->
+
+        </div>
+    </div>
+</div>

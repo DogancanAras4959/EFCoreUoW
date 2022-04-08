@@ -1,0 +1,88 @@
+﻿@model UoW.DOMAIN.Models.Yetki
+@{
+    ViewData["Title"] = "InsertRole";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">KULLANICI YETKİSİ OLUŞTUR</h4>
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Yönetici Paneli</a></li>
+                            <li class="breadcrumb-item active">Kullanıcı Yetkisi Oluştur</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 col-xl-5">
+                <div class="card overflow-hidden">
+                    <div class="bg-soft-primary">
+                        <div class="row">
+                            <div class="col-7">
+                                <div class="text-primary p-4">
+                                    <h5 class="text-primary">Yetki Ekleyin!</h5>
+                                    <p>Yönetici paneliniz için yetkiler oluşturun.</p>
+                                </div>
+                            </div>
+                            <div class="col-5 align-self-end">
+                                <img src="~/assets/images/profile-img.png" alt="" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div>
+                            <a href="javascript::void(0);">
+                                <div class="avatar-md profile-user-wid mb-4">
+                                    <span class="avatar-title rounded-circle bg-light">
+                                        <img src="~/Files/Admin/pp.jpg" alt="" class="rounded-circle" height="50">
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="p-2">                          
+                                @using (Html.BeginForm("InsertRole", "Account", FormMethod.Post))
+                                {
+                                    <div class="form-group">
+                                        <label for="username">Yetki Adı</label>
+                                        @Html.TextBoxFor(x => x.YetkiAdi, new { @class = "form-control", autocomplete = "off", maxlength = "50", placeholder = "Kullanıcı yetkisi ekleyin...", type = "text", name = "yetkiAdi" })
+                                        <label class="text-danger mt-1">@Html.ValidationMessageFor(x => x.YetkiAdi)</label>
+                                    </div>
+                                    <div class="mt-3">
+                                        <button id="btn_insert" onclick="btn_insert_role()" class="btn btn-primary btn-block waves-effect waves-light" type="submit">Yetki Oluştur</button>
+                                    </div>
+                                }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/assets/libs/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('label[class=text-danger]').delay(500).fadeOut();
+            }, 3000);
+        });
+
+        function btn_insert_role() {
+            window.setTimeout(function () {
+                $("#btn_insert").attr("disabled", true);
+            }, 500);
+            var btn = document.getElementById("btn_insert");
+            btn.innerText = "Yetki Oluşturuluyor...";
+        }
+
+    </script>
+}

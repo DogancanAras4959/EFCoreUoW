@@ -1,0 +1,115 @@
+﻿@model IPagedList<UoW.DOMAIN.Models.CuzdanIslemler>
+@using UoW.CORE.Enums;
+@using UoW.DOMAIN.Models;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common;
+
+@section Styles{
+    <style>
+        .page-link {
+            position: relative;
+            display: block;
+            padding: .5rem .75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #fff;
+            background-color: #34509d;
+            border: 1px solid #34509d;
+        }
+
+            .page-link a {
+                color: #fff;
+            }
+
+                .page-link a:hover {
+                    color: #34509d;
+                }
+    </style>
+}
+@{
+    IPagedList<CuzdanIslemler> borclar = ViewBag.CuzdanIslemler as IPagedList<CuzdanIslemler>;
+}
+
+<div class="row">
+    <div class="col-12">
+
+        <div class="card">
+            <div class="card-body">
+                <h4 class="page-title-box">Bayi Borçları</h4>
+                @if (borclar.Count == 0)
+                {
+                    <div class="jumbotron">
+                        <h4 class="text-center">Herhangi bir bayi borcu bulunmuyor!</h4>
+                    </div>
+
+                }
+                else
+                {
+                    <table class="table table-bordered dt-responsive nowrap"
+                           style="border-collapse: collapse;
+                       border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Bayi</th>
+                                <th>İşlem No</th>
+                                <th>Borç Miktarı</th>
+                                <th>Ödeme Şekli</th>
+                                <th>Tarih</th>
+                                <th>İşlem</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in borclar)
+                            {                                
+                            <tr>
+                                <td class="text-body font-weight-bold">@item.ID</td>
+                                <td><a href="@Url.Action("SellerDetailsAdmin","Bayi", new { ID = item.cuzdanHesabi.BayiID })">Bayiyi Görüntüle</a></td>
+                                <td>@item.IslemNo</td>
+                                <td style="color:red;">@string.Format("{0:c}", item.IslemTutari)</td>
+                                <td>@item.odemeSekliCuzdan.Odeme</td>
+                                <td>@item.IslemTarihi</td>
+                                @if (item.IslemDurum == IslemDurum.BorcBildirildi)
+                                {
+                                    <td><button class="btn btn-sm btn-success" disabled>Hesap Kısıtlandı</button></td>
+                                    <td><a href="@Url.Action("RemoveRestrictFromAccount","Home", new { ID = item.ID })" class="btn btn-sm btn-info">Kısıtlamayı Kaldır</a></td>
+                                }
+                                else
+                                {
+                                    <td><a href="@Url.Action("RestrictAccount","Home", new { ID = item.ID })" class="btn btn-sm btn-warning">Hesap Kısıtla</a></td>
+                                }
+
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div> <!-- end col -->
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        @Html.PagedListPager((IPagedList<CuzdanIslemler>)ViewBag.CuzdanIslemler,
+       page => Url.Action("Index", new { page }),
+       PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+       {
+                MaximumPageNumbersToDisplay = 10,
+           DisplayPageCountAndCurrentLocation = true,
+           UlElementClasses = new[] { "pagination pagination-rounded justify-content-center mt-4" },
+           LiElementClasses = new[] { "page-link" },
+           EllipsesFormat = "&#8230;",
+           DisplayLinkToIndividualPages = true,
+           ActiveLiElementClass = "page-item",
+           DisplayLinkToFirstPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+           DisplayLinkToLastPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+           DisplayLinkToPreviousPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+           DisplayLinkToNextPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+           PageCountAndCurrentLocationFormat = "",
+           ContainerDivClasses = new[] { "pagination-container" }
+            },
+        new AjaxOptions() { HttpMethod = "GET" }))
+    </div>
+</div>

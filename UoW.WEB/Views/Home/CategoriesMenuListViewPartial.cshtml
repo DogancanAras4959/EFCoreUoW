@@ -1,0 +1,53 @@
+﻿@using Microsoft.AspNetCore.Mvc
+@using UoW.DOMAIN.Models
+@using UoW.WEB.Controllers
+
+@{
+    List<Kategori> kategoriler = ViewBag.Kategoriler as List<Kategori>;
+}
+
+<div class="container-fluid">
+    <nav class="navbar navbar-light navbar-expand-lg topnav-menu">
+
+        <div class="collapse navbar-collapse" id="topnav-menu-content">
+            <div class="navbar-nav">
+                @foreach (Kategori item in kategoriler.Where(x => x.UstKategori == 0).Take(8))
+                {
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboard" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @{
+                                int toplam = 0;
+                                if (kategoriler.Where(x => x.UstKategori == item.ID).Count() == 0)
+                                {
+                                    toplam = item.urunler.Count();
+                                }
+                                else
+                                {
+                                    @foreach (var kategori in kategoriler.Where(x => x.UstKategori == item.ID).ToList())
+                                    {
+                                        toplam += kategori.urunler.Count();
+                                    }
+                                }
+
+                                @item.KategoriAdi <div class="arrow-down"></div>
+                            }
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="topnav-dashboard">
+                            @{
+                                int toplamSub = 0;
+                                @foreach (Kategori subItem in kategoriler.Where(x => x.UstKategori == item.ID))
+                                {
+                                    toplamSub = subItem.urunler.Count();
+                                    <a class="dropdown-item" href="@Url.Action("FilterByProduct", "Home", new { KategoriID = subItem.ID })">@subItem.KategoriAdi</a>
+                                }
+                            }
+
+                        </div>
+                    </li>
+                }
+                <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboard" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tümünü Gör</a></li>
+            </div>
+        </div>
+    </nav>
+</div>

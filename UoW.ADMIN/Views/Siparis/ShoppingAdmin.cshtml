@@ -1,0 +1,268 @@
+﻿@model UoW.ADMIN.Models.CargoViewModel
+@{
+    ViewData["Title"] = "SatinAl";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@{
+    ViewData["Title"] = "ListProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int id = Convert.ToInt32(TempData["Id"]);
+}
+
+<div class="page-content" data-select2-id="16">
+    <div class="container-fluid" data-select2-id="15">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">Ödeme</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Alışveriş</a></li>
+                            <li class="breadcrumb-item active">Satın Al</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="checkout-tabs" data-select2-id="14">
+            <div class="row" data-select2-id="13">
+                <div class="col-xl-2 col-sm-3">
+                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <a class="nav-link active" id="v-pills-shipping-tab" data-toggle="pill" href="#v-pills-shipping" role="tab" aria-controls="v-pills-shipping" aria-selected="true">
+                            <i class="bx bxs-truck d-block check-nav-icon mt-4 mb-2"></i>
+                            <p class="font-weight-bold mb-4">Fatura Bilgileri</p>
+                        </a>
+                        <a class="nav-link" id="v-pills-payment-tab" data-toggle="pill" href="#v-pills-payment" role="tab" aria-controls="v-pills-payment" aria-selected="false">
+                            <i class="bx bx-money d-block check-nav-icon mt-4 mb-2"></i>
+                            <p class="font-weight-bold mb-4">Ödeme Bilgileri</p>
+                        </a>
+                        <a class="nav-link" id="v-pills-confir-tab" data-toggle="pill" href="#v-pills-confir" role="tab" aria-controls="v-pills-confir" aria-selected="false">
+                            <i class="bx bx-badge-check d-block check-nav-icon mt-4 mb-2"></i>
+                            <p class="font-weight-bold mb-4">Onaylama</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-10 col-sm-9" data-select2-id="12">
+                    @using (Html.BeginForm("FinishToShoppingAdmin", "Siparis", FormMethod.Post))
+                    {
+                        <div class="row mt-4">
+                            <div class="col-sm-6">
+                                <a href="@Url.Action("BasketAdmin","Siparis")" class="btn text-muted d-none d-sm-inline-block btn-link">
+                                    <i class="mdi mdi-arrow-left mr-1"></i> Sepete Dön
+                                </a>
+                            </div> <!-- end col -->
+                            <div class="col-sm-6">
+                                <div class="text-sm-right">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="mdi mdi-truck-fast mr-1"> Alışverişe Tamamla</i>
+                                    </button>
+                                </div>
+                            </div> <!-- end col -->
+                        </div> <!-- end row -->
+
+                        <br />
+
+                        <div class="card" data-select2-id="11">
+                            <div class="card-body" data-select2-id="10">
+                                <div class="tab-content" id="v-pills-tabContent" data-select2-id="v-pills-tabContent">
+                                    <div class="tab-pane fade active show" id="v-pills-shipping" role="tabpanel" aria-labelledby="v-pills-shipping-tab" data-select2-id="v-pills-shipping">
+                                        <div data-select2-id="9">
+                                            <h4 class="card-title">Adres Bilgisi</h4>
+                                            <p class="card-title-desc">Bilgilerinizi eksiksiz doldurun</p>
+                                            <form data-select2-id="8">
+                                                <div class="form-group row mb-4">
+                                                    <label for="billing-name" class="col-md-2 col-form-label">Firma Adı</label>
+                                                    <div class="col-md-10">
+                                                        @Html.TextBoxFor(x => x.BayiAdi, new { @class = "form-control", id = "billing-name", placeholder = "Bayi adını giriniz", type = "text" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row mb-4">
+                                                    <label for="billing-email-address" class="col-md-2 col-form-label">Email Adresi</label>
+                                                    <div class="col-md-10">
+                                                        @Html.TextBoxFor(x => x.EmailAdresi, new { @class = "form-control", id = "billing-email-address", placeholder = "Email Adresini giriniz", type = "email" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row mb-4">
+                                                    <label for="billing-phone" class="col-md-2 col-form-label">Telefon No</label>
+                                                    <div class="col-md-10">
+                                                        @Html.TextBoxFor(x => x.TelefonNo, new { @class = "form-control", id = "billing-phone", placeholder = "Telefon No giriniz", type = "text" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row mb-4">
+                                                    <label for="billing-address" class="col-md-2 col-form-label">Açık Adres</label>
+                                                    <div class="col-md-10">
+                                                        @Html.TextAreaFor(x => x.Adres, new { @class = "form-control", id = "billing-address", rows = 3, placeholder = "Tam adresinizi giriniz", type = "text" })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row mb-4">
+                                                    <label class="col-md-2 col-form-label">Adres Seçin</label>
+                                                    <div class="col-md-10">
+                                                        @Html.DropDownList("BayiAdresID", (SelectList)ViewBag.BayiAdresID, "Adresinizi Seçin", new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row mb-0">
+                                                    <label for="example-textarea" class="col-md-2 col-form-label">Satın Alma Notu:</label>
+                                                    <div class="col-md-10">
+                                                        @Html.TextAreaFor(x => x.SatinAlmaNotu, new { @class = "form-control", id = "example-textarea", rows = 3, placeholder = "Kargo Notunuzu bırakın" })
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="v-pills-payment" role="tabpanel" aria-labelledby="v-pills-payment-tab">
+                                        <div>
+                                            <h4 class="card-title">Ödeme Bilgileri</h4>
+                                            <p class="card-title-desc">Tüm bilgileri eksiksiz doldurun</p>
+
+                                            <div>
+
+                                                <div class="custom-control custom-radio custom-control-inline mr-4">
+                                                    <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input">
+                                                    <label class="custom-control-label" for="customRadioInline1"><i class="fab fa-cc-mastercard mr-1 font-size-20 align-top"></i> Credit / Debit Card</label>
+                                                </div>
+                                                <div class="custom-control custom-radio custom-control-inline mr-4">
+                                                    <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input">
+                                                    <label class="custom-control-label" for="customRadioInline2"><i class="fab fa-cc-paypal mr-1 font-size-20 align-top"></i> Paypal</label>
+                                                </div>
+                                                <div class="custom-control custom-radio custom-control-inline mr-4">
+                                                    <input type="radio" id="customRadioInline3" name="customRadioInline1" class="custom-control-input" checked="">
+                                                    <label class="custom-control-label" for="customRadioInline3"><i class="far fa-money-bill-alt mr-1 font-size-20 align-top"></i> Cash on Delivery</label>
+                                                </div>
+                                            </div>
+
+                                            <h5 class="mt-5 mb-3 font-size-15">For card Payment</h5>
+                                            <div class="p-4 border">
+                                                <form>
+                                                    <div class="form-group mb-0">
+                                                        <label for="cardnumberInput">Card Number</label>
+                                                        <input type="text" class="form-control" id="cardnumberInput" placeholder="0000 0000 0000 0000">
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group mt-4 mb-0">
+                                                                <label for="cardnameInput">Name on card</label>
+                                                                <input type="text" class="form-control" id="cardnameInput" placeholder="Name on Card">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group mt-4 mb-0">
+                                                                <label for="expirydateInput">Expiry date</label>
+                                                                <input type="text" class="form-control" id="expirydateInput" placeholder="MM/YY">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group mt-4 mb-0">
+                                                                <label for="cvvcodeInput">CVV Code</label>
+                                                                <input type="text" class="form-control" id="cvvcodeInput" placeholder="Enter CVV Code">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="v-pills-confir" role="tabpanel" aria-labelledby="v-pills-confir-tab">
+                                        <div class="card shadow-none border mb-0">
+                                            <div class="card-body">
+                                                <h4 class="card-title mb-4">Sipariş Bilgisi</h4>
+
+                                                <div class="table-responsive">
+                                                    <table class="table table-centered mb-0 table-nowrap">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th scope="col">#</th>
+                                                                <th scope="col">Ürün</th>
+                                                                <th scope="col">KDV'li Fiyat</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @{
+                                                                decimal aratoplam = 0;
+                                                            }
+
+                                                            @foreach (UoW.ADMIN.Models.BasketsAdmin item in ViewBag.Sepet)
+                                                            {
+                                                                decimal toplam;
+                                                                int KDV = Convert.ToInt32(item.urun.KDVFiyat);
+                                                                aratoplam = KDV * item.adet;
+                                                                toplam = Convert.ToDecimal(item.urun.KDVFiyat * item.adet);
+                                                                <tr>
+                                                                    <th scope="row"><img src="@item.urun.Resim" alt="resim" title="resim" class="avatar-md"></th>
+                                                                    <td>
+                                                                        <h5 class="font-size-14 text-truncate"><a href="@Url.Action("DetailProduct","Urun", new { Id = item.urun.ID })" class="text-dark">@item.urun.UrunAdi.Substring(0, 30)</a></h5>
+                                                                        <p class="text-muted mb-0">@KDV₺ x @item.adet</p>
+                                                                    </td>
+                                                                    <td>@toplam ₺</td>
+
+                                                                </tr>
+                                                            }
+
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    <div class="bg-soft-primary p-3 rounded">
+                                                                        <h5 class="font-size-14 text-primary mb-0">
+                                                                            <i class="fas fa-shipping-fast mr-2"></i> Kargo Bedeli
+                                                                            @if (Convert.ToDecimal(TempData["KargoUcret"]) == 0)
+                                                                            {
+                                                                                <span class="float-right">Ücretsiz</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span class="float-right">@string.Format("{0:c}", TempData["KargoUcret"])</span>
+                                                                            }
+                                                                        </h5>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2">
+                                                                    <h6 class="m-0 text-right">Ara Toplam:</h6>
+                                                                </td>
+                                                                <td>
+                                                                    @string.Format("{0:c}", TempData["araToplam"])
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2">
+                                                                    <h6 class="m-0 text-right">İndirim:</h6>
+                                                                </td>
+                                                                <td>
+                                                                    -@string.Format("{0:c}", TempData["indirim"])
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2">
+                                                                    <h6 class="m-0 text-right">Toplam Tutar:</h6>
+                                                                </td>
+                                                                <td>
+                                                                    <span class="text-success">@string.Format("{0:c}", TempData["ToplamTutar"])</span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+
+    </div> <!-- container-fluid -->
+</div>
+

@@ -1,0 +1,180 @@
+﻿@model UoW.DOMAIN.Models.SliderBannerItem
+@using UoW.DOMAIN.Models
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common;
+@{
+    ViewData["Title"] = "SliderDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <style>
+        .page-link {
+            position: relative;
+            display: block;
+            padding: .5rem .75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #fff;
+            background-color: #34509d;
+            border: 1px solid #34509d;
+        }
+
+            .page-link a {
+                color: #fff;
+            }
+
+                .page-link a:hover {
+                    color: #34509d;
+                }
+    </style>
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">@Model.sliderBannerItemSlider.SliderName bannerı</h4>
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Yönetici Paneli</a></li>
+                            <li class="breadcrumb-item active">Detay</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner" role="listbox">
+                                <div class="carousel-item active">
+                                    <img class="d-block img-fluid" src="https://bayi.kiracelektrik.com.tr/Files/Urun/@Model.ItemImage" alt="First slide">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5><span style="font-weight:600;">Kampanya Kod: @TempData["Kod"]</span></h5>   
+                        <h5>@Model.ItemName</h5>
+                        <hr />
+                        <p>@Model.ItemDesc</p>
+                        <div style="width:100%;">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td style="width:50%;">
+                                            <a href="@Url.Action("SliderItemBannerUpdate","Urun", new { ID = Model.ID })" class="btn btn-primary btn-block" style="width: 103px;">Düzenle</a>
+                                        </td>
+                                        <td style="width:50%;">
+                                            <a href="@Url.Action("SliderItemBannerRemove","Urun", new { ID = Model.ID })" class="btn btn-danger btn-block" style="width: 103px;">Sil</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">BANNER KAMPANYA ÜRÜNLERİ</h4>
+                    <div class="page-title-right">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-bordered dt-responsive nowrap"
+                               style="border-collapse: collapse;
+                       border-spacing: 0; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>#</th>
+                                    <th>Ürün Adı</th>
+                                    <th>Ürün No</th>
+                                    <th>Fiyat</th>
+                                    <th>İşlem</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var item in ViewBag.Urunler)
+                                {
+
+                                    <tr>
+                                        <td><img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@item.urunSliderUrun.Resim" class="rounded-circle" width="40" /></td>
+                                        <td class="text-body font-weight-bold">#@item.ID</td>
+                                        @if (item.urunSliderUrun.UrunAdi.Length > 20)
+                                        {
+                                            <td>@item.urunSliderUrun.UrunAdi.Substring(0, 30)<a href="@Url.Action("DetailProduct","Urun", new { ID = item.ID })">...</a></td>
+                                        }
+
+                                        <td>@item.urunSliderUrun.UrunNo</td>
+                                        <td>@item.urunSliderUrun.Fiyat ₺ </td>
+                                        <td><a href="@Url.Action("ProductRemoveInCampaign","Urun", new  { ID = item.ID })" class="btn btn-danger btn-sm">Kaldır</a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                @Html.PagedListPager((IPagedList<SliderUrun>)ViewBag.Urunler,
+               page => Url.Action("SliderDetail", new { page }),
+               PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+               {
+                        MaximumPageNumbersToDisplay = 10,
+                   DisplayPageCountAndCurrentLocation = true,
+                   UlElementClasses = new[] { "pagination pagination-rounded justify-content-center mt-4" },
+                   LiElementClasses = new[] { "page-link" },
+                   EllipsesFormat = "&#8230;",
+                   DisplayLinkToIndividualPages = true,
+                   ActiveLiElementClass = "page-item",
+                   DisplayLinkToFirstPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                   DisplayLinkToLastPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                   DisplayLinkToPreviousPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                   DisplayLinkToNextPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                   PageCountAndCurrentLocationFormat = "",
+                   ContainerDivClasses = new[] { "pagination-container" }
+                    },
+                new AjaxOptions() { HttpMethod = "GET" }))
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+    {
+    <script src="~/assets/libs/select2/js/select2.min.js"></script>
+    <script src="~/assets/js/pages/ecommerce-select2.init.js"></script>
+    <script src="~/assets/libs/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <script src="~/assets/js/pages/form-element.init.js"></script>
+
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+            $('#dropdown1').select2();
+        });
+
+    </script>
+}

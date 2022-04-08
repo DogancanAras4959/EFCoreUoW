@@ -1,0 +1,101 @@
+﻿@using UoW.DOMAIN.Models;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common;
+
+@{
+    ViewData["Title"] = "GeneralDocuments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    IPagedList<Fatura> faturalar = ViewBag.Faturalar as IPagedList<Fatura>;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">FATURALARIM</h4>
+
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Ana Sayfa</a></li>
+                        <li class="breadcrumb-item active">Faturalarım</li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @if (faturalar.Count == 0)
+    {
+    <div class="card">
+        <div class="card-body">
+            <h5 style="text-align:center;">Sistemimizde kayıtlı faturanız bulunmuyor. Sipariş işlemlerinizin ardından faturalarınız bu sayfada listelenecektir.</h5>
+        </div>
+    </div>
+    }
+    else
+    {
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="table-responsive">
+                        <table class="table table-centered table-nowrap">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Fatura No</th>
+                                    <th>Oluşturulma Tarihi</th>
+                                    <th>Toplam Tutar</th>
+                                    <th>Fatura Adresi</th>
+                                    <th>İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in faturalar)
+                                    {
+                                <tr>
+                                    <td>@item.ID</td>
+                                    <td>@item.FaturaNo</td>
+                                    <td>@item.EklenmeTarih</td>
+                                    <td>@item.ToplamFiyat</td>
+                                    <td>@item.bayiAdresler.Adres</td>
+                                    <td>
+                                        <a href="@Url.Action("BillDetail","Page", new { ID = item.ID})" class="btn btn-info btn-block">Faturayı Gör</a>
+                                    </td>
+                                </tr>
+                                    }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            @Html.PagedListPager((IPagedList<Fatura>)ViewBag.Faturalar,
+        page => Url.Action("MyBillList", new { page }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+        {
+            MaximumPageNumbersToDisplay = 10,
+            DisplayPageCountAndCurrentLocation = true,
+            UlElementClasses = new[] { "pagination pagination-rounded justify-content-center mt-4" },
+            LiElementClasses = new[] { "page-link" },
+            EllipsesFormat = "&#8230;",
+            DisplayLinkToIndividualPages = true,
+            ActiveLiElementClass = "page-item",
+            DisplayLinkToFirstPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+            DisplayLinkToLastPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+            DisplayLinkToPreviousPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+            DisplayLinkToNextPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+            PageCountAndCurrentLocationFormat = "",
+            ContainerDivClasses = new[] { "pagination-container" }
+        },
+         new AjaxOptions() { HttpMethod = "GET" }))
+        </div>
+    </div>
+    }
+</div>

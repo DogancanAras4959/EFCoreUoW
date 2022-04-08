@@ -1,0 +1,282 @@
+﻿@model UoW.DOMAIN.Models.Urun
+@using UoW.DOMAIN.Models
+@{
+    ViewData["Title"] = "DetailProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Urun> altUrunler = ViewBag.AltUrunler as List<Urun>;
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">ÜRÜN DETAYI</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Yönetici Paneli</a></li>
+                            <li class="breadcrumb-item active">Ürün Detayı</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="product-detai-imgs">
+                                    <div class="row">
+                                        <div class="col-md-2 col-sm-3 col-4">
+                                            <div class="nav flex-column nav-pills " id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                                @foreach (UoW.DOMAIN.Models.UrunResimler item in ViewBag.UrunResimler)
+                                                {
+                                                    <a class="nav-link" id="product-@item.ID-tab" data-toggle="pill" href="#product-@item.ID" role="tab" aria-controls="product-@item.ID" aria-selected="true">
+                                                        <img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@item.ResimYol" alt="" class="img-fluid mx-auto d-block rounded">
+                                                    </a>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 offset-md-1 col-sm-9 col-8">
+                                            <div class="tab-content" id="v-pills-tabContent">
+
+                                                <div class="tab-pane fade show active" role="tabpanel">
+                                                    <div>
+                                                        <img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@Model.DetayResim" alt="" class="img-fluid mx-auto d-block">
+                                                    </div>
+                                                </div>
+
+                                                @foreach (UoW.DOMAIN.Models.UrunResimler item in ViewBag.UrunResimler)
+                                                {
+                                                    <div class="tab-pane fade" id="product-@item.ID" role="tabpanel" aria-labelledby="product-@item.ID-tab">
+                                                        <div>
+                                                            <img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@item.ResimYol" alt="" class="img-fluid mx-auto d-block">
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <div class="mt-4 mt-xl-3">
+                                    <a href="javascript::void(0);" class="text-primary">@Model.kategori.KategoriAdi</a>
+                                    <h4 class="mt-1 mb-3">@Model.UrunAdi</h4>
+                                    <p class="text-muted mb-4">Ürün Kodu: @Model.UrunNo</p>
+
+                                    @if (Model.IndirimOrani > 0)
+                                    {
+                                        <h6 class="text-success text-uppercase"></h6>
+                                        <h5 class="mb-4"><span class="text-muted mr-2"><del>@Model.KDVFiyat ₺</del></span> <b>@Model.IndirimliFiyat ₺</b></h5>
+                                    }
+                                    else
+                                    {
+                                        <h5 class="mb-4"><span class="text-muted mr-2">@Model.Fiyat ₺</span> <span class="text-success"> + KDV @Model.KDVFiyat ₺</span></h5>
+                                    }
+                                    <p class="text-muted mb-4">@Html.Raw(Model.UrunSpot)</p>
+                                    <div class="row mb-3">
+                                        <p class="mb-4 font-weight-bold" style="margin-left:15px;">Ürün Fiyat Seçenekleri</p>
+                                        <hr />
+                                        <div class="col-md-12">
+                                            @foreach (UoW.DOMAIN.Models.UrunFiyat item in ViewBag.UrunFiyat)
+                                            {
+                                                <div>
+                                                    <p class="text-muted"><i class="bx bx-money font-size-16 align-middle text-primary mr-1"></i>@item.AdetBaslangic - @item.AdetBitis Adet = @item.UrunFiyati ₺</p>
+                                                </div>
+                                            }
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end row -->
+
+                        <div class="mt-5">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p class="description">@Html.Raw(Model.Aciklama)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-5">
+                            <h5 class="mb-3">Ürün Özellikleri:</h5>
+
+                            <div class="table-responsive">
+                                <table class="table mb-0 table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row" style="width: 400px;">Kategori</th>
+                                            <td>@Model.kategori.KategoriAdi</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Marka</th>
+                                            <td>@Model.marka.MarkaAdi</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Adet</th>
+                                            <td>@Model.Adet</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Maximum Satın Alınabilecek Ürün Sayısı</th>
+                                            <td>@Model.MaxAdet</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Minimum Satın Alınabilecek Ürün Sayısı</th>
+                                            <td>@Model.MinAdet</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Stok Birimi</th>
+                                            <td>@Model.stokbirimi.BirimAdi</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Etiketler</th>
+                                            <td>
+                                                @foreach (UoW.DOMAIN.Models.EtiketGonderi item in ViewBag.Etiketler)
+                                                {
+                                                    <strong class="badge badge-pill badge-primary font-size-12">@item.etiketler.EtiketAdi</strong>
+                                                }
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- end Specifications -->
+                    </div>
+                </div>
+                <!-- end card -->
+            </div>
+        </div>
+        <!-- end row -->
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title mb-3">Ürün resimlerinizi yükleyin</h4>
+
+                        <form enctype="multipart/form-data" method="post" action="@Url.Action("InsertProductPhoto","Urun")" class="dropzone">
+                            @Html.HiddenFor(x => x.ID)
+                            <div class="fallback">
+                                <input type="file" multiple accept="image/*" name="file" id="files">
+                            </div>
+
+                            <div class="dz-message needsclick">
+                                <div class="mb-3">
+                                    <i class="display-4 text-muted bx bxs-cloud-upload"></i>
+                                </div>
+
+                                <h4>Ürün resimlerinizi seçin veya sürükleyerek bırakın.</h4>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- end row -->
+        </div>
+        @if (altUrunler.Count == 0)
+        {
+            <div class="row mt-3">
+                <div class="col-lg-12">
+                    <div>
+                        <h5 class="mb-3">Bağlı Ürünler:</h5>
+                        <div class="row">
+                            <div class="col-xl-12 col-sm-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <h5 style="margin-left:15px;">Henüz bir alt ürününüz bulunmuyor. Alt ürün eklemek için ürünü <a style="font-size:15px;" href="@Url.Action("EditProduct","Urun", new { ID = Model.ID})">düzenleyin</a> </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row mt-3">
+                <div class="col-lg-12">
+                    <div>
+
+                        <h5 class="mb-3">Bağlı Ürünler:</h5>
+
+                        <div class="row">
+                            @foreach (UoW.DOMAIN.Models.Urun item in altUrunler)
+                            {
+                                <div class="col-xl-4 col-sm-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-4">
+                                                    <img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@item.Resim" alt="" class="img-fluid mx-auto d-block">
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="text-center text-md-left pt-3 pt-md-0">
+                                                        <h5 class="mb-3 text-truncate"><a href="@Url.Action("DetailProduct","Urun", new { ID= item.ID })" class="text-dark">@item.UrunAdi</a></h5>
+                                                        <p class="text-muted">
+                                                            @item.UrunSpot
+                                                        </p>
+                                                        @if (item.IndirimOrani > 0)
+                                                        {
+                                                            <h5 class="my-0"><span class="text-muted mr-2"><del>@item.KDVFiyat₺</del></span> <b>@item.IndirimliFiyat₺</b></h5>
+                                                        }
+                                                        else
+                                                        {
+                                                            <h5 class="my-0">
+                                                                <span class="text-muted mr-2">@item.KDVFiyat ₺</span>
+                                                            </h5>
+                                                        }
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- end row -->
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+    <!-- start page title -->
+</div>
+@section Scripts{
+    <script src="~/assets/libs/dropzone/min/dropzone.min.js"></script>
+    <link href="~/assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
+
+    <script>
+
+        $(document).ready(function () {
+            Dropzone.options.dropzoneForm = {
+                paramName: "file",
+                maxFilesize: 20,
+                maxFiles: 4,
+                acceptedFiles: "image/*",
+                dictMaxFilesExceeded: "Custom max files msg"
+            }
+        });
+    </script>
+
+}
+

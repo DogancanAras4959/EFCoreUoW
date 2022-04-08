@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewData["Title"] = "InsertProductWithExcel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Ürünleri İçe Aktarın</h4>
+                        <p class="card-title-desc">Ürünlerinizi tek bir dosya ile içe akarın</p>
+                     
+                            @using (Html.BeginForm("InsertProductWithExcel", "Urun", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <div class="form-group">
+                                            <div style="margin-top:10px;"></div>
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="file" id="customFile">
+                                                <label class="custom-file-label" for="customFile">Dosyanızı Seçin</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button id="btn_upload" onclick="upload_urun()" type="submit" class="btn btn-sm btn-primary">Yükle</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+    {
+    <script src="~/assets/libs/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <script src="~/assets/js/pages/form-element.init.js"></script>
+    <script>
+        function upload_urun() {
+            var btn = document.getElementById("btn_upload");
+            btn.innerText = "Ürünler yükleniyor...";
+        }
+    </script>
+}

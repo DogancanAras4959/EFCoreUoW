@@ -1,0 +1,349 @@
+﻿@using UoW.SERVICE.Dtos;
+@model UoW.DOMAIN.Models.Kargo
+@{
+    ViewData["Title"] = "CargoDetailBySeller";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    decimal indirim = 0;
+}
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+<link rel="stylesheet" href="~/assets/libs/owl.carousel/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="~/assets/libs/owl.carousel/assets/owl.theme.default.min.css">
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="invoice-title">
+                        <h4 class="float-right font-size-16">Sipariş No # @Model.siparis.SiparisNo</h4>
+                        <div class="mb-4">
+                            <img src="~/assets/images/logo-dark.png" alt="logo" height="20" />
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <address>
+                                <strong>Hazırlanan Kargo:</strong><br>
+                                @Model.kargoFirmaDetay.KargoAdi<br>
+                                @Model.kargoFirmaDetay.KargoAciklama
+                            </address>
+                        </div>
+                        <div class="col-sm-6 text-sm-right">
+                            <address class="mt-2 mt-sm-0">
+                                <strong>Teslim Edilen:</strong><br>
+                                @Model.bayi.BayiAdi<br>
+                                @Model.bayiAdresler.Adres
+                            </address>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 mt-3">
+                            <address>
+                                <strong>Satın Alma Notu:</strong><br>
+                                @Model.SatinalmaNotu<br>
+
+                            </address>
+                        </div>
+                        <div class="col-sm-6 mt-3 text-sm-right">
+                            <address>
+                                <strong>Sipariş Tarihi:</strong><br>
+                                @Model.siparis.SiparisTarih<br><br>
+                            </address>
+                        </div>
+                    </div>
+                    <div class="py-2 mt-3">
+                        <h3 class="font-size-15 font-weight-bold">Sipariş</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <div class="table-responsive">
+                                <table class="table table-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th style="width: 70px;">Ürün No</th>
+                                            <th>Ürün Adı</th>
+                                            <th>Fiyat</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (UoW.DOMAIN.Models.Sepet item in ViewBag.SiparisDetaylari)
+                                        {
+
+                                            decimal fiyat = item.UrunSepet.IndirimliFiyat + item.UrunSepet.KDVFiyat;
+                                            indirim = ViewBag.TotalPrice - Model.siparis.ToplamFiyat;
+                                            <tr>
+                                                <th scope="row">
+                                                    <div>
+                                                        <img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@item.UrunSepet.Resim" alt="" class="avatar-sm">
+                                                    </div>
+                                                </th>
+                                                <td>@item.UrunSepet.UrunNo</td>
+                                                <td>
+                                                    <div>
+                                                        <h5 class="text-truncate font-size-14">@item.UrunSepet.UrunAdi</h5>
+                                                        <p class="text-muted mb-0">@string.Format("{0:C}", item.BirimFiyat) x @item.Adet</p>
+                                                    </div>
+                                                </td>
+                                                <td>@string.Format("{0:c}", item.ToplamSatır)</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="table-responsive">
+                                <table class="table table-nowrap">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="1">
+                                                <h6 class="m-0 text-right">Kargo Ücreti:</h6>
+                                            </td>
+                                            <td>
+                                                @if (Model.kargoFirmaDetay.KargoUcret == 0)
+                                                {
+                                                    <span>Ücretsiz</span>
+                                                }
+                                                else
+                                                {
+                                                    @string.Format("{0:c}", Model.kargoFirmaDetay.KargoUcret)
+                                                }
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="1">
+                                                <h6 class="m-0 text-right">İndirim:</h6>
+                                            </td>
+                                            <td>
+                                                @string.Format("{0:c}", indirim)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="1">
+                                                <h6 class="m-0 text-right">Toplam Tutar:</h6>
+                                            </td>
+                                            <td>
+                                                @string.Format("{0:c}", Model.siparis.ToplamFiyat)
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-print-none">
+                        <div class="float-right">
+                            <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light mr-1"><i class="fa fa-print"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 d-print-none">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-5">Gönderinizi Takip Edin</h4>
+                    <div class="table-responsive">
+                        @if (((CargoTrackingInformation)ViewBag.CargoTracking).CargoFirmType == UoW.SERVICE.Builders.Enums.CargoFirmType.Yurtici)
+                        {
+                            var cargoTracking = (YurticiCargoTrackingInformation)ViewBag.CargoTracking;
+                            <a href="@cargoTracking.TrackingUrl" target="_blank" class="btn btn-sm btn-primary">Kargo Takip Bilgisi</a>
+                        }
+                        else if (((CargoTrackingInformation)ViewBag.CargoTracking).CargoFirmType == UoW.SERVICE.Builders.Enums.CargoFirmType.Surat)
+                        {
+                            <h4 class="mb-0 font-size-18">
+                                @{
+                                    var cargoTrackingNo = Model.KargoReferansNo;
+                                }
+                                Kargo bilgisi -
+                                <a target="_blank" href="@Configuration["SuratKargo:CargoTrackingUrl"].Replace("{cargoTrackingNumber}", cargoTrackingNo)"> @cargoTrackingNo</a>
+                            </h4>
+                            var cargoTracking = (SuratCargoTrackingInformation)ViewBag.CargoTracking;
+
+                            <table class="table table-sm table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Son Hareket Zamanı
+                                        </th>
+                                        <th>
+                                            Son Hareket Açıklama
+                                        </th>
+                                        <th>
+                                            Son Hareket Yer
+                                        </th>
+                                        <th>
+                                            Son Hareket Durum
+                                        </th>
+                                        <th>
+                                            Teslim Alan
+                                        </th>
+                                        <th>
+                                            Teslim Durumu
+                                        </th>
+                                        <th>
+                                            Teslim Zamanı
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            @cargoTracking.LastMovementDate
+                                        </td>
+                                        <td>
+                                            @cargoTracking.LastMovementExplanation
+                                        </td>
+                                        <td>
+                                            @cargoTracking.LastLocation
+                                        </td>
+                                        <td>
+                                            @cargoTracking.LastStatus
+                                        </td>
+                                        <td>
+                                            @cargoTracking.DeliveryReceiver
+                                        </td>
+                                        <td>
+                                            @cargoTracking.DeliveryExplanation
+                                        </td>
+                                        <td>
+                                            @cargoTracking.DeliveryDate
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title mb-5">Gönderinizi Takip Edin</h4>
+                        <div class="">
+                            <ul class="verti-timeline list-unstyled">
+                                <li class="event-list">
+                                    @if (ViewBag.SiparisAlindi == true)
+                                    {
+                                        <div class="event-timeline-dot">
+                                            <i class="bx bx-right-arrow-circle bx-fade-right"></i>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="event-timeline-dot">
+                                            <i class="bx bx-right-arrow-circle"></i>
+                                        </div>
+                                    }
+                                    <div class="media">
+                                        <div class="mr-3">
+                                            <i class="bx bx-copy-alt h2 text-primary"></i>
+                                        </div>
+                                        <div class="media-body">
+                                            <div>
+                                                <h5>Sipariş Alındı</h5>
+                                                <p class="text-muted">Siparişinizi aldık. Siparişiniz kargoya hazırlandıktan sonra size bildireceğiz</p>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="event-list">
+                                    @if (ViewBag.KargoHazirlandi == true)
+                                    {
+                                        <div class="event-timeline-dot">
+                                            <i class="bx bx-right-arrow-circle bx-fade-right"></i>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="event-timeline-dot">
+                                            <i class="bx bx-right-arrow-circle"></i>
+                                        </div>
+                                    }
+                                    <div class="media">
+                                        <div class="mr-3">
+                                            <i class="bx bx-package h2 text-primary"></i>
+                                        </div>
+                                        <div class="media-body">
+                                            <div>
+                                                <h5>Kargo Hazırlandı</h5>
+                                                <p class="text-muted">Gönderinizi hazırladık. Teslim noktasından çıktığında size bildireceğiz</p>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="event-list active">
+                                    @if (ViewBag.GonderiYolda == true)
+                                    {
+                                        <div class="event-timeline-dot">
+                                            <i class="bx bx-right-arrow-circle bx-fade-right"></i>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="event-timeline-dot">
+                                            <i class="bx bx-right-arrow-circle"></i>
+                                        </div>
+                                    }
+                                    <div class="media">
+                                        <div class="mr-3">
+                                            <i class="bx bx-car h2 text-primary"></i>
+                                        </div>
+                                        <div class="media-body">
+                                            <div>
+                                                <h5>Gönderiniz Yolda</h5>
+                                                <p class="text-muted">Gönderiniz yolda. Size belirtilen süre içerisinde gönderinizi ulaştıracağız</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="event-list">
+                                    @if (ViewBag.TeslimEdildi == true)
+                                    {
+                                        <div class="event-timeline-dot">
+                                            <i class="bx bx-right-arrow-circle bx-fade-right"></i>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="event-timeline-dot">
+                                            <i class="bx bx-right-arrow-circle"></i>
+                                        </div>
+                                    }
+                                    <div class="media">
+                                        <div class="mr-3">
+                                            <i class="bx bx-badge-check h2 text-primary"></i>
+                                        </div>
+                                        <div class="media-body">
+                                            <div>
+                                                <h5>Teslim Edildi</h5>
+                                                <p class="text-muted">Gönderiniz başarıyla teslim edildi. Gönderinizle ilgili sorunlar için bizimle iletişime geçin!</p>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+    </div>
+</div>
+
+
+<script src="~/assets/libs/owl.carousel/owl.carousel.min.js"></script>
+<script src="~/assets/js/pages/timeline.init.js"></script>

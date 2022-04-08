@@ -1,0 +1,107 @@
+﻿@model UoW.DOMAIN.Models.Basvuru
+@using UoW.DOMAIN.Models
+@{
+    ViewData["Title"] = "ToApplyDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<BasvuruDosyalar> dosyalar = ViewBag.Dosyalar as List<BasvuruDosyalar>;
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">BAYİ BAŞVURU DETAY - @Model.BasvuruTarih.ToShortDateString() @Model.BasvuruTarih.ToShortTimeString()</h4>
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Ana Sayfa</a></li>
+                            <li class="breadcrumb-item active">Başvuru Detay</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="mb-1 font-size-18">#@Model.BasvuruNo - @Model.basvuruDurum.DurumAdi</h4>
+                        <p> Başvuru numarasına ait <span style="color:#ff2f00; font-weight:bold;">@Model.BayiAdi - @Model.BayiUnvani</span> adlı bayinin başvuru detayını içerir. Başvuru sürecinde incelenecek belge ve veriler bu detay sayfasında yer alır. Bu verileri inceledikten sonra işlem yapabilir. Süreci yönetebilirsiniz</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <d iv class="card">
+                    <div class="card-body">
+                        <table class="table table-condensed">
+                            <tbody>
+                                <tr>
+                                    <td><span style="font-weight:800">Email Adresi:</span> </td>
+                                    <td>@Model.EmailAdresi</td>
+                                </tr>
+                                <tr>
+                                    <td><span style="font-weight:800">Telefon No:</span> </td>
+                                    <td>@Model.TelNo</td>
+                                </tr>
+                                <tr>
+                                    <td><span style="font-weight:800">Yetkili Adı:</span> </td>
+                                    <td>@Model.YetkiliAdi</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-body">
+                    <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner" role="listbox">
+                            <div class="carousel-item active">
+                                <img class="d-block img-fluid" src="https://bayi.kiracelektrik.com.tr/Files/Bayi/@Model.basvuruFoto" alt="First slide">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="mb-3 font-size-15">
+                        Başvuru Belgeleri
+                    </h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Dosya Adı</th>
+                                <th>Dosya Türü</th>
+                                <th>İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in dosyalar)
+                            {
+                                <tr>
+                                    <td>@item.ID</td>
+                                    <td>@item.DosyaAdi</td>
+                                    <td>@item.DosyaTuru</td>
+                                    <td>
+                                        <a href="@Url.Action("DownloadApplyDocument","Home", new { ID = item.ID })" class="btn btn-link btn-sm">İndir</a>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,175 @@
+﻿@using UoW.LOG.Models
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common;
+
+@section Styles{
+    <style>
+        .page-link {
+            position: relative;
+            display: block;
+            padding: .5rem .75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #fff;
+            background-color: #34509d;
+            border: 1px solid #34509d;
+        }
+
+            .page-link a {
+                color: #fff;
+            }
+
+                .page-link a:hover {
+                    color: #34509d;
+                }
+    </style>
+}
+
+@{
+    ViewData["Title"] = "ListLog";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string durumAdi = Convert.ToString(TempData["durum"]);
+    string islemAdi = Convert.ToString(TempData["islem"]);
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">LOG KAYITLARI</h4>
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li style="padding-right:20px;">
+                                <form method="get" action="~/Log/ListLogWithIslem">
+                                    @Html.DropDownList("IslemAdi", (SelectList)ViewBag.IslemAdi, ("İşlem Seçiniz"), new { @class = "form-control select2", onchange = "this.form.submit();", id = "dropdown1" })
+                                </form>
+                            </li>
+                            <li>
+                                <form method="get" action="~/Log/ListLogWithDurum">
+                                    @Html.DropDownList("DurumAdi", (SelectList)ViewBag.DurumAdi, ("Durum Seçiniz"), new { @class = "form-control select2", onchange = "this.form.submit();", id = "dropdown1" })
+                                </form>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-bordered dt-responsive nowrap"
+                               style="border-collapse: collapse;
+                       border-spacing: 0; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Sayfa</th>
+                                    <th>Metot</th>
+                                    <th>İşlem</th>
+                                    <th>Durum</th>
+                                    <th>Oluşturulma Tarih</th>
+                                    <th>Kullanıcı</th>
+                                    <th>Detay İşl.</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var item in ViewBag.Loglar)
+                                {
+
+                                    <tr>
+
+                                        <td class="text-body font-weight-bold">#@item.ID</td>
+                                        <td>@item.Controller</td>
+                                        <td>@item.Action </td>
+                                        <td>@item.islemler.IslemAdi</td>
+                                        <td>@item.durumlar.DurumAdi</td>
+                                        <td>@item.Tarih.ToShortDateString() @item.Saat.ToShortTimeString()</td>
+                                        <td>@item.yonetici.KullaniciAdi</td>
+
+                                        <td>
+                                            <a href="#" data-toggle="modal" data-target="#model_@item.ID" class="text-danger" data-placement="top" title="" data-original-title="Delete"> Kaydı Kaldır</a>
+                                            <div id="model_@item.ID" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title mt-0" id="myModalLabel">#@item.ID - Log</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">×</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Bu logu sistemden kaldırmak istediğinize emin misiniz?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <a href="javascript::void(0);" class="btn btn-secondary waves-effect" data-dismiss="modal">İptal</a>
+                                                            <a href="@Url.Action("RemoveLog","Log", new { ID = item.ID })" class="btn btn-primary waves-effect waves-light">Logu Sil</a>
+                                                        </div>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal-dialog -->
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                @if (islemAdi != null)
+                {
+                    @Html.PagedListPager((IPagedList<Loglar>)ViewBag.Loglar,
+           page => Url.Action("ListLogWithIslem", new { page, islemAdi }),
+           PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+           {
+               MaximumPageNumbersToDisplay = 10,
+               DisplayPageCountAndCurrentLocation = true,
+               UlElementClasses = new[] { "pagination pagination-rounded justify-content-center mt-4" },
+               LiElementClasses = new[] { "page-link" },
+               EllipsesFormat = "&#8230;",
+               DisplayLinkToIndividualPages = true,
+               ActiveLiElementClass = "page-item",
+               DisplayLinkToFirstPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+               DisplayLinkToLastPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+               DisplayLinkToPreviousPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+               DisplayLinkToNextPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+               PageCountAndCurrentLocationFormat = "",
+               ContainerDivClasses = new[] { "pagination-container" }
+           },
+            new AjaxOptions() { HttpMethod = "GET" }))
+                }
+                else if (durumAdi != null)
+                {
+                    @Html.PagedListPager((IPagedList<Loglar>)ViewBag.Loglar,
+          page => Url.Action("ListLogWithDurum", new { page, durumAdi }),
+          PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+          {
+              MaximumPageNumbersToDisplay = 10,
+              DisplayPageCountAndCurrentLocation = true,
+              UlElementClasses = new[] { "pagination pagination-rounded justify-content-center mt-4" },
+              LiElementClasses = new[] { "page-link" },
+              EllipsesFormat = "&#8230;",
+              DisplayLinkToIndividualPages = true,
+              ActiveLiElementClass = "page-item",
+              DisplayLinkToFirstPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+              DisplayLinkToLastPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+              DisplayLinkToPreviousPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+              DisplayLinkToNextPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+              PageCountAndCurrentLocationFormat = "",
+              ContainerDivClasses = new[] { "pagination-container" }
+          },
+           new AjaxOptions() { HttpMethod = "GET" }))
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,107 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Kıraç Elektrik | Bayi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Kıraç, Group, Bayi, Elektrik, Malzeme" name="description" />
+    <meta content="Kıraç Elektrik Bayim" name="author" />
+    <link rel="shortcut icon" href="~/assets/images/favicon.ico">
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/assets/css/app.min.css" rel="stylesheet" />
+    <link href="~/assets/css/icons.min.css" rel="stylesheet" />
+    <link href="~/assets/css/toastr/build/toastr.css" rel="stylesheet" />
+    <link href="~/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/dist/themes/default/style.min.css" rel="stylesheet" />
+    <link href="~/css/search.css" rel="stylesheet" />
+    @RenderSection("Styles", required: false)
+
+    <style>
+       
+        #sidebar-menu ul li a {
+            display: block;
+            padding: 0.225rem 1.5rem;
+            color: #545a6d;
+            position: relative;
+            font-size: 13px;
+            -webkit-transition: all .4s;
+            transition: all .4s;
+        }
+        body[data-layout=horizontal] .page-content {
+            margin-top: 0px;
+            padding: calc(55px + 24px) calc(24px / 2) 60px calc(24px / 2);
+        }
+        body[data-topbar=dark] #page-topbar {
+            background-color: #fff;
+        }
+        .landing-footer {
+            padding: 80px 0 40px;
+            background-color: #10366f;
+            color: rgba(255,255,255,.5);
+        }
+        .black{
+            color:#000;
+        }
+
+        body[data-topbar=dark] .header-item {
+            color: #000;
+        }
+        body[data-topbar=dark] .noti-icon i {
+            color: #10366f;
+        }
+    </style>
+
+</head>
+
+<body data-topbar="dark" data-layout="horizontal">
+
+    <div id="layout-wrapper">
+
+        @await Component.InvokeAsync("Header")
+
+        <div class="main-content">
+
+            <div class="page-content mt-3">
+                @RenderBody()
+            </div>
+
+            <footer class="landing-footer">
+                @await Component.InvokeAsync("Footer")
+                <!-- end container -->
+            </footer>
+
+        </div>
+
+    </div>
+
+    <div class="rightbar-overlay"></div>
+
+    <script src="~/assets/libs/jquery/jquery.min.js"></script>
+    <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/libs/metismenu/metisMenu.min.js"></script>
+    <script src="~/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/assets/libs/node-waves/waves.min.js"></script>
+    <script src="~/assets/js/jquery.bxslider.min.js"></script>
+    <script src="~/assets/js/app.js"></script>
+
+    @RenderSection("Scripts", required: false)
+
+    <script src="~/assets/css/toastr/toastr.js"></script>
+
+    @if (TempData["mesaj"] != null)
+    {
+        <script>
+            @Html.Raw(TempData["mesaj"])
+        </script>
+    }
+    <script type="text/javascript">
+        let data = @Html.Raw(ViewData["data"]);
+    </script>
+
+    <script src="~/js/jssearch.js"></script>
+
+</body>
+
+</html>

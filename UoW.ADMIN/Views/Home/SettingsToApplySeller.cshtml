@@ -1,0 +1,100 @@
+﻿@model UoW.DOMAIN.Models.BasvuruAyar
+
+@{
+    ViewData["Title"] = "SettingsToApplySeller";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">BAŞVURU AYARLARI</h4>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>Başvuru Günlük Limiti:</td>
+                                    <td>@Model.BasvuruLimitGunluk</td>
+                                </tr>
+                                <tr>
+                                    <td>Güncellenme Tarihi:</td>
+                                    <td>@Model.GuncellenmeTarih</td>
+                                </tr>
+                                <tr>
+                                    <td>İşlem Yapan:</td>
+                                    <td>@Model.kullaniciBasvuruAyar.KullaniciAdi</td>
+                                </tr>
+                                <tr>
+                                    <td>Başvuru Alma Durumu: </td>
+                                    <td>
+                                        @if (Model.SecilenAyar == true)
+                                        {
+                                            <div class="custom-control custom-switch custom-switch-lg mb-3" dir="ltr">
+                                                <input type="checkbox" class="custom-control-input" id="customSwitchsizelg" checked>
+                                                <label class="custom-control-label" for="customSwitchsizelg"></label>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="custom-control custom-switch custom-switch-lg mb-3" dir="ltr">
+                                                <input type="checkbox" class="custom-control-input" id="customSwitchsizelg">
+                                                <label class="custom-control-label" for="customSwitchsizelg"></label>
+                                            </div>
+                                        }
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/assets/libs/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+<script src="~/assets/js/pages/form-element.init.js"></script>
+<script src="~/assets/libs/jquery/jquery.min.js"></script>
+
+<script>
+    $(function () {
+
+        const checkbox = document.getElementById('customSwitchsizelg');
+        checkbox.addEventListener('change', (event) => {
+            var dataStatus;
+            if (event.currentTarget.checked) {
+                dataStatus = 1;
+                alert("Başvuru alma işlemi gerçekleştirilebilir");
+            }
+            else {
+                dataStatus = 0;
+                alert("Başvuru alma işlemi gerçekleştirilemez. Bu işlem pasifize edilmiştir!");
+            }
+            $.ajax({
+                url: "/Home/EditSettingToApplySeller/",
+                type: "POST",
+                data: { dataStatus: dataStatus },
+
+                success: function (response) {                  
+                }
+            });
+        });
+    });
+</script>

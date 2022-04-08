@@ -1,0 +1,16 @@
+{
+  "ExtendedData": {
+    "inputs": [
+      "http://webservices.suratkargo.com.tr/services.asmx?wsdl"
+    ],
+    "collectionTypes": [
+      "System.Array",
+      "System.Collections.Generic.Dictionary`2"
+    ],
+    "namespaceMappings": [
+      "*, SuratKargoWS"
+    ],
+    "targetFramework": "netcoreapp3.1",
+    "typeReuseMode": "All"
+  }
+}

@@ -1,0 +1,200 @@
+﻿@using UoW.DOMAIN.Models
+@model UoW.DOMAIN.Models.Urun
+
+@{
+    int indirimOran = 0;
+    bool begeniVarmi = Convert.ToBoolean(TempData["Disable"]);
+    List<UrunFiyat> urunFiyatlar = ViewBag.UrunFiyat as List<UrunFiyat>;
+    Bayi b = ViewBag.Bayi as Bayi;
+}
+@{
+    <style>
+        p {
+            margin: 0;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-lg-10">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="col-xl-6">
+                        <div class="product-detai-imgs">
+                            <div class="row">
+                                <div class="col-md-3 col-sm-4 col-5">
+                                    <div class="nav flex-column nav-pills " id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                        @foreach (UoW.DOMAIN.Models.UrunResimler item in ViewBag.UrunResimler)
+                                        {
+                                            <a class="nav-link" id="product-@item.ID-tab" data-toggle="pill" href="#product-@item.ID" role="tab" aria-controls="product-@item.ID" aria-selected="true">
+                                                <img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@item.ResimYol" alt="" class="img-fluid mx-auto d-block rounded">
+                                            </a>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-md-6 offset-md-1 col-sm-8 col-7">
+                                    <div class="tab-content" id="v-pills-tabContent">
+
+                                        <div class="tab-pane fade show active" role="tabpanel">
+                                            <div>
+                                                <img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@Model.Resim" alt="" class="img-fluid mx-auto d-block">
+                                            </div>
+                                        </div>
+
+                                        @foreach (UoW.DOMAIN.Models.UrunResimler item in ViewBag.UrunResimler)
+                                        {
+
+                                            <div class="tab-pane fade" id="product-@item.ID" role="tabpanel" aria-labelledby="product-@item.ID-tab">
+                                                <div>
+                                                    <img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@item.ResimYol" alt="" class="img-fluid mx-auto d-block">
+                                                </div>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-6 pr-4">
+
+                        <div class="row mb-2" style="right: 9px; border: 1px solid #b9b9b9;">
+                            <div class="col-12 p-3">
+                                <h4 class="mt-1 mb-1">@Model.UrunAdi</h4>
+                                <p class="text-muted">Ürün Kodu: @Model.UrunNo</p>
+                                @if (Model.Adet == 0)
+                                {
+                                    <p class="text-danger">STOKTA TÜKENDİ!</p>
+                                }
+                                @if (Model.IndirimOrani > 0)
+                                {
+
+                                    indirimOran = Convert.ToInt32(Model.IndirimOrani);
+                                    decimal? _indirim = Model.KDVFiyat * Model.IndirimOrani / 100;
+                                    decimal? toplam = Model.KDVFiyat - _indirim;
+                                    Model.IndirimliFiyat = (decimal)toplam;
+                                    decimal? _indirimIskonto = Model.IndirimliFiyat * (b.musteriGrubu.IskontoOrani / 100);
+                                    decimal? toplamIskonto = Model.IndirimliFiyat - _indirimIskonto;
+                                    Model.IndirimliFiyat = (decimal)toplamIskonto;
+                                    <div class="row">
+                                        <div class="col-sm-4">
+
+                                            <div class="avatar-sm product-ribbon">
+                                                <span class="avatar-title bg-primary" style="font-size: 13px; text-align: center; position: relative; bottom: 12px; right: 2px;">
+                                                    %@indirimOran İndirim
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-8" style="left:-30px;">
+                                            <h6 class="text-success text-uppercase"></h6>
+                                            <h3><span class="text-muted mr-2"><del>@string.Format("{0:c}", Model.KDVFiyat)</del></span> <b>@string.Format("{0:c}", Model.IndirimliFiyat)</b></h3>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    Model.IndirimOrani = b.musteriGrubu.IskontoOrani;
+                                    decimal _indirim = Model.KDVFiyat * b.musteriGrubu.IskontoOrani / 100;
+                                    decimal toplam = Model.KDVFiyat - _indirim;
+                                    Model.KDVFiyat = toplam;
+
+                                    <h3><span class="text-success"> @string.Format("{0:c}", Model.KDVFiyat) </span></h3>
+                                }
+
+                                @if (urunFiyatlar.Count > 0)
+                                {
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <p class="font-weight-bold">Ürün Fiyat Seçenekleri</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                            @foreach (UoW.DOMAIN.Models.UrunFiyat item in ViewBag.UrunFiyat)
+                                            {
+                                                <div>
+                                                    <p class="text-muted"><i class="bx bx-money font-size-16 align-middle text-primary mr-1"></i>@item.AdetBaslangic - @item.AdetBitis Adet = @string.Format("{0:c}", item.UrunFiyati)</p>
+                                                </div>
+                                            }
+
+                                        </div>
+                                    </div>
+
+                                }
+                            </div>
+                        </div>
+
+                        <div class="row mt-2 mb-2" style="right: 9px; border: 1px solid #b9b9b9;">
+                            <div class="col-12 p-3">
+                                <div class="row pb-2">
+                                    <div class="col-sm-9">
+                                        Marka: <span class="text-primary">Metal Kablo Kanalı</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <a href="/Home/FilterByProductList?KategoriID=98" class="text-primary">Markayı Gör</a>
+                                    </div>
+                                </div>
+
+                                @if (Model.IndirimOrani > 0)
+                                {
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <input id="adet" type="text" value="0" name="demo_vertical2" style="width:170px;">
+                                                    <input type="hidden" value="@Model.ID" name="ID" id="ID" />
+                                                    <input class="price" type="hidden" value="@Model.IndirimliFiyat" />
+                                                </td>
+                                                @if (Model.Adet != 0)
+                                                {
+                                                    <td>
+                                                        <button type="button" style="margin-left:5px;" id="btnsubmit" class="btn btn-block btn-success">Sepete Ekle</button>
+                                                    </td>
+                                                }
+                                               
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                }
+                                else
+                                {
+                                    <div style="width:100%;">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <input id="adet" type="text" value="0" name="demo_vertical2">
+                                                        <input type="hidden" value="@Model.ID" name="ID" id="ID" />
+                                                        <input type="hidden" class="price" value="@Model.KDVFiyat" />
+
+                                                    </td>
+
+                                                    @if (Model.Adet != 0)
+                                                    {
+                                                        <td>
+                                                            <button type="button" style="margin-left:5px;" id="btnsubmit" class="btn btn-block btn-success">Sepete Ekle</button>
+                                                        </td>
+                                                    }
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>                                  
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- end card -->
+    </div>
+    <div class="col-sm-1">
+    </div>
+</div>

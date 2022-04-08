@@ -1,0 +1,117 @@
+﻿@using UoW.DOMAIN.Models;
+@using UoW.CORE.Enums;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common;
+
+@section Styles{
+    <style>
+        .page-link {
+            position: relative;
+            display: block;
+            padding: .5rem .75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #fff;
+            background-color: #34509d;
+            border: 1px solid #34509d;
+        }
+
+            .page-link a {
+                color: #fff;
+            }
+
+                .page-link a:hover {
+                    color: #34509d;
+                }
+    </style>
+}
+
+@{
+    ViewData["Title"] = "AllSpecialOffers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    IPagedList<OzelTeklif> teklifler = ViewBag.OzelTeklifler as IPagedList<OzelTeklif>;
+    decimal nettoplam = 0;
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">ÖZEL TEKLİFLER</h4>
+                </div>
+            </div>
+        </div>
+        @if (teklifler.Count == 0)
+        {
+            <div class="jumbotron">
+                <h4 class="text-center">Herhangi bir özel teklif bulunmuyor!</h4>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table table-bordered dt-responsive nowrap"
+                                   style="border-collapse: collapse;
+                       border-spacing: 0; width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Detay</th>
+                                        <th>Bayi</th>
+                                        <th>Toplam Fiyat</th>
+                                        <th>İndirim</th>
+                                        <th>Sipariş No</th>
+                                        <th>İşlem Zamanı</th>
+                                        <th>Teklif Durum</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in teklifler)
+                                    {
+                                        <tr>
+
+                                            <td class="text-body font-weight-bold">@item.ID</td>
+                                            <td><a href="@Url.Action("OfferDetail","Home", new { ID = item.ID })">Teklifi Görüntüle</a></td>
+                                            <td>@item.bayiOzelTeklif.BayiAdi</td>
+                                            <td>@item.siparisOzelTeklif.ToplamFiyat</td>
+                                            <td>@item.siparisOzelTeklif.Indirim</td>
+                                            <td>@item.siparisOzelTeklif.SiparisNo</td>
+                                            <td>@item.TeklifTarih.ToLongDateString() @item.TeklifTarih.ToLongTimeString()</td>
+                                            @if (item.TeklifDurum == OzelTeklifDurum.TeklifBitti)
+                                            {
+                                                <td><span class="text-success">Teklif tamamlandı</span></td>
+                                            }
+                                            else if (item.TeklifDurum == OzelTeklifDurum.TeklifHazirlandi)
+                                            {
+                                                <td><a href="@Url.Action("MakeOfferToSeller","Home", new { ID = item.ID })" class="btn btn-sm btn-info" style="color:#fff;" disabled>TEKLİFİ DÜZENLE</a></td>
+                                            }
+                                            else if (item.TeklifDurum == OzelTeklifDurum.TeklifGonderildi)
+                                            {
+                                                <td><span class="text-success">Teklif gönderildi</span></td>
+                                            }
+                                            else
+                                            {
+                                                <td><span class="text-info">Teklif Düzenleniyor</span></td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+

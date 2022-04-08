@@ -1,0 +1,87 @@
+﻿@model UoW.ADMIN.Models.BayiVM.SellerLoginVM
+@{
+    ViewData["Title"] = "BayiLogin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">BAYİ GİRİŞİ</h4>
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Yönetici Paneli</a></li>
+                            <li class="breadcrumb-item active">Bayi Girişi</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 col-xl-5">
+                <div class="card overflow-hidden">
+                    <div class="bg-soft-primary">
+                        <div class="row">
+                            <div class="col-7">
+                                <div class="text-primary p-4">
+                                    
+                                </div>
+                            </div>
+                            <div class="col-5 align-self-end">
+                                <img src="~/assets/images/profile-img.png" alt="" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div>
+                            <a href="javascript::void(0);">
+                                <div class="avatar-md profile-user-wid mb-4">
+                                    <span class="avatar-title rounded-circle bg-light">
+                                        <img src="~/Files/Admin/pp.jpg" alt="" class="rounded-circle" height="50">
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="p-2">
+                            <form class="form-horizontal" action="@Url.Action("SellerLoginAdmin","Bayi")" method="post">
+                                @Html.HiddenFor(x=> x.ID)
+                                <div class="form-group">
+                                    <label for="username">Kullanıcı Adı</label>
+                                    @Html.TextBoxFor(x => x.username, new { @class = "form-control", autocomplete = "off", placeholder = "Bayi kullanıcı adı girin..."})
+                                    <label class="text-danger">@Html.ValidationMessageFor(x=> x.username)</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username">Şifre</label>
+                                    @Html.TextBoxFor(x => x.password, new { @class = "form-control", type="password", placeholder = "Bayi şifresini girin..." })
+                                    <label class="text-danger">@Html.ValidationMessageFor(x=> x.password)</label>
+                                </div>
+                                <div class="mt-3">
+                                    <button id="btn_bayi" onclick="login_btn()" class="btn btn-primary btn-block waves-effect waves-light" type="submit">Giriş Yap</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        setTimeout(function () {
+            $('label[class=text-danger]').delay(500).fadeOut();
+        }, 3000);
+    });
+
+    function login_btn() {
+        window.setTimeout(function () {
+            $("#btn_bayi").attr("disabled", true);
+        }, 500);
+        var btn = document.getElementById("btn_bayi");
+        btn.innerText = "Giriş yapılıyor...";
+    }
+</script>

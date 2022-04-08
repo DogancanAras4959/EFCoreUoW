@@ -1,0 +1,32 @@
+﻿@model UoW.DOMAIN.Models.Bayi
+@{
+    ViewData["Title"] = "BayiLoginSucces";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="text-center mb-5">
+                    <h1 class="display-2 font-weight-medium"><i class="bx bx-buoy bx-spin text-primary display-3"></i>BAŞARILI</h1>
+                    <h4 class="text-wrap">Bayi giriş işleminiz başarılı! 5sn içerisinde sisteme yönlendiriliyorsunuz</h4>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-xl-6">
+                <div>
+                    <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    window.setTimeout(function () {
+        window.location.replace('@Url.Action("SellerDetailsAdmin", "Bayi", new { ID = Model.ID })');
+                                  }, 4000);
+</script>

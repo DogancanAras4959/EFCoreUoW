@@ -1,0 +1,23 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <h1 class="text-danger">Yetkisiz Giriş</h1>
+        <h4 class="text-danger">Yetkiniz bulunmadığından girmek isteidiğiniz sayfa da görüntüleme veya düzenleme gerçekleştiremezsiniz.</h4>
+        <br />
+        @if (Model.ShowRequestId)
+        {
+            <p>
+                <strong>Kimlik:</strong> <code>@Model.RequestId</code>
+            </p>
+        }
+
+        <h3>Geliştirici Modu</h3>
+        <p>
+            Bu sayfada düzenleme yapmak istiyorsanız <strong>Yöneticinize</strong> başvurun ve onay alın
+        </p>
+    </div>
+</div>

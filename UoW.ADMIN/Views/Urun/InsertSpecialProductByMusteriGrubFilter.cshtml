@@ -1,0 +1,218 @@
+﻿@model UoW.DOMAIN.Models.MusteriGrupOzelUrun
+@using UoW.DOMAIN.Models
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common;
+
+@{
+    ViewData["Title"] = "InsertSpecialProductByMusteriGrub";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/assets/css/jquery-ui.min.css" rel="stylesheet" />
+
+<style>
+    #div1 {
+        width: 100%;
+        height: 150px;
+        padding: 10px;
+        border: 1px solid #aaaaaa;
+    }
+    .page-link {
+        position: relative;
+        display: block;
+        padding: .5rem .75rem;
+        margin-left: -1px;
+        line-height: 1.25;
+        color: #fff;
+        background-color: #34509d;
+        border: 1px solid #34509d;
+    }
+
+        .page-link a {
+            color: #fff;
+        }
+
+            .page-link a:hover {
+                color: #34509d;
+            }
+</style>
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">Özel Ürün Oluştur</h4>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @foreach (UoW.DOMAIN.Models.MusteriGrubu item3 in ViewBag.MusteriGruplar)
+            {
+
+                <div class="col-sm-3">
+                    <div class="card">
+
+                        <div class="mt-4 text-center">
+                            <h3>@item3.GrubAdi Müşteri Grubu</h3>
+                            <input type="hidden" class="grupId" value="@item3.ID" />
+                            <p>İstediğiniz ürünü bu kutucğa sürükleyip bırakın</p>
+                        </div>
+                        <div class="card-body">
+                            <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Filtreleyin</h4>
+                        <div>
+                            <h5 class="font-size-14 mb-3">Kategoriler</h5>
+                            <ul class="list-unstyled product-list">
+                                @foreach (UoW.DOMAIN.Models.Kategori item in ViewBag.Kategoriler)
+                                {
+                                  
+                                    <li><a href="@Url.Action("InsertSpecialProductByMusteriGrubFilter","Urun", new { KategoriID = item.ID })"><i class="mdi mdi-chevron-right mr-1"></i>@item.KategoriAdi (@item.urunler.Count())</a></li>
+                                }
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 class="font-size-14 mb-3">Markalar</h5>
+                            <ul class="list-unstyled product-list">
+                                @foreach (UoW.DOMAIN.Models.Marka item2 in ViewBag.Markalar)
+                                {
+            
+                                    <li><a href="#"><i class="mdi mdi-chevron-right mr-1"></i>@item2.MarkaAdi (@item2.urunler.Count())</a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="row">
+                    @foreach (UoW.DOMAIN.Models.Urun item in ViewBag.Urunler)
+                    {
+                        <div class="col-xl-4 col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="product-img position-relative">
+                                        @if (item.IndirimOrani > 0)
+                                        {
+                                            <div class="avatar-sm product-ribbon">
+                                                <span class="avatar-title rounded-circle  bg-primary">
+                                                    - @item.IndirimOrani %
+                                                </span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="avatar-sm product-ribbon">
+
+                                            </div>
+                                        }
+                                        <img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@item.DetayResim" alt="" class="img-fluid mx-auto d-block">
+                                    </div>
+                                    <div class="mt-4 text-center" id="product">
+                                        <h5 class="mb-3 text-truncate">
+                                            <a href="@Url.Action("DetailProduct","Urun", new { Id = item.ID })"
+                                               class="text-dark DraggableItem" draggable='true' ondragstart='drag(event)'>@item.UrunAdi </a>
+                                            <input type="hidden" class="productId" value="@item.ID" />
+                                        </h5>
+                                        @if (item.IndirimOrani > 0)
+                                        {
+                                            <h5 class="my-0"><span class="text-muted mr-2"><del>@item.Fiyat ₺</del></span> <b>@item.IndirimliFiyat ₺</b></h5>
+                                        }
+                                        else
+                                        {
+                                            <h5 class="my-0"><span class="text-muted mr-2">@item.KDVFiyat ₺</span></h5>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        @Html.PagedListPager((IPagedList<Urun>)ViewBag.Urunler,
+                       page => Url.Action("InsertSpecialProductByMusteriGrubFilter", new { page }),
+                       PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+                       {
+                                MaximumPageNumbersToDisplay = 10,
+                           DisplayPageCountAndCurrentLocation = true,
+                           UlElementClasses = new[] { "pagination pagination-rounded justify-content-center mt-4" },
+                           LiElementClasses = new[] { "page-link" },
+                           EllipsesFormat = "&#8230;",
+                           DisplayLinkToIndividualPages = true,
+                           ActiveLiElementClass = "page-item",
+                           DisplayLinkToFirstPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                           DisplayLinkToLastPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                           DisplayLinkToPreviousPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                           DisplayLinkToNextPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                           PageCountAndCurrentLocationFormat = "",
+                           ContainerDivClasses = new[] { "pagination-container" }
+                            },
+                        new AjaxOptions() { HttpMethod = "GET" }))
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/assets/libs/jquery/jquery.min.js"></script>
+    <script src="~/assets/js/jquery-ui.min.js"></script>
+    <script>
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+        $(".DraggedItem").draggable({
+            helper: 'clone',
+            cursor: 'move'
+        });
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.setData("text", ev.target.id);
+            var s = document.createElement('div'); // is the node
+            s.innerHTML = document.getElementById(data).innerHTML;
+            document.getElementById('#div1').appendChild(s);
+            $('#grupId').val();
+
+            var elem = document.getElementById("#grupId");
+            var div = document.getElementById("#div1");
+            elem.value = div.value;
+            alert(elem);
+        }
+
+        $(".DraggedItem").draggable({
+            cursor: 'move'
+        });
+        $("#div1").droppable({
+            drop: function (event, ui) {
+                var elemid = ui.draggable[0].id;
+                $("#grupId").val(elemid);
+                alert("dropped item has id: " + elemid);
+            }
+        });
+
+    </script>
+}

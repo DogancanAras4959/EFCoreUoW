@@ -1,0 +1,106 @@
+﻿@model UoW.DOMAIN.Models.Kategori
+@{
+    ViewData["Title"] = "InsertCategory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">KATEGORİ GÜNCELLE</h4>
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="@Url.Action("Categories","Urun")">Kategoriler</a></li>
+                            <li class="breadcrumb-item active">Kategori Güncelle</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10 col-xl-9">
+                <div class="card overflow-hidden">
+                    <div class="card-body pt-3">
+                        <div class="p-3">
+                            <h4 class="card-title">Kategori Güncelle!</h4>
+                            <p class="card-title-desc">
+                                Kategorilerinizi güncelleme işleminde istediğiniz bilgiyi güncelleyiniz
+                            </p>
+                            <div class="p-2">
+                                    @using (Html.BeginForm("EditCategory", "Urun", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                    {
+                                        @Html.HiddenFor(x => x.ID)
+                                        <div class="form-group row">
+                                            <div class="col-md-2">
+                                                <img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@Model.KategoriFoto" style="border:1px solid #000;" height="90" />
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div style="margin-top:10px;"></div>
+                                                <label>(Fotonuzu değiştirmek için 500x500px boyutunda bir foto yükleyin!)</label>
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" accept="image/*" name="file" id="customFile">
+                                                    <label class="custom-file-label" for="customFile">Kategori Fotonuzu Seçin</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="username">Üst Kategori</label>
+                                            @Html.DropDownList("UstKategori", (SelectList)ViewBag.UstKategori, "Üst Kategori Seçiniz", new { @class = "form-control select2 dropdown3", id = "UstKategori" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="username">Kategori Adı</label>
+                                            @Html.TextBoxFor(x => x.KategoriAdi, new { @class = "form-control", maxlength = "70", id = "username", autocomplete = "off", placeholder = "Kategori adı giriniz..." })
+                                            <label class="text-danger">@Html.ValidationMessageFor(x => x.KategoriAdi)</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="username">Kategori Kodu</label>
+                                            @Html.TextBoxFor(x => x.KategoriKodu, new { @class = "form-control", maxlength = "10", id = "username", autocomplete = "off", placeholder = "Kategori adı giriniz..." })
+                                            <label class="text-danger">@Html.ValidationMessageFor(x => x.KategoriKodu)</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="username">Açıklama</label>
+                                            @Html.TextAreaFor(x => x.KategoriAciklama, new { @class = "form-control", maxlength = "400", id = "username", type = "text", cols = "40", row = "5", placeholder = "Kategori açıklaması giriniz..." })
+                                        </div>
+                                        <div class="mt-3">
+                                            <button id="btn_edit" onclick="edit_kategori()" class="btn btn-primary btn-block waves-effect waves-light" type="submit">Kategori Güncelle</button>
+                                        </div>
+                                    }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/assets/libs/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="~/assets/libs/select2/js/select2.min.js"></script>
+    <script src="~/assets/js/pages/ecommerce-select2.init.js"></script>
+    <script src="~/assets/libs/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <script src="~/assets/js/pages/form-element.init.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $('.dropdown3').select2();
+            setTimeout(function () {
+                $('label[class=text-danger]').delay(500).fadeOut();
+            }, 3000);
+
+        });
+
+        function edit_kategori() {
+            window.setTimeout(function () {
+                $("#btn_edit").attr("disabled", true);
+            }, 500);
+            var btn = document.getElementById("btn_edit");
+            btn.innerText = "Kategori Güncelleniyor...";
+        }
+
+    </script>
+}

@@ -1,0 +1,434 @@
+﻿
+@{
+    ViewData["Title"] = "HomePageList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using UoW.DOMAIN.Models
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common;
+@{
+    ViewData["Title"] = "HomePage";
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int id = Convert.ToInt32(TempData["MarkaID"]);
+    int indirimOran = 0;
+    Bayi b = ViewBag.Bayi as Bayi;
+    List<UoW.DOMAIN.Models.SliderItem> sliderItems = ViewBag.SliderItems as List<UoW.DOMAIN.Models.SliderItem>;
+    List<UoW.DOMAIN.Models.SliderBannerItem> sliderbannerItems = ViewBag.SliderBannerItems as List<UoW.DOMAIN.Models.SliderBannerItem>;
+    List<UoW.DOMAIN.Models.Marka> markas = ViewBag.Markalar as List<UoW.DOMAIN.Models.Marka>;
+    PagedList<UoW.DOMAIN.Models.Urun> sliderKampanyaliUrunler = ViewBag.KampanyaliUrunler as PagedList<UoW.DOMAIN.Models.Urun>;
+    PagedList<UoW.DOMAIN.Models.Urun> digerUrunler = ViewBag.Urunler as PagedList<UoW.DOMAIN.Models.Urun>;
+    int MarkaID = Convert.ToInt32(TempData["MarkaID"]);
+}
+
+<link href="~/slick/slick.css" rel="stylesheet" />
+<link href="~/slick/slick-theme.css" rel="stylesheet" />
+<link href="~/assets/libs/ion-rangeslider/css/ion.rangeSlider.min.css" rel="stylesheet" type="text/css" />
+
+<div class="container-fluid">
+    <div class="row" style="margin:auto 0;">
+        <div class="col-md-12">
+            <div class="wrapper">
+                <div class="search-input">
+                    <a href="" target="_blank" hidden></a>
+                    <input type="text" placeholder="Ürünlerinizi arayın...">
+                    <div class="autocom-box">
+                    </div>
+                    <div class="icon"><i class="fas fa-search"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+
+    @*<div class="row" style="margin:0 auto;">
+        @{await Html.RenderPartialAsync("SliderViewPartial");}
+    </div>*@
+
+    @if (digerUrunler.Count() == 0)
+    {
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="text-center jumbotron">Ürünlerimiz çok yakında bu bölümde yayınlanacaktır. Takipte Kalın!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row" style="margin:0 auto;">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">ÜRÜNLERİMİZ</h4>
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li>
+                                <a class="btn btn-sm btn-light" href="@Url.Action("FilterByBrandList", "Home", new { MarkaID = id })"><span class="fa fa-list"></span></a>
+                            </li>
+
+                            <li style="padding-left:2px;">
+                                <a class="btn btn-sm btn-light" href="@Url.Action("FliterByBrand", "Home", new { MarkaID = id })">
+                                    <span class="fa fa-solar-panel"></span>
+                                </a>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin:0 auto;">
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">Filter</h4>
+
+                                <div>
+                                    <h5 class="font-size-14 mb-3">Clothes</h5>
+                                    <ul class="list-unstyled product-list">
+                                        <li><a href="#"><i class="mdi mdi-chevron-right mr-1"></i> T-shirts</a></li>
+                                        <li><a href="#"><i class="mdi mdi-chevron-right mr-1"></i> Shirts</a></li>
+                                        <li><a href="#"><i class="mdi mdi-chevron-right mr-1"></i> Jeans</a></li>
+                                        <li><a href="#"><i class="mdi mdi-chevron-right mr-1"></i> Jackets</a></li>
+                                    </ul>
+                                </div>
+
+                                <div class="mt-4 pt-3">
+                                    <h5 class="font-size-14 mb-3">Price</h5>
+                                    <input type="text" id="pricerange">
+                                </div>
+
+                                <div class="mt-4 pt-3">
+                                    <h5 class="font-size-14 mb-3">Discount</h5>
+                                    <div class="custom-control custom-checkbox mt-2">
+                                        <input type="checkbox" class="custom-control-input" id="productdiscountCheck1">
+                                        <label class="custom-control-label" for="productdiscountCheck1">Less than 10%</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox mt-2">
+                                        <input type="checkbox" class="custom-control-input" id="productdiscountCheck2">
+                                        <label class="custom-control-label" for="productdiscountCheck2">10% or more</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox mt-2">
+                                        <input type="checkbox" class="custom-control-input" id="productdiscountCheck3" checked>
+                                        <label class="custom-control-label" for="productdiscountCheck3">20% or more</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox mt-2">
+                                        <input type="checkbox" class="custom-control-input" id="productdiscountCheck4">
+                                        <label class="custom-control-label" for="productdiscountCheck4">30% or more</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox mt-2">
+                                        <input type="checkbox" class="custom-control-input" id="productdiscountCheck5">
+                                        <label class="custom-control-label" for="productdiscountCheck5">40% or more</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox mt-2">
+                                        <input type="checkbox" class="custom-control-input" id="productdiscountCheck6">
+                                        <label class="custom-control-label" for="productdiscountCheck6">50% or more</label>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4 pt-3">
+                                    <h5 class="font-size-14 mb-3">Customer Rating</h5>
+                                    <div>
+                                        <div class="custom-control custom-checkbox mt-2">
+                                            <input type="checkbox" class="custom-control-input" id="productratingCheck1">
+                                            <label class="custom-control-label" for="productratingCheck1">4 <i class="bx bx-star text-warning"></i>  & Above</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox mt-2">
+                                            <input type="checkbox" class="custom-control-input" id="productratingCheck2">
+                                            <label class="custom-control-label" for="productratingCheck2">3 <i class="bx bx-star text-warning"></i>  & Above</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox mt-2">
+                                            <input type="checkbox" class="custom-control-input" id="productratingCheck3">
+                                            <label class="custom-control-label" for="productratingCheck3">2 <i class="bx bx-star text-warning"></i>  & Above</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox mt-2">
+                                            <input type="checkbox" class="custom-control-input" id="productratingCheck4">
+                                            <label class="custom-control-label" for="productratingCheck4">1 <i class="bx bx-star text-warning"></i></label>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-condensed" id="productsTableOther">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Ürün Adı</th>
+                                    <th>Kategori</th>
+                                    <th>Liste Fiyatı</th>
+                                    <th>İskonto</th>
+                                    <th>Adet</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in digerUrunler)
+                                {
+                                    indirimOran = (int)b.musteriGrubu.IskontoOrani;
+                                    decimal _indirim = item.KDVFiyat * b.musteriGrubu.IskontoOrani / 100;
+                                    decimal toplam = item.KDVFiyat - _indirim;
+                                    item.KDVFiyat = toplam;
+
+                                    <tr>
+                                        <td>
+                                            <a href="@Url.Action("DetailProduct", "BayiUrun", new { Id = item.ID })">
+                                                <img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@item.Resim" alt="" style="max-width:36px;" class="mx-auto d-block">
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @if (item.UrunAdi.Length > 20)
+                                            {
+                                                <a href="@Url.Action("DetailProduct", "BayiUrun", new { Id = item.ID })" class="text-dark" data-toggle="tooltip" data-placement="top" title="" data-original-title="@item.UrunAdi">@item.UrunAdi.Substring(0, 30)<span>...</span> </a>
+                                            }
+                                            else
+                                            {
+                                                <a href="@Url.Action("DetailProduct", "BayiUrun", new { Id = item.ID })" class="text-dark" data-toggle="tooltip" data-placement="top" title="" data-original-title="@item.UrunAdi">@item.UrunAdi<span>...</span> </a>
+                                            }
+
+                                        </td>
+                                        <td>
+                                            @item.kategori.KategoriAdi
+                                        </td>
+                                        <td><span class="text-muted mr-2">@string.Format("{0:c}", item.KDVFiyat)</span><input class="price" value="@item.KDVFiyat" style="display:none;" /></td>
+                                        <td>%@indirimOran</td>
+
+                                        @if (item.Adet >= 450)
+                                        {
+
+                                            <td>
+                                                450<span>+</span>
+                                            </td>
+                                        }
+                                        else if (item.Adet > 20)
+                                        {
+
+                                            <td>
+                                                20 <span>+</span>
+                                            </td>
+                                        }
+                                        else if (item.Adet > 150)
+                                        {
+                                            <td>
+                                                150 <span>+</span>
+                                            </td>
+                                        }
+                                        else if (item.Adet > 500)
+                                        {
+
+                                            <td>
+                                                500 <span>+</span>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            if (item.Adet == 0)
+                                            {
+                                                <td>Stokta Tükendi!</td>
+                                            }
+                                            else
+                                            {
+                                                <td>@item.Adet</td>
+                                            }
+                                        }
+                                        <td>
+                                            @if (item.Adet != 0)
+                                            {
+                                                if (item.ID == id)
+                                                {
+                                                    <input type="text" class="form-control" placeholder="Adet..." disabled />
+                                                }
+                                                else
+                                                {
+                                                    <input type="text" class="form-control" style="max-width:80px; padding:5px !important; max-height:34px;" placeholder="Adet..." />
+                                                    <input type="hidden" value="@item.ID" />
+                                                }
+                                            }
+
+                                        </td>
+                                        <td>
+                                            @{
+                                                if (item.begeniler.Where(x => x.BayiID == b.ID).Count() > 0)
+                                                {
+                                                    <a href="@Url.Action("DissLikeHomePageList", "BayiUrun", new { ID = item.ID })" data-toggle="tooltip" data-placement="top" title="" data-original-title="Favorilerden Çıkar"><img src="~/Files/Bayi/icon_star_full.png" /></a>//dolu olacak - deletelike yapacağız
+                                                }
+                                                else
+                                                {
+
+                                                    <a href="@Url.Action("InsertLike", "BayiUrun", new { ID = item.ID })" data-toggle="tooltip" data-placement="top" title="" data-original-title="Favorilere Ekle"><img src="/Files/Bayi/icon_star_empty.png" /></a>//boş olacak
+                                                }
+                                            }
+
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("NotificateProductWhenStock", "BayiUrun", new { ID = item.ID })" data-toggle="tooltip" data-placement="top" title="" data-original-title="Stokta Bildir"><i class="fa fa-bell bell-position"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td colspan="5">
+                                    </td>
+                                    <td colspan="3">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <button style="margin-top:5px;" type="button" onclick="InsertSepet();" class="btn btn-primary btn-block btn-sm right"><i class="bx bx-cart"></i> Sepete Ekle</button>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- end row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        @Html.PagedListPager((IPagedList<Urun>)ViewBag.Urunler, page => Url.Action("FilterByBrandListtTwo", new { page }),
+                                                        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+                                                        {
+                                                            MaximumPageNumbersToDisplay = 10,
+                                                            DisplayPageCountAndCurrentLocation = true,
+                                                            UlElementClasses = new[] { "pagination pagination-rounded justify-content-center mt-4" },
+                                                            LiElementClasses = new[] { "page-link" },
+                                                            EllipsesFormat = "&#8230;",
+                                                            DisplayLinkToIndividualPages = true,
+                                                            ActiveLiElementClass = "page-item",
+                                                            DisplayLinkToFirstPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                                                            DisplayLinkToLastPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                                                            DisplayLinkToPreviousPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                                                            DisplayLinkToNextPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                                                            PageCountAndCurrentLocationFormat = "",
+                                                            ContainerDivClasses = new[] { "pagination-container" }
+                                                        },
+                                                         new AjaxOptions() { HttpMethod = "GET" }))
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+
+
+</div> 
+<div class="container-fluid">
+    <div class="row" style="margin:0 auto;">
+        @foreach (var itemKatalog in ViewBag.Kataloglar)
+        {
+            <div class="col-md-3 col-xl-3 col-sm-3">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title mt-0">@itemKatalog.KatalogAdi</h4>
+                        <h6 class="card-subtitle font-14 text-muted">@itemKatalog.EklenmeTarih.ToShortDateString() @itemKatalog.EklenmeTarih.ToShortTimeString()</h6>
+                    </div>
+                    <img class="img-fluid" src="https://bayi.kiracelektrik.com.tr/Files/Dokumanlar/@itemKatalog.Onizleme" alt="@itemKatalog.KatalogAdi">
+                    <div class="card-body">
+                        <a href="@Url.Action("DownloadDocumentCatalog","Home", new { ID = itemKatalog.ID })" class="card-link">Katalogu indirmek için tıklayınız</a>
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+</div><!-- end row -->
+<div class="container-fluid">
+    <div class="row" style="margin:0 auto;">
+        <div class="col-12">
+            @await Component.InvokeAsync("News")
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script src="~/assets/libs/jquery/jquery.min.js"></script>
+    <script src="~/assets/libs/ion-rangeslider/js/ion.rangeSlider.min.js"></script>
+    <script src="~/assets/js/pages/product-filter-range.init.js"></script>
+    <script src="~/slick/slick.js"></script>
+    <script src="~/slick/slick.min.js"></script>
+
+    <script type="text/javascript">
+
+        $('.slick-table').slick({
+            dots: true,
+            infinite: false,
+            speed: 300,
+            slidesToShow: 12,
+            slidesToScroll: 12,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 3,
+                        infinite: true,
+                        dots: true
+                    }
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                }
+
+            ]
+        });
+
+    var InsertSepet = function () {
+
+        var productsDiscounted = [];
+        $('#productsTable > tbody > tr').each(function (i, row) {
+            var id = $(row).find('input.DiscountedId').val();
+            var miktar = $(row).find('input.DiscountedQuantity').val();
+            var fiyat = $(row).find('input.priceDiscounted').val();
+            if (miktar) {
+                var item = { id: id, adet: miktar, BirimFiyat: fiyat.replace(',', '.') };
+                productsDiscounted.push(item);
+            }
+        });
+
+        $.ajax({
+
+            url: "/Siparis/SepeteEkle",
+            type: "POST",
+            data: { products: JSON.stringify(productsDiscounted) },
+            success: function (response) {
+                if (response == true) {
+                  window.location.assign('@Url.Action("Basket","Siparis")');
+                }
+            },
+            error: function (e, j, k) {
+                let responseText = e.responseText.replace("UoW.CORE.Exceptions.BorcVarException:", "");
+                toastr["warning"](responseText, "Uyarı !");
+            }
+            });
+        });
+    }
+
+    </script>
+
+}

@@ -1,0 +1,162 @@
+﻿@using UoW.DOMAIN.Models
+@using UoW.DATA
+@model UoW.DOMAIN.Models.OzelTeklif
+
+@{
+    ViewData["Title"] = "ListAccount";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    decimal indirim = 0;
+    decimal aratoplam = 0;
+    decimal nettoplam = 0;
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">TEKLİF YAP</h4>
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Yönetici Paneli</a></li>
+                            <li class="breadcrumb-item active">Teklif Detay</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="invoice-title">
+                            <h4 class="float-right font-size-16">Sipariş No # @Model.siparisOzelTeklif.SiparisNo</h4>
+                            <div class="mb-4">
+                                <img src="~/assets/images/logo-dark.png" alt="logo" height="20" />
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-6 mt-3">
+                                <address>
+                                    <strong>Sipariş Tarihi:</strong><br>
+                                    @Model.siparisOzelTeklif.HazirlanmaTarih.ToShortDateString() @Model.siparisOzelTeklif.HazirlanmaTarih.ToShortTimeString()<br><br>
+                                </address>
+                            </div>
+                            <div class="col-sm-6 mt-3 text-sm-right">
+                                <address>
+                                    <strong>Teslim Edilen:</strong><br>
+                                    @Model.bayiOzelTeklif.BayiAdi<br>
+                                </address>
+                            </div>
+                        </div>
+                        <div class="py-2 mt-3">
+                            <h3 class="font-size-15 font-weight-bold">Sipariş</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <div class="table-responsive">
+                                    <table class="table table-nowrap" id="productsTable">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th style="width: 70px;">Ürün No</th>
+                                                <th>Ürün Adı</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (UoW.DOMAIN.Models.Sepet item in ViewBag.SiparisDetaylari)
+                                            {
+
+                                                decimal fiyat = item.UrunSepet.IndirimliFiyat + item.UrunSepet.KDVFiyat;
+                                                aratoplam += item.UrunSepet.KDVFiyat * item.Adet;
+                                                nettoplam += item.BirimFiyat * item.Adet;
+                                                indirim += aratoplam - nettoplam;
+                                                <tr>
+                                                    <th scope="row">
+                                                        <div>
+                                                            <img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@item.UrunSepet.Resim" alt="" class="avatar-sm">
+                                                        </div>
+                                                    </th>
+                                                    <td>@item.UrunSepet.UrunNo</td>
+                                                    <td>
+                                                        <div>
+                                                            <h5 class="text-truncate font-size-14">
+                                                                @if (item.UrunSepet.UrunAdi.Length > 30)
+                                                                {@item.UrunSepet.UrunAdi.Substring(0, 30)}
+                                                            </h5>
+                                                            @if (item.UrunSepet.IndirimOrani > 0)
+                                                            {
+                                                                <p class="text-muted mb-0"><del>@string.Format("{0:c}", item.UrunSepet.KDVFiyat)</del> @string.Format("{0:C}", item.BirimFiyat) x @item.Adet</p>
+                                                            }
+                                                            else
+                                                            {
+                                                                <p class="text-muted mb-0">@string.Format("{0:c}", item.BirimFiyat) x @item.Adet</p>
+                                                            }
+
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+                                                        <input type="text" class="form-control" style="max-width:150px; padding:5px !important; max-height:34px;" placeholder="Birim Fiyat giriniz..." />
+                                                        <input type="hidden" value="@item.ID" />
+                                                        <input type="button" style="display:none;" value="@Model.ID" />
+                                                    </td>
+                                                </tr>
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="table-responsive">
+                                    <table class="table table-nowrap">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="1">
+                                                    <h6 class="m-0 text-right">Ara Toplam:</h6>
+                                                </td>
+                                                <td>
+                                                    @string.Format("{0:c}", aratoplam)
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="1">
+                                                    <h6 class="m-0 text-right">İndirim:</h6>
+                                                </td>
+                                                <td>
+                                                    -@string.Format("{0:c}", indirim)
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="1">
+                                                    <h6 class="m-0 text-right">Kargo Bedeli:</h6>
+                                                </td>
+                                                <td>
+                                                    @string.Format("{0:c}", Model.siparisOzelTeklif.KargoBedeli)
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="1">
+                                                    <h6 class="m-0 text-right">Toplam Tutar:</h6>
+                                                </td>
+                                                <td>
+                                                    @string.Format("{0:c}", nettoplam + Model.siparisOzelTeklif.KargoBedeli)
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

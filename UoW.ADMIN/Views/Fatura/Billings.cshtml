@@ -1,0 +1,111 @@
+﻿@using X.PagedList.Mvc.Core;
+@using UoW.DOMAIN.Models;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common;
+
+
+@section Styles{
+    <style>
+        .page-link {
+            position: relative;
+            display: block;
+            padding: .5rem .75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #fff;
+            background-color: #34509d;
+            border: 1px solid #34509d;
+        }
+
+            .page-link a {
+                color: #fff;
+            }
+
+                .page-link a:hover {
+                    color: #34509d;
+                }
+    </style>
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="page-title-box">Billings</h4>
+                        @if (ViewBag.Faturalar == null)
+                        {
+                            <div class="jumbotron">
+                                <h4 class="text-center">Sistemde herhangi bir fatura bulunmuyor!</h4>
+                            </div>
+
+                        }
+                        else
+                        {
+                            <table class="table table-bordered dt-responsive nowrap"
+                                   style="border-collapse: collapse;
+                       border-spacing: 0; width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Fatura No</th>
+                                        <th>Fatura Tipi</th>
+                                        <th>Bayi</th>
+                                        <th>Eklenme Tarih</th>
+                                        <th>Toplam Fiyat</th>
+                                        <th>Sipariş No</th>
+                                        <th>İşlem</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach (var item in ViewBag.Faturalar)
+                                    {
+                                        <tr>
+                                            <td class="text-body font-weight-bold">@item.ID</td>
+                                            <td>@item.FaturaNo</td>
+                                            <td>@item.faturaTipi.TipAdi</td>
+                                            <td>@item.bayiFatura.BayiAdi</td>
+                                            <td>@item.EklenmeTarih.ToLongTimeString() @item.EklenmeTarih.ToLongDateString()</td>
+                                            <td style="color:red;">@string.Format("{0:c}", item.ToplamFiyat)</td>
+                                            <td>@item.siparisFatura.SiparisNo</td>
+                                            <td>
+                                                <a href="@Url.Action("RemoveBill","Fatura", new { id = item.ID })" class="btn btn-sm btn-danger">Sil</a>
+                                                <a href="@Url.Action("BillDetail", "Fatura", new { id = item.ID })" class="btn btn-sm btn-info">Detay</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div> <!-- end col -->
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                @Html.PagedListPager((IPagedList<Fatura>)ViewBag.Faturalar,
+               page => Url.Action("Billings", new { page }),
+               PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+               {
+                        MaximumPageNumbersToDisplay = 10,
+                   DisplayPageCountAndCurrentLocation = true,
+                   UlElementClasses = new[] { "pagination pagination-rounded justify-content-center mt-4" },
+                   LiElementClasses = new[] { "page-link" },
+                   EllipsesFormat = "&#8230;",
+                   DisplayLinkToIndividualPages = true,
+                   ActiveLiElementClass = "page-item",
+                   DisplayLinkToFirstPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                   DisplayLinkToLastPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                   DisplayLinkToPreviousPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                   DisplayLinkToNextPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                   PageCountAndCurrentLocationFormat = "",
+                   ContainerDivClasses = new[] { "pagination-container" }
+                    },
+                new AjaxOptions() { HttpMethod = "GET" }))
+            </div>
+        </div>
+    </div>
+</div>

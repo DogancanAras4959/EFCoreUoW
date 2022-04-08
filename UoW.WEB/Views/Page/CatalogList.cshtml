@@ -1,0 +1,72 @@
+﻿@using UoW.DOMAIN.Models;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common;
+
+@{
+    ViewData["Title"] = "GeneralDocuments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    IPagedList<Dokuman> dokumans = ViewBag.Katalog as IPagedList<Dokuman>;
+}
+
+
+<div class="container-fluid">
+    <h4>Kataloglar</h4>
+    <br />
+    @if (dokumans.Count == 0)
+    {
+        <div class="card">
+            <div class="card-body">
+                <h5 style="text-align:center;"> Sistemimizde kataloglarla ilgili bir döküman bulunmamaktadır. Kataloglar yüklendikten sonra sayfamızda listelenecektir</h5>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row" style="margin:0 auto;">
+            @foreach (var itemKatalog in ViewBag.Katalog)
+            {
+                <div class="col-md-3 col-xl-3 col-sm-3">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title mt-0">@itemKatalog.KatalogAdi</h4>
+                            <h6 class="card-subtitle font-14 text-muted">@itemKatalog.EklenmeTarih.ToShortDateString() @itemKatalog.EklenmeTarih.ToShortTimeString()</h6>
+                        </div>
+                        <img class="img-fluid" src="https://bayi.kiracelektrik.com.tr/Files/Dokumanlar/@itemKatalog.Onizleme" alt="@itemKatalog.KatalogAdi">
+                        <div class="card-body">
+                            <a href="@Url.Action("DownloadDocument", "Home", new { ID = itemKatalog.ID })" class="card-link">Katalogu indirmek için tıklayınız</a>
+                        </div>
+                    </div>
+
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                @Html.PagedListPager((IPagedList<Dokuman>)ViewBag.Katalog,
+            page => Url.Action("CatalogList", new { page }),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+            {
+                MaximumPageNumbersToDisplay = 10,
+                DisplayPageCountAndCurrentLocation = true,
+                UlElementClasses = new[] { "pagination pagination-rounded justify-content-center mt-4" },
+                LiElementClasses = new[] { "page-link" },
+                EllipsesFormat = "&#8230;",
+                DisplayLinkToIndividualPages = true,
+                ActiveLiElementClass = "page-item",
+                DisplayLinkToFirstPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                DisplayLinkToLastPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                DisplayLinkToPreviousPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                DisplayLinkToNextPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                PageCountAndCurrentLocationFormat = "",
+                ContainerDivClasses = new[] { "pagination-container" }
+            },
+             new AjaxOptions() { HttpMethod = "GET" }))
+            </div>
+        </div>
+    }
+    </div>
+
+
+

@@ -1,0 +1,89 @@
+﻿@using UoW.DOMAIN.Models
+@model IEnumerable<UoW.DOMAIN.Models.MusteriGrupKargo>
+
+@{
+    ViewData["Title"] = "KargolariYonet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    Bayi gelenBayi = ViewBag.GelenBayi as Bayi;
+    //KargoSure gelenSure = ViewBag.KargoSure as KargoSure;
+    //bool durum = false;
+
+    //if (TempData["KargoDurum"] != null)
+
+    //{
+    //    durum = Convert.ToBoolean(TempData["KargoDurum"]);
+    //}
+
+}
+
+    <div class="container-fluid">
+        
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">Kargoları Yönet</h4>
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="@Url.Action("SellerDetail","Bayi",new { ID = gelenBayi.ID })">Bayi Hesabı</a></li>
+                            <li class="breadcrumb-item active">Kargoları Yönet</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card-deck-wrapper">
+                    <div class="card-deck">
+                        @foreach (var item in Model)
+                        {
+                            @if (item.Durum == true)
+                            {
+                                <div class="col-sm-4">
+                                    <div class="card mb-4">
+                                        <img class="card-img-top img-fluid" src="https://bayi.kiracelektrik.com.tr/Files/Bayi/@item.Kargo.KargoFoto" alt="Card image cap">
+                                        <div class="card-body">
+                                            <h4 class="card-title">@item.Kargo.KargoAdi <span style="color:#fff; background-color:#3edc1f; padding:5px; font-weight:500; font-size:13px;">Şu an kullanılan</span></h4>
+
+                                            <p class="card-text">
+                                                @item.Kargo.KargoAciklama - Ücreti: @string.Format("{0:c}", item.Kargo.KargoUcret)
+                                            </p>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-4">
+                                    <div class="card mb-4">
+                                        <img class="card-img-top img-fluid" src="~/Files/Admin/@item.Kargo.KargoFoto" alt="Card image cap">
+                                        <div class="card-body">
+                                            <h4 class="card-title">@item.Kargo.KargoAdi</h4>
+
+                                            <p class="card-text">
+                                                @item.Kargo.KargoAciklama - Ücreti: @string.Format("{0:c}", item.Kargo.KargoUcret)
+                                            </p>
+
+                                            <p class="card-text">
+                                                <small class="text-muted">
+                                                    <a class="btn btn-sm btn-success" href="@Url.Action("KargoSecBayi","Islem", new { KargoID = item.KargoID })">Kargoyu Seç</a>
+                                                </small>
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+

@@ -1,0 +1,113 @@
+﻿@model IPagedList<UoW.DOMAIN.Models.Basvuru>
+@using UoW.DOMAIN.Models;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common;
+
+@section Styles{
+    <style>
+        .page-link {
+            position: relative;
+            display: block;
+            padding: .5rem .75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #fff;
+            background-color: #34509d;
+            border: 1px solid #34509d;
+        }
+
+            .page-link a {
+                color: #fff;
+            }
+
+                .page-link a:hover {
+                    color: #34509d;
+                }
+    </style>
+}
+
+@{
+    ViewData["Title"] = "ToApproveApplySellerList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>ToApproveApplySellerList</h1>
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="page-title-box">Tüm Bayi Başvuruları</h4>
+                        @if (Model.Count == 0)
+                        {
+                            <div class="jumbotron">
+                                <h4 class="text-center">Sisteme gelen onaylanan bir başvuru bulunmuyor henüz!</h4>
+                            </div>
+                        }
+                        else
+                        {
+                            <table class="table table-bordered dt-responsive nowrap"
+                                   style="border-collapse: collapse;
+                       border-spacing: 0; width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Başvuru No</th>
+                                        <th>Bayi Adı</th>
+                                        <th>Bayi Unvanı</th>
+                                        <th>Telefon No</th>
+                                        <th>Yetkili Adı</th>
+                                        <th>Başvuru Tarihi</th>
+                                        <th>Başvuru Durum</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                    <tr>
+                                        <td class="text-body font-weight-bold">#@item.ID</td>
+                                        <td>@item.BasvuruNo</td>
+                                        <td>@item.BayiAdi</td>
+                                        <td>@item.BayiUnvani</td>
+                                        <td>@item.TelNo</td>
+                                        <td>@item.YetkiliAdi</td>
+                                        <td>@item.BasvuruTarih.ToShortDateString() @item.BasvuruTarih.ToShortTimeString()</td>
+                                        <td><span class="btn btn-@item.basvuruDurum.Renk btn-sm">@item.basvuruDurum.DurumAdi</span></td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div> <!-- end col -->
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                @Html.PagedListPager((IPagedList<Basvuru>)Model,
+               page => Url.Action("AllApplySeller", new { page }),
+               PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+               {
+                        MaximumPageNumbersToDisplay = 10,
+                   DisplayPageCountAndCurrentLocation = true,
+                   UlElementClasses = new[] { "pagination pagination-rounded justify-content-center mt-4" },
+                   LiElementClasses = new[] { "page-link" },
+                   EllipsesFormat = "&#8230;",
+                   DisplayLinkToIndividualPages = true,
+                   ActiveLiElementClass = "page-item",
+                   DisplayLinkToFirstPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                   DisplayLinkToLastPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                   DisplayLinkToPreviousPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                   DisplayLinkToNextPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                   PageCountAndCurrentLocationFormat = "",
+                   ContainerDivClasses = new[] { "pagination-container" }
+                    },
+                new AjaxOptions() { HttpMethod = "GET" }))
+            </div>
+        </div>
+    </div>
+</div>

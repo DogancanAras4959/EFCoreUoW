@@ -1,0 +1,359 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc
+@using UoW.DATA.Toastr
+@using UoW.DOMAIN.Models
+@using Newtonsoft.Json
+@{
+    string userB = "";
+    int idB = 0;
+    string ppB = "";
+
+    string username = "";
+    int id = 0;
+    string pp = "";
+
+    if (Context.Session.GetString("username") != null)
+    {
+        username = Context.Session.GetString("username");
+        id = Convert.ToInt32(Context.Session.GetInt32("Id"));
+        pp = Context.Session.GetString("pp");
+    }
+    else
+    {
+        userB = Context.Session.GetString("userB");
+        idB = Convert.ToInt32(Context.Session.GetInt32("IdB"));
+        ppB = Context.Session.GetString("ppB");
+    }
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8" />
+    <title>Yönetim Paneli</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <link rel="shortcut icon" href="~/assets/images/favicon.ico">
+
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/assets/css/app.min.css" rel="stylesheet" />
+    <link href="~/assets/css/icons.min.css" rel="stylesheet" />
+    <link href="~/assets/css/toastr/build/toastr.css" rel="stylesheet" />
+    <link href="~/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+
+    @RenderSection("Styles", required: false)
+
+</head>
+
+<body data-sidebar="dark">
+    <div id="layout-wrapper">
+        <header id="page-topbar">
+            <div class="navbar-header">
+                <div class="d-flex">
+                    <div class="navbar-brand-box">
+                        <a href="@Url.Action("Index","Home")" class="logo logo-dark">
+                            <span class="logo-sm">
+                                <img src="~/assets/images/logo.svg" alt="" height="22">
+                            </span>
+                            <span class="logo-lg">
+                                <img src="~/assets/images/logo-dark.png" alt="" height="17">
+                            </span>
+                        </a>
+                        <a href="@Url.Action("Index","Home")" class="logo logo-light">
+                            <span class="logo-sm">
+                                <img src="~/assets/images/logo-light.svg" alt="" height="22">
+                            </span>
+                            <span class="logo-lg">
+                                <img src="~/assets/images/logo-light.png" alt="" height="25">
+                            </span>
+                        </a>
+                    </div>
+
+                    <button type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect" id="vertical-menu-btn">
+                        <i class="fa fa-fw fa-bars"></i>
+                    </button>
+
+                    <form class="app-search d-none d-lg-block">
+                        <div class="position-relative">
+                            <input type="text" class="form-control" placeholder="İstediğinizi arayın...">
+                            <span class="bx bx-search-alt"></span>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="d-flex">
+
+                    <div class="dropdown d-inline-block d-lg-none ml-2">
+                        <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-search-dropdown"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="mdi mdi-magnify"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0"
+                             aria-labelledby="page-header-search-dropdown">
+
+                            <form class="p-3">
+                                <div class="form-group m-0">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Arama yap..." aria-label="Recipient's username">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    @if (username != "")
+                    {
+                        <div class="dropdown d-inline-block">
+                            <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="rounded-circle header-profile-user" src="https://admin.kiracelektrik.com.tr/Files/Admin/@pp" />
+                                <span class="d-none d-xl-inline-block ml-1">@username</span>
+                                <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+
+                                <a class="dropdown-item" href="@Url.Action("ProfileDetail","Account", new { ID = id })"><i class="bx bx-user font-size-16 align-middle mr-1"></i> Hesabım</a>
+                                <a class="dropdown-item text-danger" href="@Url.Action("LogOut","Account")"><i class="bx bx-power-off font-size-16 align-middle mr-1 text-danger"></i> Oturumu Kapat</a>
+                            </div>
+                        </div>
+                    }
+
+                    @if (userB != "")
+                    {
+                        <div class="dropdown d-inline-block">
+                            <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="rounded-circle header-profile-user" src="https://admin.kiracelektrik.com.tr/Files/Admin/@ppB" alt="Header Avatar" />
+                                <span class="d-none d-xl-inline-block ml-1">@userB</span>
+                                <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+
+                                <a class="dropdown-item" href="@Url.Action("SellerDetailsAdmin","Bayi", new { ID = idB })"><i class="bx bx-user font-size-16 align-middle mr-1"></i> Hesabım</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="@Url.Action("SellerLogOut","Bayi", new { ID = idB })"><i class="bx bx-power-off font-size-16 align-middle mr-1 text-danger"></i> Oturumu Kapat</a>
+                            </div>
+                        </div>
+                    }
+
+
+
+                </div>
+            </div>
+        </header> <!-- ========== Left Sidebar Start ========== -->
+
+        <div class="vertical-menu">
+
+            <div data-simplebar class="h-100">
+
+                <!--- Sidemenu -->
+                <div id="sidebar-menu">
+                    <!-- Left Menu Start -->
+                    @if (userB != null)
+                    {
+                    <ul class="metismenu list-unstyled" id="side-menu">
+                        <li class="menu-title">Ana İşlemler</li>
+
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bxs-dashboard"></i>
+                                <span>Yönetim</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("AllApplySeller","Home")">Tüm Başvurular</a></li>
+                                <li><a href="@Url.Action("ApproveToApplySellerList","Home")">Onaylanan Başvurular</a></li>
+                                <li><a href="@Url.Action("SettingsToApplySeller","Home")">Başvuru Ayarları</a></li>
+                                <li><a href="@Url.Action("Documents","Document")">Dökümanlar</a></li>
+                                <li><a href="@Url.Action("DocumentTypeList","Document")">Döküman Tipleri</a></li>
+
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bxs-news"></i>
+                                <span>Haber İşlemleri</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("ListNewsCategory","Haber")">Haber Kategorileri</a></li>
+                                <li><a href="@Url.Action("InsertNewsCategory","Haber")">Haber Kategorisi Ekle</a></li>
+                                <li><a href="@Url.Action("ListNews","Haber")">Haberler</a></li>
+                                <li><a href="@Url.Action("InsertNews","Haber")">Haber Ekle</a></li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bxs-report"></i>
+                                <span>Site Bilgileri Düzenle</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("ListSiteInfo","SiteInfo")">Site Bilgileri</a></li>
+                                <li><a href="@Url.Action("InsertSiteInfo","SiteInfo")">Site Bilgisi Ekle</a></li>                              
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-chart"></i>
+                                <span>Bayi Yönetimi</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("BulletinList","Home")">Bülten Üyelikleri</a></li>
+                                <li><a href="@Url.Action("CustomerGroups","Bayi")">Müşteri Grupları</a></li>
+                                <li><a href="@Url.Action("InsertCustomerGroup","Bayi")">Müşteri Grubu Ekle</a></li>
+                                <li><a href="@Url.Action("ListSeller","Bayi")">Bayiler</a></li>
+                                <li><a href="@Url.Action("InsertSeller","Bayi")">Bayi Ekle</a></li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bxl-product-hunt"></i>
+                                <span>Ürün İşlemleri</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("Categories","Urun")">Kategoriler</a></li>
+                                <li><a href="@Url.Action("InsertCategory","Urun")">Kategori Ekle</a></li>
+                                <li><a href="@Url.Action("ListProduct","Urun")">Ürünler</a></li>
+                                <li><a href="@Url.Action("InsertProduct","Urun")">Ürün Ekle</a></li>
+                                <li><a href="@Url.Action("InsertProductWithExcel","Urun")">Ürünleri İçe Aktar</a></li>
+                                <li><a href="@Url.Action("ExportProduct","Urun")">Ürünleri Dışa Aktar</a></li>
+                                <li><a href="@Url.Action("ListUnitStock","Urun")">Stok Birimleri</a></li>
+                                <li><a href="@Url.Action("InsertUnitStock","Urun")">Stok Birimi Ekle</a></li>
+                                <li><a href="@Url.Action("SpecialProductList","Urun")">Özel Ürünler</a></li>
+                                <li><a href="@Url.Action("SpecialProductCreate","Urun")">Özel Ürün Oluştur</a></li>
+                                <li><a href="@Url.Action("ListBrand","Urun")">Markalar</a></li>
+                                <li><a href="@Url.Action("InsertBrand","Urun")">Marka Ekle</a></li>
+                                <li><a href="@Url.Action("ColorsForProduct","Urun")">Renkler</a></li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-collapse"></i>
+                                <span>Kampanya İşlemleri</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("SliderList","Urun")">Kampanyalar</a></li>
+                                <li><a href="@Url.Action("SliderInsert","Urun")">Kampanya Oluştur</a></li>
+                                <li><a href="@Url.Action("ProductListToSliderBanner","Urun")">Kampanya Ürün İşlemleri</a></li>
+
+                            </ul>
+                        </li>
+
+                        <li class="menu-title">Satış İşlemleri</li>
+
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-cart"></i>
+                                <span>Sipariş</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("OrderList","Siparis")">Siparişler</a></li>
+                                <li><a href="@Url.Action("Billings","Fatura")">Faturalar</a></li>
+
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="javascript: void(0);" class="waves-effect">
+                                <i class="bx bxs-ship"></i>
+                                <span>Kargo İşlemleri</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("ListCargo","Kargo")">Kargo Şirketleri</a></li>
+                                <li><a href="@Url.Action("InsertCargo","Kargo")">Kargo Şirketi Ekle</a></li>
+                                <li><a href="@Url.Action("CargoDelayList","Kargo")">Kargo Şirket Ayarları</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="menu-title">Kullanıcı Yönetimi</li>
+
+                        <li>
+                            <a href="@Url.Action("ProfileDetail","Account", new { ID = id })" class=" waves-effect">
+                                <i class="bx bxs-user-detail"></i>
+                                <span>Profil Yönetimi</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-user-circle"></i>
+                                <span>Kullanıcı Düzenlemeleri</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("ListAccount","Account")">Kullanıcılar</a></li>
+                                <li><a href="@Url.Action("InsertAccount","Account")">Kullanıcı Kaydı</a></li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-lock"></i>
+                                <span>Yetki Düzenlemeleri</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                <li><a href="@Url.Action("Roles","Account")">Yetkiler</a></li>
+                                <li>
+                                    <a href="@Url.Action("InsertRole","Account")">Yetki Ekle</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("ListLog","Log", new { ID = id })" class=" waves-effect">
+                                <i class="bx bxs-user-detail"></i>
+                                <span>Log Kayıtları</span>
+                            </a>
+                        </li>
+                    </ul>
+                    }
+                    else
+                    {
+                    }
+
+                </div>
+                <!-- Sidebar -->
+            </div>
+        </div>
+
+        <div class="main-content">
+
+            @RenderBody()
+
+            <footer class="footer">
+                <div class="container-fluid">
+
+                </div>
+            </footer>
+        </div>
+        <!-- end main content-->
+    </div>
+
+    <div class="rightbar-overlay"></div>
+
+    <script src="~/assets/libs/jquery/jquery.min.js"></script>
+    <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/libs/metismenu/metisMenu.min.js"></script>
+    <script src="~/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/assets/libs/node-waves/waves.min.js"></script>
+
+    <script src="~/assets/js/app.js"></script>
+
+    @RenderSection("Scripts", required: false)
+
+    <script src="~/assets/css/toastr/toastr.js"></script>
+
+    @if (TempData["mesaj"] != null)
+    {
+        <script>
+            @Html.Raw(TempData["mesaj"])
+        </script>
+    }
+
+</body>
+</html>

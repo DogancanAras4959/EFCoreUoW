@@ -1,0 +1,68 @@
+﻿@using UoW.DOMAIN.Models;
+
+@{
+    List<Haber> haberler = ViewBag.Haberler as List<Haber>;
+}
+
+@if (haberler.Count == 0)
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body" style="padding:40px;">
+                    <div class="text-center mb-5">
+                        <div class="small-title">Dünya'dan ve Türkiye'den</div>
+                        <h4>Finans Haberleri</h4>
+                    </div>
+                    <div class="text-center">
+                        <h5>Sistemimizde finansa dair haberlerimiz henüz bulunmamaktadır. Bizi takipte kalın. Haberlerimizi sizlerle paylaşacağız</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body" style="padding:40px;">
+                    <div class="text-center mb-5">
+                        <div class="small-title">Dünya'dan ve Türkiye'den</div>
+                        <h4>Finans Haberleri</h4>
+                    </div>
+                    <div class="row">
+                        @foreach (var item in haberler)
+                        {
+                            <div class="col-xl-4 col-sm-6">
+                                <div class="blog-box mb-4 mb-xl-0">
+                                    <div class="position-relative">
+                                        <img src="https://bayi.kiracelektrik.com.tr/Files/Bayi/@item.HaberOnizlemeFoto" alt="" class="rounded img-fluid mx-auto d-block">
+                                        <div class="badge badge-success blog-badge font-size-11">@item.kategori.HaberKategoriAdi</div>
+                                    </div>
+
+                                    <div class="mt-4 text-muted">
+                                        <p class="mb-2"><i class="bx bx-calendar mr-1"></i> @item.EklenmeTarih.ToShortDateString() @item.EklenmeTarih.ToShortTimeString()</p>
+                                        <h5 class="mb-3">@item.HaberAdi</h5>
+                                        @if (item.HaberSpot.Length > 30)
+                                        {
+                                            <p>@item.HaberSpot.Substring(0, 25)<span><a href="@Url.Action("NewsDetail", "Home", new { Id = item.ID })">...</a></span></p>
+                                        }
+                                        else
+                                        {
+                                            <p>@item.HaberSpot</p>
+                                        }
+                                        <div>
+                                            <a href="@Url.Action("NewsDetail","Home",new { Id = item.ID })">Haberi Oku</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

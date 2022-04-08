@@ -1,0 +1,166 @@
+﻿@model UoW.DOMAIN.Models.KargoFirmalar
+@using UoW.DOMAIN.Models
+@{
+    ViewData["Title"] = "EditCargo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<MusteriGrubu> gruplar = ViewBag.MusteriGrublari as List<MusteriGrubu>;
+    List<MusteriGrupKargo> kargoGruplar = ViewBag.MusteriGrublariKargolar as List<MusteriGrupKargo>;
+
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 col-xl-5">
+                <div class="card overflow-hidden">
+                    <div class="bg-soft-primary">
+                        <div class="row">
+                            <div class="col-7">
+                                <div class="text-primary p-4">
+                                    <h5 class="text-primary">Kargo Şirketi Düzenle!</h5>
+                                    <p>Kargo şirketlerinizi daha iyi kontrol edebilmek için düzenleyin!</p>
+                                </div>
+                            </div>
+                            <div class="col-5 align-self-end">
+                                <img src="/assets/images/profile-img.png" alt="" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body pt-3">
+                        <div class="p-2">
+                         
+                                @using (Html.BeginForm("EditCargo", "Kargo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                {
+                                    @Html.HiddenFor(x => x.ID)
+                                    <div class="form-group">
+                                        <img src="https://bayi.kiracelektrik.com.tr/Files/Bayi/@Model.KargoFoto" style="border:1px solid #000;" width="100%" />
+                                    </div>
+                                    <div class="form-group">
+                                        <div style="margin-top:10px;"></div>
+                                        <label>(Fotonuzu değiştirmek için 800x500px boyutunda bir foto yükleyin!)</label>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" accept="image/*" name="file" id="customFile">
+                                            <label class="custom-file-label" for="customFile">Kargo Fotonuzu Seçin</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="username">Kargo Adı</label>
+                                        @Html.TextBoxFor(x => x.KargoAdi, new { @class = "form-control", maxlength = "70", autocomplete = "off", })
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="username">Kargo Ücreti</label>
+                                        @Html.TextBoxFor(x => x.KargoUcret, new { @class = "form-control", maxlength = "10", autocomplete = "off", })
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="username">Kargo Açıklama</label>
+                                        @Html.TextAreaFor(x => x.KargoAciklama, new { @class = "form-control", maxlength = "345", @row = "5" })
+                                    </div>
+                                    @*<div class="form-horizontal">
+                                        <label for="username">Müşteri Grupları</label>
+                                        <div class="form-group row" id="grup">
+                                            @foreach (var item2 in kargoGruplar)
+                                            {
+                                                if (item2.Durum == true)
+                                                {
+                                                    <div class="col-sm-2">
+                                                        <div class="custom-control custom-checkbox mb-3">
+                                                            <input type="checkbox" class="custom-control-input" id="Checked_@item2.MusteriGrupID" checked>
+                                                            <label class="custom-control-label" for="Checked_@item2.MusteriGrupID">@item2.musteriGrubu.GrubAdi</label>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-sm-2">
+                                                        <div class="custom-control custom-checkbox mb-3">
+                                                            <input type="checkbox" class="custom-control-input" id="Checked_@item2.MusteriGrupID">
+                                                            <label class="custom-control-label" for="Checked_@item2.MusteriGrupID">@item2.musteriGrubu.GrubAdi</label>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+
+                                        </div>
+                                    </div>*@
+                                    <div class="mt-3">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <button id="kargo_edit" class="btn btn-primary btn-block waves-effect waves-light" onclick="kargoGuncelle()" type="submit">Güncelle</button>
+                                            </div>
+                                            @*<div class="col-sm-6">
+
+                                                <button id="btn_bagla" type="button" class="btn btn-success btn-block waves-effect waves-light" onclick="UpdateCargoGroup(@Model.ID)">Grupları Bağla</button>
+                                            </div>*@
+                                        </div>
+
+                                    </div>
+                                }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/assets/libs/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="~/assets/libs/jquery/jquery.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('label[class=text-danger]').delay(500).fadeOut();
+            }, 3000);
+        });
+
+        function kargoGuncelle() {
+            window.setTimeout(function () {
+                $("#kargo_edit").attr("disabled", true);
+            }, 500);
+            var btn = document.getElementById("kargo_edit");
+            btn.innerText = "Kargo Şirketi Güncelleniyor...";
+        }
+
+        function kargoGuncelle() {
+            window.setTimeout(function () {
+                $("#btn_bagla").attr("disabled", true);
+            }, 500);
+            var btn = document.getElementById("btn_bagla");
+            btn.innerText = "Gruplar ilişkilendiriliyor...";
+        }
+
+        function UpdateCargoGroup(id) {
+
+            var arrItem = [];
+            var grupIds = "";
+            var cargoId = id;
+
+            $("input[type=checkbox]").each(function (index, val) {
+                var checkId = $(val).attr("Id");
+                var arr = checkId.split('_');
+                var currentCheckboxId = arr[1];
+                var Ischecked = $("#" + checkId).is(":checked", true);
+
+                if (Ischecked) {
+                    arrItem.push(currentCheckboxId);
+                }
+            })
+
+            if (arrItem.length != 0) {
+                grupIds = arrItem.toString();
+                $.ajax({
+                    url: "/Kargo/ContextCargoByGroup",
+                    type: "POST",
+                    data: { grupList: grupIds, cargoId: cargoId },
+                    success: function (response)
+                    {
+                      window.location.assign('@Url.Action("ListCargo","Kargo")');
+                    }
+                });
+            }
+        }
+
+    </script>
+}

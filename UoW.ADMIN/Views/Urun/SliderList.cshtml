@@ -1,0 +1,121 @@
+﻿@using UoW.DOMAIN.Models
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common;
+
+@{
+    ViewData["Title"] = "Categories";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    PagedList<Slider> sliderList = ViewBag.SliderList as PagedList<Slider>;
+}
+
+@section Styles{
+    <style>
+        .page-link {
+            position: relative;
+            display: block;
+            padding: .5rem .75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #fff;
+            background-color: #34509d;
+            border: 1px solid #34509d;
+        }
+
+            .page-link a {
+                color: #fff;
+            }
+
+                .page-link a:hover {
+                    color: #34509d;
+                }
+    </style>
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">KAMPANYALAR</h4>
+                   
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            @foreach (var item in sliderList)
+            {
+                <div class="col-xl-4 col-sm-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">@item.SliderName</div>
+                            <div class="media">
+                                <div class="avatar-md mr-4">
+                                    <span class="avatar-title rounded-circle bg-light text-danger font-size-16 d-xl-flex">
+                                        <img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@item.Thumbnail" style="padding:3px; margin-top:51px; margin-left:43px;" alt="" width="125" height="125">
+                                    </span>
+                                </div>
+
+                                <div class="media-body overflow-hidden ml-2 pl-4">
+                                    <h5 class="text-truncate font-size-15" data-toggle="tooltip" data-placement="top" title="" data-original-title="Slider Düzenleyin"><a href="@Url.Action("SliderItemList","Urun", new { SliderID = item.ID })" class="text-dark">Slider İşlemleri</a></h5>
+                                    <h5 class="text-truncate font-size-15" data-toggle="tooltip" data-placement="top" title="" data-original-title="Banner Düzenleyin"><a href="@Url.Action("SliderItemBannerList","Urun", new { SliderID = item.ID })" class="text-dark">Banner İşlemleri</a></h5>
+                                    <p class="text-muted">Oluşturulma: @item.CreatedTime.ToShortDateString()</p>
+                                    @if (item.IsUse == false)
+                                    {
+                                        <a href="@Url.Action("SliderIsUsed","Urun", new { id = item.ID })" class="btn btn-block btn-success">Kullan</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("SliderIsUsed","Urun", new { id = item.ID })" class="btn btn-block btn-danger">Kullanma</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-4 py-3 border-top">
+                            <ul class="list-inline mb-0">
+                                <li class="list-inline-item mr-2">
+                                    @if (item.IsUse == true)
+                                    {<span class="badge badge-pill badge-soft-success font-size-12">Kullanılıyor</span>}
+                                    else
+                                    { <span class="badge badge-pill badge-soft-danger font-size-12">Kullanılmıyor</span>}
+                                </li>
+                                <li class="list-inline-item mr-1">
+                                    <a href="@Url.Action("SliderUpdate","Urun", new { id = item.ID })" class="btn btn-default btn-block">Düzenle</a>
+                                </li>
+                                <li class="list-inline-item mr-1">
+                                    <a href="@Url.Action("SliderRemove","Urun", new { id = item.ID })" class="btn btn-default btn-block text-danger">Kaldır</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                @Html.PagedListPager((IPagedList<Slider>)ViewBag.SliderList,
+               page => Url.Action("SliderList", new { page }),
+               PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+               {
+                   MaximumPageNumbersToDisplay = 10,
+                   DisplayPageCountAndCurrentLocation = true,
+                   UlElementClasses = new[] { "pagination pagination-rounded justify-content-center mt-4" },
+                   LiElementClasses = new[] { "page-link" },
+                   EllipsesFormat = "&#8230;",
+                   DisplayLinkToIndividualPages = true,
+                   ActiveLiElementClass = "page-item",
+                   DisplayLinkToFirstPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                   DisplayLinkToLastPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                   DisplayLinkToPreviousPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                   DisplayLinkToNextPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                   PageCountAndCurrentLocationFormat = "",
+                   ContainerDivClasses = new[] { "pagination-container" }
+               },
+                new AjaxOptions() { HttpMethod = "GET" }))
+            </div>
+        </div>
+    </div>
+</div>

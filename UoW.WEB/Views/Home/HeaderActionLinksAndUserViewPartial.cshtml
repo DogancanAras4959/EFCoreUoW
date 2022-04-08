@@ -1,0 +1,195 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc
+@using UoW.DOMAIN.Models
+
+@{
+    List<Begeni> begeni = ViewBag.Begeniler as List<Begeni>;
+
+    List<StokBildirim> bildirimler = ViewBag.StokBildirimler as List<StokBildirim>;
+
+    List<Sepet> sepets = ViewBag.Sepetler as List<Sepet>;
+}
+
+@{
+    string userB = "";
+    int idB = 0;
+    string ppB = "";
+    Bayi bayi = new Bayi();
+    bool acik = true;
+    int BayiID = Convert.ToInt32(Context.Session.GetInt32("IdB"));
+    bool durum = Convert.ToBoolean(Context.Session.GetString("durum"));
+    string mG = Context.Session.GetString("mG");
+
+    if (Context.Session.GetString("userB") != null)
+    {
+        acik = false;
+        userB = Context.Session.GetString("userB");
+        idB = Convert.ToInt32(Context.Session.GetInt32("IdB"));
+        ppB = Context.Session.GetString("ppB");
+
+        bayi.ID = idB;
+        bayi.BayiAdi = userB;
+        bayi.AktifMi = durum;
+    }
+}
+
+<div class="d-flex">
+    <!-- LOGO -->
+    <div class="navbar-brand-box">
+        <a href="index.html" class="logo logo-dark">
+            <span class="logo-sm">
+                <img src="~/assets/images/logo.svg" alt="" height="22">
+            </span>
+            <span class="logo-lg">
+                <img src="~/assets/images/logo-dark.png" alt="" height="17">
+            </span>
+        </a>
+
+        <a href="index.html" class="logo logo-light">
+            <span class="logo-sm">
+                <img src="~/assets/images/logo-light.svg" alt="" height="22">
+            </span>
+            <span class="logo-lg">
+                <img src="~/assets/images/logo-light.png" alt="" height="19">
+            </span>
+        </a>
+    </div>
+
+    <button type="button" class="btn btn-sm px-3 font-size-16 d-lg-none header-item waves-effect waves-light" data-toggle="collapse" data-target="#topnav-menu-content">
+        <i class="fa fa-fw fa-bars"></i>
+    </button>
+
+    <div class="dropdown dropdown-mega d-none d-lg-block ml-2">
+        <a href="@Url.Action("SpecialOfferBySeller", "Home")"> style="font-size:15px; margin:15px; border-radius:10px;" class="btn waves-effect btn-primary">
+            Özel Teklifler
+        </a>
+    </div>
+    <div class="dropdown d-inline-block">
+        <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Size Özel
+            <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="@Url.Action("BulletinList", "Page")"><i class="bx bx-album font-size-16 align-middle mr-1"></i> Bültenler</a>
+            <a class="dropdown-item" href="@Url.Action("CatalogList", "Page")"><i class="bx bx-book-content font-size-16 align-middle mr-1"></i> Kataloglar</a>
+            <a class="dropdown-item" href="@Url.Action("AllCampaignProducts", "Page")"><i class="bx bx-alarm-add font-size-16 align-middle mr-1"></i> Kampanya Ürünleri</a>
+            <a class="dropdown-item" href="@Url.Action("GeneralDocument", "Page")"><i class="bx bxs-file-doc font-size-16 align-middle mr-1"></i> Dökümanlar</a>
+        </div>
+    </div>
+    <div class="dropdown d-inline-block ml-2">
+        <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Sipariş Takibi
+            <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="@Url.Action("OrderListWeb", "Siparis")"><i class="bx bx-caret-down font-size-16 align-middle mr-1"></i> Biten Siparişler</a>
+            <a class="dropdown-item" href="@Url.Action("OrderListWebContinue", "Siparis")"><i class="bx bx-id-card font-size-16 align-middle mr-1"></i> Devam Eden Siparişler</a>
+            <a class="dropdown-item" href="@Url.Action("ListProductLikes", "BayiUrun")"><i class="bx bx-like font-size-16 align-middle mr-1"></i> Favorilerim</a>
+        </div>
+    </div>
+    <div class="dropdown d-inline-block ml-2">
+        <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Ürün Takibi
+            <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="@Url.Action("MyUnitStockInProduct", "Siparis")"><i class="bx bxl-product-hunt font-size-16 align-middle mr-1"></i> Ürünlerim</a>
+            <a class="dropdown-item" href="@Url.Action("PricesList", "Siparis")"><i class="bx bx-list-check font-size-16 align-middle mr-1"></i> Fiyat Listesi</a>
+            <a class="dropdown-item" href="@Url.Action("MyBilList", "Siparis")"><i class="bx bxl-invision font-size-16 align-middle mr-1"></i> Faturalarım</a>         
+        </div>
+    </div>
+  
+</div>
+
+<div class="d-flex">
+
+    <div class="dropdown d-none d-lg-inline-block ml-1">
+
+        <a href="@Url.Action("SellerCargoCheck","Home")" style="font-size: 15px; margin: 15px; border-radius: 10px; left: -91px;" class="btn waves-effect btn-info">
+            <i class="fa fa-ship"></i> Kargom Nerede?
+        </a>
+
+        <button type="button" class="btn header-item noti-icon" id="page-header-notifications-dropdown" style="position:absolute; top:5px; margin-left:-104px"
+                data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+            <i class="bx bx-bell bx-tada"></i>
+            <span class="badge badge-danger badge-pill" style="position: absolute; top: 13px; margin-left: -9px; font-size: 9px;">@bildirimler.Count</span>
+        </button>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0"
+             aria-labelledby="page-header-notifications-dropdown">
+            <div class="p-3">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h6 class="m-0"> Bildirimler </h6>
+                    </div>
+                </div>
+            </div>
+            <div data-simplebar style="max-height: 230px;">
+                @foreach (StokBildirim item in bildirimler)
+                {
+
+                    <a href="@Url.Action("DetailProduct", "BayiUrun", new { Id = item.UrunId })" class="text-reset notification-item">
+                        <div class="media">
+                            <div class="avatar-xs mr-3">
+                                <span class="avatar-title bg-primary rounded-circle font-size-16">
+                                    <img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@item.urun.Resim" width="50" />
+                                </span>
+                            </div>
+                            <div class="media-body">
+                                @if (item.urun.UrunAdi.Length > 20)
+                                {
+                                    <h6 class="mt-0 mb-1">@item.urun.UrunAdi.Substring(0, 30)</h6><span>...</span>
+                                }
+                                <div class="font-size-12 text-muted">
+                                    <p class="mb-1">Takipte kaldığınız ürün artık stoklarımızda mevcuttur. İyi alışverişler...</p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                }
+
+            </div>
+        </div>
+
+        <a href="@Url.Action("ListProductLikes", "BayiUrun", new { ID = bayi.ID })"
+           style="position:absolute; top:18px; margin-left:-75px"
+           class="btn header-item noti-icon"
+           aria-haspopup="true" aria-expanded="false">
+            <i class="bx bx-heart"></i>
+            <span style="position:absolute; top:0px; margin-left:-9px; font-size:9px;" class="badge badge-danger badge-pill">@begeni.Count</span>
+        </a>
+
+        <a href="@Url.Action("Basket", "Siparis")"
+           style="position:absolute; top:19px; margin-left:-46px"
+           class="btn header-item noti-icon"
+           aria-haspopup="true" aria-expanded="false">
+            <i class="bx bx-cart"></i>
+            <span style="position:absolute; top:0px; margin-left:-9px; font-size:9px;" class="badge badge-danger badge-pill">@sepets.Count</span>
+        </a>
+
+    </div>
+
+    @if (Context.Session.GetString("userB") != null && bayi.AktifMi != false)
+    {
+        <div class="dropdown d-inline-block">
+            <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img class="rounded-circle header-profile-user" src="https://bayi.kiracelektrik.com.tr/Files/Bayi/@ppB" alt="">
+                <span class="d-none d-xl-inline-block ml-1">@userB</span>
+                <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right">
+                <!-- item-->
+                <a class="dropdown-item" href="@Url.Action("SellerDetail", "Bayi", new { ID = bayi.ID })"><i class="bx bx-user font-size-16 align-middle mr-1"></i> Profilim</a>
+                <a class="dropdown-item" href="@Url.Action("MyWallet", "Bayi", new { ID = idB })"><i class="bx bx-wallet font-size-16 align-middle mr-1"></i> Cüzdanım</a>
+                <a class="dropdown-item" href="@Url.Action("SellerAdressList", "Bayi", new { ID = idB })"><i class="bx bx-lock-open font-size-16 align-middle mr-1"></i> Adreslerim</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item text-danger" href="@Url.Action("SellerLogOutWeb", "Bayi", bayi)"><i class="bx bx-power-off font-size-16 align-middle mr-1 text-danger"></i> Çıkış Yap</a>
+            </div>
+        </div>
+    }
+
+</div>

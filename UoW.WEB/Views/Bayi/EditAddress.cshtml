@@ -1,0 +1,126 @@
+﻿@model UoW.DOMAIN.Models.BayiAdresler
+@{
+    ViewData["Title"] = "InsertSellerAdress";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">BAYİ ADRESİ EKLE</h4>
+
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="@Url.Action("SellerDetail","Bayi", new { ID = ViewBag.ID })">Bayi Hesabı</a></li>
+                        <li class="breadcrumb-item active">Bayi Adesi Oluşturun</li>
+                    </ol>
+                </div>
+
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-12 col-lg-10 col-xl-9">
+                    <div class="card overflow-hidden">
+                        <div class="card-body pt-3">
+                            <div class="p-3">
+                                <h4 class="card-title">Bilgileriniz oluşturun!</h4>
+                                <p class="card-title-desc">
+                                    Adres bilgilerinizi oluşturmak istiyorsanız aşağıda istenilen bilgileri eksiksiz doldurun
+                                </p>
+                                    @Html.HiddenFor(x => x.ID)
+                                    <div class="form-group row">
+                                        <label for="example-text-input" class="col-md-2 col-form-label">Adres Adı</label>
+                                        <div class="col-md-10">
+                                            @Html.TextBoxFor(x => x.AdresAdi, new { @class = "form-control", maxlength = "70", id = "adresadi", autocomplete = "off", placeholder = "Adres adı giriniz..." })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="example-text-input" class="col-md-2 col-form-label">Açık Adres</label>
+                                        <div class="col-md-10">
+                                            @Html.TextAreaFor(x => x.Adres, new { @class = "form-control", id = "adres", autocomplete = "off", @row = 3, placeholder = "Tam adres giriniz..." })
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="username">İl Seçiniz</label>
+                                                @Html.DropDownList("SehirID", (SelectList)ViewBag.SehirID, "İl Seçiniz", new { @class = "form-control", id = "SehirID" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="username">İlçe Seçiniz</label>
+                                                <select id="ilceler" class="form-control"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <button id="btn_guncelle" class="btn btn-primary btn-block waves-effect waves-light" type="submit">Bayi Adresi Oluşturun</button>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/assets/libs/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+
+    <script>
+        getIlceler();
+
+        function getIlceler() {
+            $("#ilceler").html('');
+            var sehirID = $("#SehirID").val();
+            $.ajax({
+                url: "/Islem/GetIlcelerBySehirIDToSeller/" + sehirID,
+                type: "GET",
+                success: function (data) {
+                    data.forEach(x => {
+
+                        let option = '<option value="' + x.id + '">' + x.ilceAdi + '</option>';
+                        $("#ilceler").append(option);
+
+                    })
+                },
+                error: function (e, j, k) {
+                    let responseText = e.responseText.replace("UoW.CORE.Exceptions.BorcVarException:", "");
+                    toastr["warning"](responseText, "Uyarı !");
+                    console.log(e.responseJSON);
+                }
+            });
+        }
+
+        $("#SehirID").change(function () {
+            getIlceler();
+        })
+
+        $("#btn_guncelle").click(function () {
+
+            let formData = { adresadi: $("#adresadi").val(), adres: $("#adres").val(), sehirID: Number.parseInt($("#SehirID").val()), ilceID: Number.parseInt($("#ilceler").val()), ID: Number.parseInt($("#ID").val()) };
+            $.ajax({
+                type: "post",
+                url: "/bayi/EditAdress",
+                data: JSON.stringify(formData),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    toastr["success"]("Bilgileri düzenleme işlemi başarılı!", "Başarılı");
+                },
+                error: function (e, j, k) {
+                    let responseText = e.responseText.replace("UoW.CORE.Exceptions.BorcVarException:", "");
+                    toastr["error"](responseText, "Uyarı");
+                    console.log(e.responseJSON);
+                }
+
+            });
+        })
+    </script>
+
+
+}

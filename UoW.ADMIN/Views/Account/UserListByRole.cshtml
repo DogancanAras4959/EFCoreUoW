@@ -1,0 +1,38 @@
+﻿@model IEnumerable<UoW.DOMAIN.Models.Kullanici>
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<h4 class="card-title mb-4">Kulllanıcılar</h4>
+<p class="card-title-desc"></p>
+<div class="table table-centered table-nowrap mb-0"></div>
+<table class="table mb-0">
+    <thead class="thead-light">
+        <tr>
+            <th></th>
+            <th>#</th>
+            <th>Kullanıcı</th>
+            <th>Durum</th>
+            <th>Eklenme</th>
+            <th>Güncellenme</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {           
+            <tr>
+                <td><img src="https://admin.kiracelektrik.com.tr/Files/Admin/@item.ProfilResim" class="rounded-circle" width="40" /></td>
+                <td class="text-body font-weight-bold">#@item.ID</td>
+                <td>@item.KullaniciAdi</td>
+                <td>
+                    @if (item.Durum == true)
+                    {<span class="badge badge-pill badge-soft-success font-size-12">Aktif</span> }
+                    else
+                    { <span class="badge badge-pill badge-soft-danger font-size-12">Pasif</span>}
+                </td>
+                <td>@item.GuncellenmeTarih.ToShortDateString()</td>
+                <td>@item.EklenmeTarih.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>

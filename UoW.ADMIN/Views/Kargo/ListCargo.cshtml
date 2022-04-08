@@ -1,0 +1,54 @@
+﻿@model IEnumerable<UoW.DOMAIN.Models.KargoFirmalar>
+
+@{
+    ViewData["Title"] = "ListCargo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">KARGO ŞİRKETLERİ</h4>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card-deck-wrapper">
+                    <div class="card-deck">
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-sm-4">
+                                <div class="card mb-4">
+                                    <a href="@Url.Action("ListCargoCompaniesToSeller","Kargo", new { KargoID = item.ID })">
+                                        <img class="card-img-top img-fluid" src="https://bayi.kiracelektrik.com.tr/Files/Bayi/@item.KargoFoto" alt="Card image cap">
+                                    </a>
+                                    <div class="card-body">
+                                        <a href="@Url.Action("ListCargoCompaniesToSeller","Kargo", new { KargoID = item.ID })">
+                                            <h4 class="card-title mt-0">@item.KargoAdi</h4>
+                                        </a>
+                                        <p class="card-text">
+                                            @item.KargoAciklama
+                                        </p>
+                                        <p class="card-text">
+                                            <small class="text-muted">
+                                                Ücreti: @string.Format("{0:c}", item.KargoUcret)
+                                                @if (item.Durum == true)
+                                                {<a class="btn btn-sm btn-link" href="@Url.Action("CargoInsertInList", "Kargo", new { ID = item.ID })">Listeden Kaldır</a> }
+                                                else
+                                                { <a class="btn btn-sm btn-link" href="@Url.Action("CargoInsertInList","Kargo", new { ID = item.ID })">Listeye Ekle</a>}<a class="btn btn-sm btn-link" href="@Url.Action("EditCargo","Kargo", new { ID = item.ID })">Düzenle</a> <a class="btn btn-sm btn-link" href="@Url.Action("DeleteCargo","Kargo", new { ID = item.ID })">Sil</a>
+                                            </small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

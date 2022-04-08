@@ -1,0 +1,287 @@
+﻿@*@using UoW.DATA.Toastr*@
+@model UoW.DOMAIN.Models.Basvuru
+@using UoW.DATA.Toastr
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Yönetim Paneli | Giriş</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Kıraç Bayi Giriş Sayfası" name="description" />
+    <meta content="Kıraç Bayi" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/assets/images/favicon.ico">
+
+    <!-- Bootstrap Css -->
+    <!-- Icons Css -->
+    <link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="~/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+    <link href="~/assets/css/toastr/build/toastr.css" rel="stylesheet" />
+
+</head>
+
+<body>
+    <div class="home-btn d-none d-sm-block">
+        <a href="index.html" class="text-dark"><i class="fas fa-home h2"></i></a>
+    </div>
+    <div class="account-pages my-5 pt-sm-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12 col-lg-10 col-xl-9">
+                    <div class="card overflow-hidden">
+                        <div class="card-body pt-3">
+                            <div class="p-3">
+                                <h4 class="card-title">Bilgileriniz oluşturun!</h4>
+                                <p class="card-title-desc">
+                                    Ticari bilgilerinizi oluşturmak istiyorsanız aşağıda istenilen bilgileri eksiksiz doldurun
+                                </p>
+                                @using (Html.BeginForm("MakeToApplySystem", "Bayi", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                {
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <div style="margin-top:10px;">
+                                            </div>
+                                            <label><b> Gerekli Belgeler:</b> Ticaret Odası Belgesi, Ticari Sicil Belgesi, Yetki Belgesi</label>
+
+                                            <label> (Başvuru için gerekli belgeleri yükleyiniz!Belgelerinizi * pdf, *jpg, *png formatlarında yükleyiniz!)</label>
+
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" accept="image/*" name="files" id="files" multiple>
+                                                <label class="custom-file-label" for="customFile">Dosyalarınız Seçin</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <div style="margin-top:10px;">
+                                            </div>
+                                            <label> (500x500px kare boyutta logonuzu yükleyin)</label>
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" accept="image/*" name="image">
+                                                <label class="custom-file-label" for="customFile">Logonuzu Seçin</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="example-text-input" class="col-md-2 col-form-label">Firma Unvanı</label>
+                                        <div class="col-md-10">
+                                            @Html.TextBoxFor(x => x.BayiUnvani, new { @class = "form-control", maxlength = "45", id = "username", autocomplete = "off", placeholder = "Bayi Unvanı giriniz..." })
+                                            <label class="text-danger">@Html.ValidationMessageFor(x => x.BayiUnvani)</label>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="example-text-input" class="col-md-2 col-form-label">Vergi Numarası</label>
+                                        <div class="col-md-10">
+                                            @Html.TextBoxFor(x => x.VergiNo, new { @class = "form-control", id = "example-tel-input", type = "text", placeholder = "Vergi Numaranızı giriniz(Zorunlu)..." })
+                                            <label class="text-danger">@Html.ValidationMessageFor(x => x.VergiNo)</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="example-text-input" class="col-md-2 col-form-label">Bayi Adı</label>
+                                        <div class="col-md-10">
+                                            @Html.TextBoxFor(x => x.BayiAdi, new { @class = "form-control", maxlength = "25", id = "username", autocomplete = "off", placeholder = "Bayi adı giriniz..." })
+                                            <label class="text-danger">@Html.ValidationMessageFor(x => x.BayiAdi)</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="example-text-input" class="col-md-2 col-form-label">Telefon No</label>
+                                        <div class="col-md-10">
+                                            @Html.TextBoxFor(x => x.TelNo, new { @class = "form-control", id = "example-tel-input", type = "tel ", placeholder = "(5__ ___ __ __) Telefon Numarası giriniz..." })
+                                            <label class="text-danger">@Html.ValidationMessageFor(x => x.TelNo)</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="example-text-input" class="col-md-2 col-form-label">Email Adresi</label>
+                                        <div class="col-md-10">
+                                            @Html.TextBoxFor(x => x.EmailAdresi, new { @class = "form-control", type = "email", id = "example-email-input", placeholder = "(ornek@mailuzantisi.com) Email adresinizi giriniz..." })
+                                            <label class="text-danger">@Html.ValidationMessageFor(x => x.EmailAdresi)</label>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="example-text-input" class="col-md-2 col-form-label">Yetkili Adı</label>
+                                        <div class="col-md-10">
+                                            @Html.TextBoxFor(x => x.YetkiliAdi, new { @class = "form-control", maxlength = "400", id = "username", placeholder = "Yetkili adı giriniz..." })
+                                            <label class="text-danger">@Html.ValidationMessageFor(x => x.YetkiliAdi)</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-6">
+                                            @Html.CheckBoxFor(x => x.EpostaBilgiAlma)
+                                            Tarafınızdan gönderilecek bilgilendirme e-postalarını almak istiyorum
+                                        </div>
+                                        <div class="col-md-6">
+                                            @Html.CheckBoxFor(x => x.SMSAlma)
+                                            Tarafınızdan gönderilecek bilgilendirme sms'lerini almak istiyorum
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-6">
+                                            @Html.CheckBoxFor(x => x.BilgilendirmeAlma)
+                                            Tarafınızdan yapılacak bilgilendirme arama'larını almak istiyorum.
+                                        </div>
+                                        <div class="col-md-6">
+                                            @Html.CheckBoxFor(x => x.UyelikSozlesmesiOkuduMu)
+                                            <a href="#" data-toggle="modal" data-target="#modal_metin">Üyelik sözleşmesini Okudum, Kabul Ediyorum.</a>
+                                        </div>
+                                    </div>
+                                    @if (ViewBag.Ayar == true)
+                                    {
+                                        <div class="mt-3">
+
+                                            <button id="btn_basvuru" onclick="btn_basvuru_olustur()" class="btn btn-primary btn-block waves-effect waves-light" type="submit">Başvuru Yap</button>
+                                            <a href="@Url.Action("SellerLogin","Bayi")" class="btn btn-danger btn-block btn-sm">İptal</a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="mt-3">
+                                            <button id="btn_disabled" class="btn btn-primary btn-block waves-effect waves-light" type="submit">Başvuru Yap</button>
+                                            <a href="@Url.Action("SellerLogin","Bayi")" class="btn btn-danger btn-block btn-sm">İptal</a>
+                                        </div>
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="modal_metin" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title mt-0" id="myModalLabel">Üyelik Sözleşmesi</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Sitenin genel kullanım şartları, bununla ilgili genel kurallar ve yasal sorumluluklar</p>
+
+                            <p>
+                                Aşağıda belirtilen şartlar, kurallar ve yasal sorumlulukları içeren Kullanıcı Sözleşmesi’nin bayi.kiracelektrik.com.tr kullanılmadan önce okunması tavsiye edilir.<br>
+                                Belirtilen şartların sizin için uygun olmaması halinde lütfen bayi.kiracelektrik.com.tr sitesini kullanmayınız. Siteyi kullanarak ve kişisel bilgilerinizin yer alacağı formu doldurarak bu sayfalarda yazılı şartları kabul etmiş sayılmaktasınız<br>
+                                <br>
+                                <strong>1. Kullanım ve Güvenlik Kuralları</strong>
+                            </p>
+
+                            <p><em>bayi.kiracelektrik.com.tr </em>tüm üyelerine açıktır. Site üzerinde verilen hizmetler aksi belirtilmedikçe, ücretsizdir.</p>
+
+                            <p>Aşağıdaki yazılı durumlarda, site yönetimi üyenin site kullanımını engelleyebilir ve aşağıdaki girişimlere karışan kişi veya kişiler hakkında kanuni haklarını saklı tutar:</p>
+
+                            <p><strong>1.a.</strong> Yanlış, düzensiz, eksik ve yanıltıcı bilgiler, genel ahlak kurallarına uygun olmayan ifadeler içeren ve Türkiye Cumhuriyeti yasalarıyla ters düşen bilgilerin siteye kaydedilmesi</p>
+
+                            <p><strong>1.b.</strong> Site içeriğinin izinsiz olarak kısmen veya tümüyle kopyalanması</p>
+
+                            <p><strong>1.c.</strong> Kullanıcılara verilen ya da kendi belirledikleri kullanıcı adı, şifre gibi bilgilerin, kullanım haklarının, üçüncü kişi ya da kuruluşlarla paylaşılmasından (bu bilgilerin kullanıcı dışındaki kişiler tarafından kullanılmasından) kaynaklanacak her türlü zarardan doğrudan Kullanıcı sorumludur. Aynı şekilde Kullanıcı, internet ortamında bir başkasına ait IP adresi, elektronik posta adresi, kullanıcı adı gibi kişisel bilgileri kullanamayacağı gibi diğer kullanıcıların özel bilgilerine de izinsiz olarak ulaşamaz veya bunları kullanamaz. Kullanıcı bu şekilde bir kullanımdan dolayı doğabilecek her türlü hukuki ve cezai yükümlülüğü kabul etmiş sayılmaktadır.</p>
+
+                            <p><strong>1.d.</strong> Sitenin güvenliğini tehdit edecek, sitenin ve kullanılan yazılımların çalışmasını engelleyecek yazılımların kullanılması, faaliyetlerin yapılması, yapılmaya çalışılması ve bilgilerin alınması, silinmesi, değiştirilmesi</p>
+
+                            <p>
+                                <br>
+                                <strong>2. İçerik Kullanımı</strong>
+                            </p>
+
+                            <p>Üye, bir bildirim, uyarı, ihtara dayalı olarak ya da olmayarak Site'de ifşa ettiği düşünce, yazı, video, fotoğraf, slogan, resim, karikatür, çizgi, söz, şarkı, melodi, yorum gibi içeriklerin bayi.kiracelektrik.com.tr tarafından onaylanmayabileceğini, onaylanması halinde herhangi bir hukuki engelle karşılaşıldığı takdirde Site'ye yüklenen içeriklerin kullanımının engelleneceğini ve bayi.kiracelektrik.com.tr’nin her zaman herhangi bir gerekçe göstermeksizin, tek taraflı olarak verilen hizmeti ve İçerikleri sürekli veya geçici olarak durdurmak veya iptal etmek hakkı olduğunu kabul ve taahhüt eder.</p>
+
+                            <p>Üye ve Kullanıcı, bayi.kiracelektrik.com.tr’nin Site’de yer alan her türlü, bilginin, içeriğin ve görselin gerçekliğini, orijinalliğini, güvenliğini, doğruluğunu araştırma, bu içerik ve ilanların internet üzerinden teşhirinin hukuka uygun olup olmadığını tespit etme sorumluluğu bulunmadığını, söz konusu içerikler sebebiyle ortaya çıkabilecek zararlardan dolayı bayi.kiracelektrik.com.tr’nin, bayi.kiracelektrik.com.tr çalışanlarının ve yöneticilerinin sorumluluğu bulunmadığını kabul ve beyan eder. Üye ve Kullanıcı bayi.kiracelektrik.com.tr’nin kontrolünde olmayan başka internet sitelerine ve/veya portallara, dosyalara veya içeriklere link verilebileceğini, bu linkin yöneldiği internet sitesi veya içerdiği bilgilere yönelik herhangi bir türde bir beyan veya garanti niteliği taşımadığını, söz konusu linkler vasıtasıyla erişilen portallar, internet siteleri, dosyalar ve içerikler, hizmetler veya ürünler ve bunların içeriği, gizlilik politikaları hakkında bayi.kiracelektrik.com.tr’nin herhangi bir sorumluluğu olmadığını kabul ve beyan eder.</p>
+
+                            <p>
+                                <br>
+                                <strong>3. Sorumluluklar</strong>
+                            </p>
+
+                            <p><strong>3.a.</strong> bayi.kiracelektrik.com.tr'yi ziyaret eden kullanıcıların bilgileri (ziyaret süresi, zamanı, görüntülenen sayfalar) onlara daha iyi hizmet edebilmek amacı ile takip edilmektedir. Bu bilgiler, gizlilik şartlarına bağlı kalınarak, içeriği genişletmek ve iyileştirmek amacı ile reklam vb. konularda işbirliği yaptığımız firmalarla paylaşılmaktadır. Buradaki amaç, sitenin kullanıcılarına sunduğu deneyimi geliştirmek ve bayi.kiracelektrik.com.tr’yi geliştirmektir.</p>
+
+                            <p><strong>3.b.</strong> bayi.kiracelektrik.com.tr kullanıcısı, kayıt için gerekli olan bölümleri doldurup elektronik posta adresini onayladıktan sonra işbu sözleşmede belirtilen şartlara uymak koşulu ile, elektronik posta adresini ve şifresini girerek bayi.kiracelektrik.com.tr sitesini kullanmaya başlayabilir.</p>
+
+                            <p><strong>3.c.</strong> Kullanıcı, bayi.kiracelektrik.com.tr sitesi ve hizmetlerinden yararlanırken, Türk Ceza Kanunu, Türk Ticaret Kanunu, Fikir ve Sanat Eserleri Kanunu, Marka ve Patent Haklarının Korunması ile ilgili Kanun Hükmünde Kararnameler ve yasal düzenlemeler, Borçlar Yasası, diğer ilgili mevzuat hükümleri ile bayi.kiracelektrik.com.tr'nin hizmetlerine ilişkin olarak yayımlayacağı her türlü duyuru ve bildirimlere uymayı kabul eder. Bu bildirimlere ve yasalara aykırı kullanım sebebiyle doğabilecek hukuki, cezai ve mali her türlü sorumluluk Kullanıcıya aittir.</p>
+
+                            <p><strong>3.d.</strong> Kullanıcının işbu sözleşmede belirtilen yükümlülüklere veya bayi.kiracelektrik.com.tr sitesinde bildirilen genel kurallara uymamasının tespiti halinde, Kullanıcının bayi.kiracelektrik.com.tr'den yararlanması bayi.kiracelektrik.com.tr tarafından süreli veya süresiz olarak engellenebilir ve/veya hesabı kapatılabilir.</p>
+
+                            <p><strong>3.e.</strong> Kullanıcı, diğer kullanıcıların ve ziyaretçilerin bayi.kiracelektrik.com.tr'yi kullanmasını önleyici veya zorlaştırıcı hareketlerde bulunamaz, sunucuları ya da veritabanlarını otomatik programlar yükleyip zorlayamaz/kilitleyemez. Hile girişimlerinde bulunamaz. Bulunması halinde üyeliğinin sonlandırılacağını ve durumdan doğabilecek her türlü hukuki, cezai sorumluluğu kabul eder.</p>
+
+                            <p><strong>3.f. </strong>Kullanıcı , bayi.kiracelektrik.com.tr'den kopyalanmış veya yazıcı ile yazdırılmış hiçbir materyal üzerinden Telif Hakkı, Ticari Marka ve her türlü Fikir ve Sanat Eserleri Kanunu kapsamı notlarını silemez veya çıkartamaz.</p>
+
+                            <p><strong>3.g.</strong> Üyelik iptali ve hesap silme işlemi, kullanıcı tarafından bayi.kiracelektrik.com.tr üzerinden yapılabilir. Üyeliğini bitiren kullanıcının siteye giriş yetkisi iptal edilecektir. Üyeliğini iptal eden kişi bu işlemin geri dönüşü olmadığını kabul eder.</p>
+
+                            <p><strong>3.h.</strong> Site kullanıcılarının birbirleri ya da üçüncü şahıslarla olan ilişkileri kişilerin sorumluluğundadır.</p>
+
+                            <p><strong>3.i.</strong> Sitenin belirli yerlerinde o bölüme özel farklı kurallar ve yükümlülükler belirtilebilir. Bu bölümleri kullanan kişi ve kuruluşlar peşinen belirtilen bu kuralları kabul etmiş sayılır.</p>
+
+                            <p><strong>3.j.</strong> Kullanıcılarımızın kişisel bilgilerini ve gizliliklerini korumak için aldığımız önlemler ve bu konudaki genel politikamızı okumak için, lütfen “Gizlilik Politikası” bölümünü okuyunuz.</p>
+
+                            <p><strong>3.k </strong>Kullanıcı site üzerinden yapacağı alışverişlerde kullanacağı ödeme bilgilerinin (kredi kartı, GSM numarası bilgileri vb.) doğru olduğunu, bunlardan kaynaklanan hukuki ve cezai sorumlulukların kendisine ait olduğunu kabul ve taahhüt eder.</p>
+
+                            <p>
+                                <br>
+                                <strong>4. Tebligat Adresleri</strong>
+                            </p>
+
+                            <p><strong>4.a. </strong>bayi.kiracelektrik.com.tr sitesi kullanıcılarından peşinen posta adreslerini istememektedir. Ancak kullanıcının bayi.kiracelektrik.com.tr'ye bildirdiği elektronik posta adresi, bu sözleşme ile ilgili olarak yapılacak her türlü bildirim için yasal adresin isteneceği elektronik posta olarak kabul edilir.</p>
+
+                            <p><strong>4.b.</strong> Taraflar, mevcut elektronik postalarındaki değişiklikleri yazılı olarak diğer tarafa 3 (üç) gün içinde bildirmedikçe, eski elektronik postalara yapılacak isteklerin geçerli olacağını ve kendilerine yapılmış sayılacağını kabul ederler.</p>
+
+                            <p><strong>4.c.</strong> Yine bayi.kiracelektrik.com.tr'nin kullanıcının kayıtlı elektronik posta adresini kullanarak yapacağı her türlü bildirimin elektronik postanın bayi.kiracelektrik.com.tr tarafından yollanmasından 1 (bir) gün sonra kullanıcıya ulaştığı kabul edilecektir.</p>
+
+                            <p>Kullanıcı, bu katılım sözleşmesinde yer alan maddelerin tümünü okuduğunu, anladığını, kabul ettiğini ve kendisiyle ilgili olarak verdiği bilgilerin doğruluğunu onayladığını beyan, kabul ve taahhüt eder.</p>
+
+                        </div>
+                        <div class="modal-footer">
+                            <a href="javascript::void(0);" class="btn btn-secondary waves-effect" data-dismiss="modal">Kapat</a>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+        </div>
+    </div>
+
+    <script src="~/assets/libs/jquery/jquery.min.js"></script>
+    <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/libs/metismenu/metisMenu.min.js"></script>
+    <script src="~/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/assets/libs/node-waves/waves.min.js"></script>
+
+    <script src="~/assets/libs/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+
+    <script src="~/assets/js/pages/form-element.init.js"></script>
+    <script src="~/assets/js/app.js"></script>
+    <script src="~/assets/css/toastr/toastr.js"></script>
+
+    @if (TempData["mesaj"] != null)
+    {
+        <script>
+            @Html.Raw(TempData["mesaj"])
+        </script>
+    }
+
+    <script>
+
+        $(document).ready(function () {
+            $("#btn_disabled").attr("disabled", true);
+            setTimeout(function () {
+                $('label[class=text-danger]').delay(500).fadeOut();
+            }, 3000);
+        });
+
+        function btn_basvuru_olustur() {
+            var btn = document.getElementById("btn_basvuru");
+            btn.innerText = "Başvuru Yapılıyor...";
+        }
+    </script>
+</body>
+
+</html>
+

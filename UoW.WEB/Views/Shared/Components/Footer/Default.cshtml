@@ -1,0 +1,93 @@
+﻿@using UoW.DOMAIN.Models
+@using UoW.WEB.Components;
+
+@{
+    List<SiteInfo> siteInfos = ViewBag.Sozlesmeler as List<SiteInfo>;
+    List<_Doviz> dolarGetir = Context.Session.GetObject<List<_Doviz>>("dolar") as List<_Doviz>;
+    List<_Doviz> euroGetir = Context.Session.GetObject<List<_Doviz>>("euro") as List<_Doviz>;
+}
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-3 col-sm-6">
+            <div class="mb-4 mb-lg-0">
+                <h5 class="mb-3 footer-list-title">Kurumsal</h5>
+                <ul class="list-unstyled footer-list-menu">
+                    <li><a href="@Url.Action("AboutUs","Page")">Hakkımızda</a></li>
+                    <li><a href="@Url.Action("ContactUs","Page")">İletişim</a></li>
+                    <li><a href="@Url.Action("FAQs","Page")">FAQs</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="mb-4 mb-lg-0">
+                <h5 class="mb-3 footer-list-title">Müşteri Servisi</h5>
+                <ul class="list-unstyled footer-list-menu">
+                    @foreach (var item in siteInfos)
+                    {
+                        <li><a href="@Url.Action("SiteInfosDetail","Home", new { Id = item.ID })">@item.LinkAdi</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="mb-4 mb-lg-0">
+                <h5 class="mb-3 footer-list-title">Hızlı İşlemler</h5>
+                <ul class="list-unstyled footer-list-menu">
+                    <li><a href="@Url.Action("HomePageList","Home")">Ana Sayfa</a></li>
+                    <li><a href="@Url.Action("SpecialOfferBySeller","Home")">Özel Teklifler</a></li>
+                    <li><a href="@Url.Action("BulletinMemberCreateSellerWeb","Islem")">Bültene Kayıt Ol</a></li>
+                    <li><a href="@Url.Action("News","Page")">Haberler</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-6">
+            <div class="mb-4 mb-lg-0">
+                <h5 class="mb-3 footer-list-title">Döviz Kuru</h5>
+                <div class="blog-post">
+                    @foreach (var dolar in dolarGetir)
+                    {
+                        <a href="#" class="post">
+                            <h5 class="post-title">@dolar.Unit @dolar.Isim | @dolar.Kod</h5>
+                            <div class="badge badge-soft-success font-size-12 mb-3">Satış: @dolar.ForexSelling</div><div class="badge badge-soft-danger font-size-12 mb-3">Alış: @dolar.ForexBuying</div>
+                        </a> 
+                    }
+
+                    @foreach (var dolar in euroGetir)
+                    {
+                        <a href="#" class="post">
+                            <h5 class="post-title">@dolar.Unit @dolar.Isim | @dolar.Kod</h5>
+                            <div class="badge badge-soft-success font-size-12 mb-3">Satış: @dolar.ForexSelling</div><div class="badge badge-soft-danger font-size-12 mb-3">Alış: @dolar.ForexBuying</div>
+                        </a>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="footer-border my-4">
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="mb-4">
+                <img src="~/assets/images/bayimfooter.png" alt="" height="100">
+            </div>
+
+            <p class="mb-2"><i class="fa fa-check-circle"></i> Veksis Bilişim tarafından geliştirildi</p>
+            <p>Kıraç Elektrik Bayim © 2021 - Türkiye'nin en iyi elektrik - elektronik markası olarak bayilerimizle buluşuyoruz.</p>
+        </div>
+        <div class="col-lg-6">
+            <div class="mb-4" style="margin: 0 auto;">
+                <img src="~/Files/Bayi/security-icon-with-cargo-banner.png" height="100" />
+            </div>
+
+            <p class="mb-2"><span class="text-success"><i class="bx bx-lock"></i></span>  Sizleri güvenli alışverişle buluşturuyoruz</p>
+            <p>Kıraç Elektrik Bayim ile yapacağınız her alışverişte sizlerin memnuniyetini önemsiyor, iyi alışverişler diliyoruz.</p>
+        </div>
+    </div>
+    <!-- end row -->
+
+</div>

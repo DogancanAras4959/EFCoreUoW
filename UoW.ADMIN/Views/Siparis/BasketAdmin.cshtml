@@ -1,0 +1,184 @@
+﻿@model List<BasketsAdmin>
+@using UoW.ADMIN.Controllers
+
+@{
+    ViewData["Title"] = "Sepetler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Bildirim> mesajlar = ViewBag.Uyarilar as List<Bildirim>;
+    int Fark = Convert.ToInt32(TempData["Fark"]);
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">SEPET</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Sepet</a></li>
+                            <li class="breadcrumb-item active">Alışveriş</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        @if (mesajlar != null)
+        {
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-flex align-items-center justify-content-between">
+
+                        @foreach (var item in mesajlar)
+                        {
+                            <div class="alert alert-success">@item.MesajAdi</div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        }
+        <!-- end page title -->
+        <div class="row">
+            <div class="col-xl-8">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-centered mb-0 table-nowrap">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th></th>
+                                        <th>Ürün Adı</th>
+                                        <th>KDV</th>
+                                        <th>Fiyat</th>
+                                        <th>Adet</th>
+                                        <th colspan="2">İşlem</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (BasketsAdmin item in Model)
+                                    {
+                                        decimal toplam;
+                                        int KDV = Convert.ToInt32(item.urun.KDV);
+
+                                        if (item.urun.IndirimOrani > 0)
+                                        {
+                                            toplam = Convert.ToDecimal(item.urun.IndirimliFiyat);
+                                        }
+                                        else
+                                        {
+                                            toplam = Convert.ToDecimal(item.urun.KDVFiyat);
+                                        }
+
+                                        <tr>
+                                            <td>
+                                                <img src="@item.urun.Resim" alt="" title="product-img" class="avatar-md">
+                                            </td>
+                                            <td>
+                                                <h5 class="font-size-14 text-truncate"><a href="@Url.Action("DetailProduct","Urun", new { Id = item.urun.ID })">@item.urun.UrunAdi.Substring(0, 20)</a></h5>
+                                                @*<p class="mb-0">Kategori : <span class="font-weight-medium">@item.urun.marka.MarkaAdi</span></p>*@
+                                            </td>
+                                            <td>%@KDV</td>
+
+                                            @if (item.urun.IndirimOrani > 0)
+                                            {
+                                                <td>
+                                                    <span class="text-muted mr-2"><del>@item.urun.KDVFiyat</del></span> @toplam ₺
+                                                </td>
+                                            }
+
+                                            else
+                                            {
+                                                <td>
+                                                    @toplam ₺
+                                                </td>
+                                            }
+                                            <td>
+                                                @Fark
+                                            </td>
+                                            <td>
+                                                <div style="width: 120px;">
+                                                    <div class="input-group bootstrap-touchspin bootstrap-touchspin-injected">
+                                                        <input type="text" value="@item.adet" name="demo_vertical" class="form-control">
+                                                        <span class="input-group-btn-vertical">
+                                                            <a href="~/Siparis/SepetEkle/@item.urun.ID" class="btn btn-primary bootstrap-touchspin-up">+</a><a style="margin-left:3px;" href="~/Siparis/SepetEkle/@item.urun.ID?remove=true" class="btn btn-primary bootstrap-touchspin-down">-</a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                            </td>
+                                            <td>
+                                                <a href="@Url.Action("RemoveBasketAdmin","Siparis", new { ID = item.urun.ID })" class="action-icon text-danger"> <i class="mdi mdi-trash-can font-size-18"></i></a>
+                                            </td>
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-sm-6">
+                                <a href="@Url.Action("CreateOrderList","Islem")" class="btn btn-secondary">
+                                    <i class="mdi mdi-arrow-left mr-1"></i> Alışverişe devam edin
+                                </a>
+                            </div> <!-- end col -->
+                            <div class="col-sm-6">
+                                <div class="text-sm-right mt-2 mt-sm-0">
+                                    <a href="@Url.Action("ShoppingAdmin","Siparis")" class="btn btn-success">
+                                        <i class="mdi mdi-cart-arrow-right mr-1"></i> Satın Alın
+                                    </a>
+                                </div>
+                            </div> <!-- end col -->
+                        </div> <!-- end row-->
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title mb-3">Sipariş Tutarı</h4>
+
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <tbody>
+                                    <tr>
+                                        <td>Ara Toplam:</td>
+                                        <td>@string.Format("{0:c}", TempData["araToplam"])</td>
+                                    </tr>
+                                    <tr>
+                                        <td>İndirim: </td>
+                                        <td>-@string.Format("{0:c}", TempData["indirim"])</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kargo Bedeli:</td>
+                                        @if (Convert.ToDecimal(TempData["KargoUcret"]) == 0)
+                                        {
+                                            <td>Ücretsiz</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@string.Format("{0:c}", TempData["KargoUcret"])</td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <th>Toplam Tutar :</th>
+                                        <th>@string.Format("{0:c}", TempData["ToplamTutar"])</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- end table-responsive -->
+                    </div>
+                </div>
+                <!-- end card -->
+            </div>
+        </div>
+
+    </div>
+</div>

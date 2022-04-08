@@ -1,0 +1,95 @@
+﻿@model UoW.DOMAIN.Models.Yetkililer
+@{
+    ViewData["Title"] = "SellerCompetentEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">YETKİLİ BİLGİLERİ GÜNCELLE</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="@Url.Action("HomePageList","Home")">Yönetici Paneli</a></li>
+                            <li class="breadcrumb-item active">Yetkili Bilgileri Güncelle</li>
+                        </ol>
+                    </div>
+
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-lg-8 col-xl-8">
+                        <div class="card overflow-hidden">
+                            <div class="card-body pt-3">
+                                <div class="p-3">
+                                    <h4 class="card-title">Bilgileriniz güncelleyin!</h4>
+                                    <p class="card-title-desc">
+                                        Yetkili bilgilerinizi düzenlemek istiyorsanız aşağıda istenilen bilgileri eksiksiz doldurun
+                                    </p>
+                                        @using (Html.BeginForm("SellerCompetentEdit", "Islem", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                        {
+                                            @Html.HiddenFor(x => x.ID)
+                                            <div class="form-group row">
+                                                <div class="col-md-2">
+                                                    <img src="https://bayi.kiracelektrik.com.tr/Files/Bayi/@Model.YetkiliFoto" style="border:1px solid #000;" height="90" />
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <div style="margin-top:10px;"></div>
+                                                    <label>(Logonuzu değiştirmek için 500x500px boyutunda bir foto yükleyin!)</label>
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input" accept="image/*" name="file" id="customFile">
+                                                        <label class="custom-file-label" for="customFile">Yetkili Fotosu Seçin</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="example-text-input" class="col-md-2 col-form-label">Yetkili Adı Syoadı</label>
+                                                <div class="col-md-10">
+                                                    @Html.TextBoxFor(x => x.YetkiliAdi, new { @class = "form-control", id = "username", maxlength = "70", autocomplete = "off", placeholder = "Yetkili Adı Soyadı giriniz..." })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="example-text-input" class="col-md-2 col-form-label">Telefon Numarası</label>
+                                                <div class="col-md-10">
+                                                    @Html.TextBoxFor(x => x.TelNo, new { @class = "form-control", id = "username", maxlength = "30", autocomplete = "off", placeholder = "Telefon Numarası giriniz..." })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="example-text-input" class="col-md-2 col-form-label">Email Adresi</label>
+                                                <div class="col-md-10">
+                                                    @Html.TextBoxFor(x => x.Email, new { @class = "form-control", id = "username", maxlength = "50", autocomplete = "off", placeholder = "Email Adresi giriniz..." })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="example-text-input" class="col-md-2 col-form-label">Bayi Seçiniz</label>
+                                                <div class="col-md-10">
+                                                    @Html.DropDownList("BayiID", (SelectList)ViewBag.BayiID, "Bayi Seçiniz", new { @class = "form-control", id = "BayiID" })
+                                                </div>
+                                            </div>
+                                            <div class="mt-3">
+                                                <button id="btn_edit" onclick="edit_yetkili()" class="btn btn-primary btn-block waves-effect waves-light" type="submit">Yetkili Güncelle</button>
+                                            </div>
+                                        }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/assets/libs/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script>
+        function edit_yetkili() {
+            var btn = document.getElementById("btn_edit");
+            btn.innerText = "Yetkili Güncelleniyor...";
+        }
+    </script>
+}

@@ -1,0 +1,71 @@
+﻿@model UoW.DOMAIN.Models.StokBirimi
+@{
+    ViewData["Title"] = "InsertBrand";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">STOK BİRİMİ OLUŞTUR</h4>
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Yönetici Paneli</a></li>
+                            <li class="breadcrumb-item active">Stok Birimi Oluştur</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10 col-xl-9">
+                <div class="card overflow-hidden">
+                    <div class="card-body pt-3">
+                        <div class="p-3">
+                            <h4 class="card-title">Birim oluşturun!</h4>
+                            <p class="card-title-desc">
+                                Ürünlerinizi daha rahat yönetmek ve kullanmak için stok birimi ekleyin
+                            </p>
+                            <div class="p-2">
+                                @using (Html.BeginForm("InsertUnitStock", "Urun", FormMethod.Post))
+                                {
+                                    <div class="form-group">
+                                        <label for="username">Birim Adı</label>
+                                        @Html.TextBoxFor(x => x.BirimAdi, new { @class = "form-control", maxlength = "45", id = "username", autocomplete = "off", placeholder = "Birim adı giriniz..." })
+                                        <label class="text-danger">@Html.ValidationMessageFor(x => x.BirimAdi)</label>
+                                    </div>
+                                    <div class="mt-3">
+                                        <button id="btn_insert" onclick="insert_birim()" class="btn btn-primary btn-block waves-effect waves-light" type="submit">Birim Oluştur</button>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/assets/libs/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            setTimeout(function () {
+                $('label[class=text-danger]').delay(500).fadeOut();
+            }, 3000);
+
+        });
+        function insert_birim() {
+            window.setTimeout(function () {
+                $("#btn_insert").attr("disabled", true);
+            }, 500);
+            var btn = document.getElementById("btn_insert");
+            btn.innerText = "Birim Oluşturuluyor...";
+        }
+    </script>
+}

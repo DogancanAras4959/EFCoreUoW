@@ -1,0 +1,110 @@
+﻿@using UoW.DOMAIN.Models
+@model IEnumerable<UoW.DOMAIN.Models.Yetkililer>
+
+@{
+    ViewData["Title"] = "SellerCompetentList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">Yetkililer</h4>
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="@Url.Action("SellerDetailsAdmin","Bayi",new { ID = ViewBag.ID })">Bayi Hesabı</a></li>
+                            <li class="breadcrumb-item active">Yetkililer</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var item in Model)
+            {
+
+                <div class="col-xl-5 col-sm-6">
+                    <div class="card">
+                        <div class="row">
+                            <div class="col-xl-5">
+                                <div class="text-center p-4 border-right">
+                                    <div class="avatar-sm mx-auto mb-0 mt-4">
+                                        <span class="avatar-title rounded-circle bg-soft-primary text-primary font-size-16">
+                                            <img src="https://bayi.kiracelektrik.com.tr/Files/Bayi/@item.YetkiliFoto" width="100" />
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-7">
+                                <div class="p-4 text-center text-xl-left">
+                                    <div class="row">
+                                        <div class="col-sm-7">
+                                            <div>
+                                                <p class="text-muted mb-2 text-truncate">Yetkili</p>
+                                                <h5>@item.YetkiliAdi</h5>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <div>
+                                                <p class="text-muted mb-2 text-truncate">Durum</p>
+                                                @if (item.Durum == true)
+                                                {<h5 style="color:forestgreen">Atkif</h5> }
+                                                else
+                                                { <h5 style="color:red">Pasif</h5>}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <a href="@Url.Action("SellerCompetentEdit","Islem", new { ID= item.ID })" class="btn btn-sm btn-rounded btn-primary">Düzenle</a>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <a href="#" data-placement="top" title="" data-original-title="Delete" data-toggle="modal" data-target="#myModal_@item.ID" class="btn btn-sm btn-rounded btn-danger">Kaldır</a>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                @if (item.Durum == false)
+                                                {
+                                                    <a href="@Url.Action("YetkiliDurumDuzenle","Islem", new { ID= item.ID })" class="btn btn-sm btn-rounded btn-success">Aktif</a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="@Url.Action("YetkiliDurumDuzenle","Islem", new { ID= item.ID })" class="btn btn-sm btn-rounded btn-danger">Pasif</a>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="myModal_@item.ID" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title mt-0" id="myModalLabel">#@item.ID - @item.YetkiliAdi</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Bu yetkiliyi sistemden kaldırmak istediğinize emin misiniz? Yetkili kaldırmak istediğiniz durumda yetkiliye ait Bayi Ticari bilgilerini de kaldırmış olursunuz!
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="javascript::void(0);" class="btn btn-secondary waves-effect" data-dismiss="modal">İptal</a>
+                                    <a href="@Url.Action("SellerCompetentRemove","Islem", new { ID = item.ID })" class="btn btn-primary waves-effect waves-light">Yetkiliyi Sil</a>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

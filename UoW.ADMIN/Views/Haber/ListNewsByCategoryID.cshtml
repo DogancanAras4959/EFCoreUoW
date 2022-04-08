@@ -1,0 +1,180 @@
+﻿@using UoW.DOMAIN.Models;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common;
+
+@section Styles{
+    <style>
+        .page-link {
+            position: relative;
+            display: block;
+            padding: .5rem .75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #fff;
+            background-color: #34509d;
+            border: 1px solid #34509d;
+        }
+
+            .page-link a {
+                color: #fff;
+            }
+
+                .page-link a:hover {
+                    color: #34509d;
+                }
+    </style>
+}
+
+@{
+    ViewData["Title"] = "ListNews";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18">HABERLER</h4>
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li style="padding-right:20px;">
+                                <form method="get" action="~/Haber/ListNewsByCategoryID">
+                                    @Html.DropDownList("KategoriID", (SelectList)ViewBag.KategoriID, ("Kategoriye göre arayın"), new { @class = "form-control select2", onchange = "this.form.submit();", id = "dropdown1" })
+                                </form>
+                            </li>
+
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-bordered dt-responsive nowrap"
+                               style="border-collapse: collapse;
+                       border-spacing: 0; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>#</th>
+                                    <th>Haber Adı</th>
+                                    <th>Eklenme Tarih</th>
+                                    <th>Güncellenme Tarih</th>
+                                    <th>Kategori</th>
+                                    <th>Kullanıcı</th>
+                                    <th>Durum</th>
+                                    <th>Detay İşl.</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var item in ViewBag.Haberler)
+                                {
+
+                                    <tr>
+                                        <td><img src="https://bayi.kiracelektrik.com.tr/Files/Haber/@item.HaberOnizlemeFoto" class="rounded-circle" width="40" /></td>
+                                        <td class="text-body font-weight-bold">#@item.ID</td>
+                                        <td><a href="@Url.Action("DetailsNews","Haber", new { ID = item.ID })">@item.HaberAdi</a></td>
+                                        <td>@item.EklenmeTarih.ToShortDateString() @item.EklenmeTarih.ToShortTimeString() </td>
+                                        <td>@item.GuncellenmeTarih.ToShortDateString() @item.GuncellenmeTarih.ToShortTimeString() </td>
+                                        <td>@item.kategori.HaberKategoriAdi</td>
+                                        <td>@item.kullanici.KullaniciAdi</td>
+                                        <td>
+                                            @if (item.AktifMi == true)
+                                            {<span class="badge badge-pill badge-soft-success font-size-12">Aktif</span> }
+                                            else
+                                            { <span class="badge badge-pill badge-soft-danger font-size-12">Pasif</span>}
+                                        </td>
+                                        <td>
+                                            @if (item.AktifMi == true)
+                                            {
+                                                <a href="@Url.Action("EditStatusNews","Haber", new { ID = item.ID })" class="btn btn-warning btn-sm btn-rounded waves-effect waves-light">Pasifleştir</a>
+                                            }
+                                            else
+                                            {
+                                                <a href="@Url.Action("EditStatusNews","Haber", new { ID = item.ID })" class="btn btn-success btn-sm btn-rounded waves-effect waves-light">Aktifleştir</a>
+                                            }
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("UpdateNews","Haber", new { ID = item.ID })" class="mr-3 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Düzenle"><i class="mdi mdi-pencil font-size-18"></i></a>
+                                            <a href="#" data-toggle="modal" data-target="#model_@item.ID" class="text-danger" data-placement="top" title="" data-original-title="Sil"><i class="mdi mdi-close font-size-18"></i></a>
+                                            <div id="model_@item.ID" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title mt-0" id="myModalLabel">#@item.ID - @item.HaberAdi</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">×</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Bu alt kategoriyi sistemden kaldırmak istediğinize emin misiniz?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <a href="javascript::void(0);" class="btn btn-secondary waves-effect" data-dismiss="modal">İptal</a>
+                                                            <a href="@Url.Action("RemoveNews","Haber", new { ID = item.ID })" class="btn btn-primary waves-effect waves-light">Ürünü Sil</a>
+                                                        </div>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal-dialog -->
+                                            </div>
+
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                @Html.PagedListPager((IPagedList<Haber>)ViewBag.Haberler,
+               page => Url.Action("ListNewsByCategoryID", new { page }),
+               PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+               {
+                        MaximumPageNumbersToDisplay = 10,
+                   DisplayPageCountAndCurrentLocation = true,
+                   UlElementClasses = new[] { "pagination pagination-rounded justify-content-center mt-4" },
+                   LiElementClasses = new[] { "page-link" },
+                   EllipsesFormat = "&#8230;",
+                   DisplayLinkToIndividualPages = true,
+                   ActiveLiElementClass = "page-item",
+                   DisplayLinkToFirstPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                   DisplayLinkToLastPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                   DisplayLinkToPreviousPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                   DisplayLinkToNextPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                   PageCountAndCurrentLocationFormat = "",
+                   ContainerDivClasses = new[] { "pagination-container" }
+                    },
+                new AjaxOptions() { HttpMethod = "GET" }))
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+    {
+    <script src="~/assets/libs/select2/js/select2.min.js"></script>
+    <script src="~/assets/js/pages/ecommerce-select2.init.js"></script>
+    <script src="~/assets/libs/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <script src="~/assets/js/pages/form-element.init.js"></script>
+
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+            $('#dropdown1').select2();
+        });
+
+    </script>
+}

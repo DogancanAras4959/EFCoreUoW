@@ -1,0 +1,169 @@
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common;
+@using UoW.DOMAIN.Models;
+@{
+    ViewData["Title"] = "OrderListWeb";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    IPagedList<Siparis> siparisWeb = ViewBag.OrderListWeb as IPagedList<Siparis>;
+}
+
+<div class="container-fluid">
+
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">Siparişler</h4>
+
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Bayi Siparişleri</a></li>
+                        <li class="breadcrumb-item active">Siparişler</li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+    @if (siparisWeb.Count == 0)
+    {
+        <div class="card">
+            <div class="card-body">
+                <h5 style="text-align:center;">Sistemimizde tamamlanan sipariş bulunmuyor. Siparişler tamamlandıktan sonra bu sayfada listelenecektir</h5>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-sm-4">
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="text-sm-right">
+                                    <a href="@Url.Action("HomePageList","Home")" class="btn btn-success btn-rounded waves-effect waves-light mb-2 mr-2"><i class="mdi mdi-plus mr-1"></i> Sipariş Oluştur</a>
+                                </div>
+                            </div><!-- end col-->
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-centered table-nowrap">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Sipariş Numarası</th>
+                                        <th>Tarih</th>
+                                        <th>Toplam Tutar</th>
+                                        <th>Durum</th>
+                                        <th>Ödeme Şekli</th>
+                                        <th>Detay</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (UoW.DOMAIN.Models.Siparis item in ViewBag.OrderListWeb)
+                                    {
+                                        <tr>
+
+                                            <td><a href="javascript: void(0);" class="text-body font-weight-bold">@item.ID</a></td>
+                                            <td>@item.SiparisNo</td>
+                                            <td>
+                                                @item.SiparisTarih.ToShortDateString() @item.SiparisTarih.ToShortTimeString()
+                                            </td>
+                                            <td>
+                                                @string.Format("{0:c}", item.ToplamFiyat)
+                                            </td>
+                                            <td>
+                                                @if (item.Durum == false)
+                                                {
+                                                    <span class="badge badge-pill badge-soft-success font-size-12">Ödendi</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-pill badge-soft-danger font-size-12">Ödenmedi</span>
+                                                }
+
+                                            </td>
+                                            <td>
+                                                <i class="fab fa-cc-mastercard mr-1"></i> @item.odemeSekliSiparis.Odeme
+                                            </td>
+                                            <td>
+                                                <!-- Button trigger modal -->
+                                                <a href="javascript::void(0)" onclick="ViewOrder(@item.ID)" class="btn btn-primary btn-sm btn-rounded" data-toggle="modal" data-target=".exampleModal">
+                                                    Detayları Gör
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <div id="modelView" class="modal fade exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title mt-0" id="myModalLabel">#@item.SiparisNo</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">×</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body" id="modelViewDep">
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <a href="javascript::void(0);" class="btn btn-secondary waves-effect" data-dismiss="modal">Kapat</a>
+                                                            </div>
+                                                        </div><!-- /.modal-content -->
+                                                    </div><!-- /.modal-dialog -->
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                @Html.PagedListPager((IPagedList<UoW.DOMAIN.Models.Siparis>)ViewBag.OrderListWeb,
+             page => Url.Action("OrderListWeb", new { page }),
+             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+             {
+                      MaximumPageNumbersToDisplay = 10,
+                 DisplayPageCountAndCurrentLocation = true,
+                 UlElementClasses = new[] { "pagination pagination-rounded justify-content-center mt-4" },
+                 LiElementClasses = new[] { "page-link" },
+                 EllipsesFormat = "&#8230;",
+                 DisplayLinkToIndividualPages = true,
+                 ActiveLiElementClass = "page-item",
+                 DisplayLinkToFirstPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                 DisplayLinkToLastPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                 DisplayLinkToPreviousPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                 DisplayLinkToNextPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                 PageCountAndCurrentLocationFormat = "",
+                 ContainerDivClasses = new[] { "pagination-container" }
+                  },
+              new AjaxOptions() { HttpMethod = "GET" }))
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- end row -->
+</div> <!-- container-fluid -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script>
+    var ViewOrder = function (ID) {
+
+        var url = "/Siparis/OrderDetailList?ID=" + ID;
+
+        $("#modelViewDep").load(url, function () { //modal-body bölümündeki id buraya yazılacak
+            $("#myModalUser").modal("show");
+        })
+
+    }
+</script>

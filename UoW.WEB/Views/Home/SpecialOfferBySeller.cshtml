@@ -1,0 +1,127 @@
+﻿@model IPagedList<UoW.DOMAIN.Models.OzelTeklif>
+@using UoW.DOMAIN.Models;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common;
+
+@section Styles{
+    <style>
+        .page-link {
+            position: relative;
+            display: block;
+            padding: .5rem .75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #fff;
+            background-color: #34509d;
+            border: 1px solid #34509d;
+        }
+
+            .page-link a {
+                color: #fff;
+            }
+
+                .page-link a:hover {
+                    color: #34509d;
+                }
+    </style>
+}
+
+@{
+    ViewData["Title"] = "ListProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">ÖZEL TEKLİFLER</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-xl-12 col-sm-12">
+                    @if (Model.Count > 0)
+                    {
+                        <div class="card">
+                            <div class="card-body">
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Bayi Adı</th>
+                                            <th>Teklif Tarihi</th>
+                                            <th>Sipariş No</th>
+                                            <th>Sipariş Fiyatı</th>
+                                            <th>İşlem</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>@item.ID</td>
+                                                <td>@item.bayiOzelTeklif.BayiAdi</td>
+
+                                                <td>@item.TeklifTarih.ToShortDateString() @item.TeklifTarih.ToShortTimeString()</td>
+                                                <td>@item.siparisOzelTeklif.SiparisNo</td>
+                                                <td>@item.siparisOzelTeklif.ToplamFiyat</td>
+                                                <td>
+                                                    <a id="btn_hazirla" onclick="sepete_hazirla()" href="@Url.Action("SpecialOfferBySellerReadyToBasket","Home", new { Id = item.ID })" class="btn btn-sm btn-success">Sepete Hazırla</a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 style="text-align:center;">Özel Teklifleriniz için sistem yöneticisinden teklif bekleyiniz. Teklifiniz sunulduktan sonra bu bölümde yer alacaktır. İyi alışverişler dileriz...</h5>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+            <!-- end row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    @Html.PagedListPager((IPagedList<OzelTeklif>)Model,
+                   page => Url.Action("SpecialOfferBySeller", new { page }),
+                   PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+                   {
+                            MaximumPageNumbersToDisplay = 10,
+                       DisplayPageCountAndCurrentLocation = true,
+                       UlElementClasses = new[] { "pagination pagination-rounded justify-content-center mt-4" },
+                       LiElementClasses = new[] { "page-link" },
+                       EllipsesFormat = "&#8230;",
+                       DisplayLinkToIndividualPages = true,
+                       ActiveLiElementClass = "page-item",
+                       DisplayLinkToFirstPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                       DisplayLinkToLastPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                       DisplayLinkToPreviousPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                       DisplayLinkToNextPage = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+                       PageCountAndCurrentLocationFormat = "",
+                       ContainerDivClasses = new[] { "pagination-container" }
+                        },
+                    new AjaxOptions() { HttpMethod = "GET" }))
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function sepete_hazirla() {
+        var btn = document.getElementById("btn_hazirla");
+        btn.innerText = "Sepete Hazırlanıyor...";
+    }
+</script>

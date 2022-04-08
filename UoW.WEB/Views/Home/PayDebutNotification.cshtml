@@ -1,0 +1,45 @@
+﻿@model UoW.DOMAIN.Models.Bayi
+@{
+    ViewData["Title"] = "PayDebutNotification";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    decimal miktar = Convert.ToDecimal(ViewBag.Count);
+}
+
+    <div class="container-fluid">
+      
+        @if (TempData["mesaj"] != null)
+        {
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                <h4 class="text-center">@TempData["mesaj"]</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="row" style="width:65%; margin:0 auto;">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="text-center">@Model.UyeNo - @Model.BayiAdi firmaya Ödeme bildirimi</p>
+                        <h4 class="text-center" style="color:#fff; background-color:#ff0000; padding:10px; font-weight:800">KIRAÇ BAYİ YÖNETİMİ - BORÇ BİLGİLENDİRME SİSTEMİ</h4>
+                        <p class="text-center mt-1"><span style="font-weight:800" 0>@Model.BayiAdi</span> adlı bayinizin kullanmış olduğu kredi toplam borcu <span style="color:#red; font-weight:600; font-size:15px;">@string.Format("{0:C}", ViewBag.Count)</span> kadardır. Kredi borcunuzun tamamını ödedikten sonra tekrardan hesabınızda sipariş işlemlerinizi gerçekleştirebilirsiniz. İyi alışverişler, nice mutlu günlere...</p>
+                        <div class="form-group" style="text-align:center">
+                            <b>Not: Ödemenizin tamamı gerçekleştikten sonra sizi tekrar bayi kullanıcı giriş sayfasına yönlendiriyoruz!</b>
+                        </div>
+                     
+                        <div class="form-group text-center">
+                            <a href="@Url.Action("PayToDebtSeller","Home", new { ID = Model.ID, miktar = miktar })" class="btn btn-success btn-lg">Ödeme Gerçekleştir</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+

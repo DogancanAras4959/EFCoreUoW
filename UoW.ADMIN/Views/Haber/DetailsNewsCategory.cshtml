@@ -68,7 +68,7 @@
                                 @foreach (var item in ViewBag.Haberler)
                                 {
                                     <tr>
-                                        <td><img src="https://bayi.kiracelektrik.com.tr/Files/Bayi/@item.HaberFoto" class="rounded-circle" width="40" /></td>
+                                        <td><img src="https://admin.kiracelektrik.com.tr/files/uploads/dokuman/@item.HaberFoto" class="rounded-circle" width="40" /></td>
                                         <td class="text-body font-weight-bold">#@item.ID</td>
                                         <td><a href="@Url.Action("DetailsNews","Haber", new { ID = item.ID })">@item.HaberAdi</a></td>
                                         <th>@item.EklenmeTarih.ToShortDateString() @item.EklenmeTarih.ToShortTimeString() </th>
@@ -152,10 +152,10 @@
 
 @section scripts
     {
-    <script src="~/assets/libs/select2/js/select2.min.js"></script>
-    <script src="~/assets/js/pages/ecommerce-select2.init.js"></script>
-    <script src="~/assets/libs/bs-custom-file-input/bs-custom-file-input.min.js"></script>
-    <script src="~/assets/js/pages/form-element.init.js"></script>
+    <script src="https://admin.kiracelektrik.com.tr/files/assets/libs/select2/js/select2.min.js"></script>
+    <script src="https://admin.kiracelektrik.com.tr/files/assets/js/pages/ecommerce-select2.init.js"></script>
+    <script src="https://admin.kiracelektrik.com.tr/files/assets/libs/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <script src="https://admin.kiracelektrik.com.tr/files/assets/js/pages/form-element.init.js"></script>
 
     <script type="text/javascript">
 

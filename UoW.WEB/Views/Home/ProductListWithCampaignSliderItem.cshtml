@@ -81,7 +81,7 @@
                                             </div>
                                         }
                                         <a href="@Url.Action("DetailProduct","BayiUrun", new { Id = item.urunSliderUrun.ID })">
-                                            <img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@item.urunSliderUrun.Resim" alt="" style="max-width:150px;" class="mx-auto d-block">
+                                            <img src="https://bayi.kiracelektrik.com.tr/files/assets/@item.urunSliderUrun.Resim" alt="" style="max-width:150px;" class="mx-auto d-block">
                                         </a>
 
                                         <a href="@Url.Action("DetailProduct","BayiUrun", new { Id = item.urunSliderUrun.ID })" class="text-dark" data-toggle="tooltip" title="" data-placement="top" data-orginal-title="@item.urunSliderUrun.UrunAdi">
@@ -173,9 +173,9 @@
 
 @section scripts{
 
-    <script src="~/assets/libs/jquery/jquery.min.js"></script>
-    <script src="~/assets/libs/bs-custom-file-input/bs-custom-file-input.min.js"></script>
-    <script src="~/assets/js/pages/form-element.init.js"></script>
+    <script src="https://bayi.kiracelektrik.com.tr/files/assets/libs/jquery/jquery.min.js"></script>
+    <script src="https://bayi.kiracelektrik.com.tr/files/assets/libs/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <script src="https://bayi.kiracelektrik.com.tr/files/assets/js/pages/form-element.init.js"></script>
     <script>
 
     var InsertSepet = function (ID) {

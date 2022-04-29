@@ -2140,7 +2140,7 @@ namespace UoW.ADMIN.Controllers
                     };
 
                     if (image != null)
-                        newSlider.Thumbnail = SaveImageProcess.ImageInsert(image, "Urun");
+                        newSlider.Thumbnail = SaveImageProcess.ImageInsert(image, "Kampanya");
 
                     await _unitOfWorkSlider.Repository.Add(newSlider);
                     _unitOfWorkSlider.Repository.Save();
@@ -2295,7 +2295,7 @@ namespace UoW.ADMIN.Controllers
                 Slider getSlider = await _unitOfWorkSlider.Repository.GetById(slider.ID);
 
                 if (image != null)
-                    getSlider.Thumbnail = SaveImageProcess.ImageInsert(image, "Urun");
+                    getSlider.Thumbnail = SaveImageProcess.ImageInsert(image, "Kampanya");
 
                 getSlider.SliderName = slider.SliderName;
                 getSlider.SliderDesc = slider.SliderDesc;
@@ -2497,7 +2497,7 @@ namespace UoW.ADMIN.Controllers
                 if (getSliderItem != null)
                 {
                     if (image != null)
-                        getSliderItem.ItemImage = SaveImageProcess.ImageInsert(image, "Urun");
+                        getSliderItem.ItemImage = SaveImageProcess.ImageInsert(image, "Kampanya");
 
                     getSliderItem.ItemDesc = item.ItemDesc;
                     getSliderItem.ItemName = item.ItemName;
@@ -2683,7 +2683,7 @@ namespace UoW.ADMIN.Controllers
 
                         if (image != null)
                         {
-                            newBannerItem.ItemImage = SaveImageProcess.ImageInsert(image, "Urun");
+                            newBannerItem.ItemImage = SaveImageProcess.ImageInsert(image, "Kampanya");
 
                             await _unitOfWorkSliderBannerItem.Repository.Add(newBannerItem);
                             _unitOfWorkSliderBannerItem.Repository.Save();
@@ -2754,7 +2754,7 @@ namespace UoW.ADMIN.Controllers
                     {
 
                         if (image != null)
-                            getBannerItem.ItemImage = SaveImageProcess.ImageInsert(image, "Urun");
+                            getBannerItem.ItemImage = SaveImageProcess.ImageInsert(image, "Kampanya");
 
                         getBannerItem.ItemDesc = sliderBannerItem.ItemDesc;
                         getBannerItem.ItemName = sliderBannerItem.ItemName;

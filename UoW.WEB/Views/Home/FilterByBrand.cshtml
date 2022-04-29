@@ -21,9 +21,9 @@
         font-size: 18px;
     }
 </style>
-<link href="~/slick/slick.css" rel="stylesheet" />
-<link href="~/slick/slick-theme.css" rel="stylesheet" />
-<link href="~/assets/libs/ion-rangeslider/css/ion.rangeSlider.min.css" rel="stylesheet" type="text/css" />
+<link href="https://admin.kiracelektrik.com.tr/files/assets/slick/slick.css" rel="stylesheet" />
+<link href="https://admin.kiracelektrik.com.tr/files/assets/slick/slick-theme.css" rel="stylesheet" />
+<link href="https://admin.kiracelektrik.com.tr/files/assets/assets/libs/ion-rangeslider/css/ion.rangeSlider.min.css" rel="stylesheet" type="text/css" />
 
 <div class="container-fluid">
     <div class="row" style="margin:auto 0;">
@@ -118,7 +118,7 @@
                             <div class="card-body">
                                 <div class="product-img position-relative">
                                     <a href="@Url.Action("DetailProduct","BayiUrun", new { Id = item.ID })">
-                                        <img src="https://bayi.kiracelektrik.com.tr/Files/Urun/@item.Resim" alt="" style="max-width:150px;" class="mx-auto d-block">
+                                        <img src="https://admin.kiracelektrik.com.tr/files/uploads/urun/@item.Resim" alt="" style="max-width:150px;" class="mx-auto d-block">
                                     </a>
                                 </div>
                                 <div class="mt-2 text-center">
@@ -240,7 +240,7 @@
                         <h4 class="card-title mt-0">@itemKatalog.KatalogAdi</h4>
                         <h6 class="card-subtitle font-14 text-muted">@itemKatalog.EklenmeTarih.ToShortDateString() @itemKatalog.EklenmeTarih.ToShortTimeString()</h6>
                     </div>
-                    <img class="img-fluid" src="https://bayi.kiracelektrik.com.tr/Files/Dokumanlar/@itemKatalog.Onizleme" alt="@itemKatalog.KatalogAdi">
+                    <img class="img-fluid" src="https://admin.kiracelektrik.com.tr/files/uploads/dokuman/@itemKatalog.Onizleme" alt="@itemKatalog.KatalogAdi">
                     <div class="card-body">
                         <a href="@Url.Action("DownloadDocumentCatalog","Home", new { ID = itemKatalog.ID })" class="card-link">Katalogu indirmek için tıklayınız</a>
                     </div>
@@ -261,11 +261,11 @@
 
 @section scripts{
 
-    <script src="~/assets/libs/jquery/jquery.min.js"></script>
-    <script src="~/slick/slick.js"></script>
-    <script src="~/slick/slick.min.js"></script>
-    <script src="~/assets/libs/ion-rangeslider/js/ion.rangeSlider.min.js"></script>
-    <script src="~/assets/js/pages/product-filter-range.init.js"></script>
+    <script src="https://admin.kiracelektrik.com.tr/files/assets/libs/jquery/jquery.min.js"></script>
+    <script src="https://admin.kiracelektrik.com.tr/files/assets/slick/slick.js"></script>
+    <script src="https://admin.kiracelektrik.com.tr/files/assets/slick/slick.min.js"></script>
+    <script src="https://admin.kiracelektrik.com.tr/files/assets/libs/ion-rangeslider/js/ion.rangeSlider.min.js"></script>
+    <script src="https://admin.kiracelektrik.com.tr/files/assets/js/pages/product-filter-range.init.js"></script>
 
     <script>
         $('.slick-table').slick({

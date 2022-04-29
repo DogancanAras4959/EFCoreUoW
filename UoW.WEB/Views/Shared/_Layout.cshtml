@@ -8,14 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Kıraç, Group, Bayi, Elektrik, Malzeme" name="description" />
     <meta content="Kıraç Elektrik Bayim" name="author" />
-    <link rel="shortcut icon" href="~/assets/images/favicon.ico">
-    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/assets/css/app.min.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="https://admin.kiracelektrik.com.tr/files/uploads/profil/favicon.ico">
+    <link href="https://admin.kiracelektrik.com.tr/files/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://admin.kiracelektrik.com.tr/files/assets/css/app.min.css" rel="stylesheet" />
     <link href="~/assets/css/icons.min.css" rel="stylesheet" />
-    <link href="~/assets/css/toastr/build/toastr.css" rel="stylesheet" />
-    <link href="~/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/assets/dist/themes/default/style.min.css" rel="stylesheet" />
-    <link href="~/css/search.css" rel="stylesheet" />
+    <link href="https://admin.kiracelektrik.com.tr/files/assets/css/toastr/build/toastr.css" rel="stylesheet" />
+    <link href="https://admin.kiracelektrik.com.tr/files/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://admin.kiracelektrik.com.tr/files/assets/dist/themes/default/style.min.css" rel="stylesheet" />
+    <link href="https://admin.kiracelektrik.com.tr/files/assets/css/search.css" rel="stylesheet" />
     @RenderSection("Styles", required: false)
 
     <style>
@@ -78,29 +78,39 @@
 
     <div class="rightbar-overlay"></div>
 
-    <script src="~/assets/libs/jquery/jquery.min.js"></script>
-    <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="~/assets/libs/metismenu/metisMenu.min.js"></script>
-    <script src="~/assets/libs/simplebar/simplebar.min.js"></script>
-    <script src="~/assets/libs/node-waves/waves.min.js"></script>
-    <script src="~/assets/js/jquery.bxslider.min.js"></script>
-    <script src="~/assets/js/app.js"></script>
+    <script src="https://admin.kiracelektrik.com.tr/files/assets/libs/jquery/jquery.min.js"></script>
+    <script src="https://admin.kiracelektrik.com.tr/files/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://admin.kiracelektrik.com.tr/files/assets/libs/metismenu/metisMenu.min.js"></script>
+    <script src="https://admin.kiracelektrik.com.tr/files/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="https://admin.kiracelektrik.com.tr/files/assets/libs/node-waves/waves.min.js"></script>
+    <script src="https://admin.kiracelektrik.com.tr/files/assets/js/jquery.bxslider.min.js"></script>
+    <script src="https://admin.kiracelektrik.com.tr/files/assets/js/app.js"></script>
+
+    <script language="JavaScript" type="text/javascript">
+        //remove back button with all possibilities
+        function noBack() { window.history.forward() }
+        noBack();
+        window.onload = noBack;
+        window.onpageshow = function (evt) { if (evt.persisted) noBack() }
+        window.onunload = function () { void (0) }
+        //remove forward buttons
+        javascript: window.history.forward(1);
+    </script>
 
     @RenderSection("Scripts", required: false)
 
-    <script src="~/assets/css/toastr/toastr.js"></script>
+    <script src="https://admin.kiracelektrik.com.tr/files/assets/css/toastr/toastr.js"></script>
 
     @if (TempData["mesaj"] != null)
     {
-        <script>
+<script>
             @Html.Raw(TempData["mesaj"])
-        </script>
-    }
+</script>}
     <script type="text/javascript">
         let data = @Html.Raw(ViewData["data"]);
     </script>
 
-    <script src="~/js/jssearch.js"></script>
+    <script src="https://admin.kiracelektrik.com.tr/files/js/jssearch.js"></script>
 
 </body>
 

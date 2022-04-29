@@ -17,44 +17,44 @@ namespace UoW.DATA.Utility
             {
                 case "Admin":
 
-                    ftpInfo.Url = "ftp://admin.kiracelektrik.com.tr//httpdocs/wwwroot/Files/Admin/";
+                    ftpInfo.Url = "ftp://admin.kiracelektrik.com.tr//files/uploads/profil";
                     ftpInfo.Username = "admin1";
-                    ftpInfo.Password = "Nkq5p1?5";
+                    ftpInfo.Password = "_67TOBtflkt?5sym";
                     break;
 
                 case "Bayi":
 
-                    ftpInfo.Url = "ftp://bayi.kiracelektrik.com.tr//httpdocs/wwwroot/Files/Bayi/";
-                    ftpInfo.Username = "admin";
-                    ftpInfo.Password = "8e28l!dX";
+                    ftpInfo.Url = "ftp://admin.kiracelektrik.com.tr//files/uploads/profil";
+                    ftpInfo.Username = "admin1";
+                    ftpInfo.Password = "_67TOBtflkt?5sym";
                     break;
 
                 case "Urun":
 
-                    ftpInfo.Url = "ftp://bayi.kiracelektrik.com.tr//httpdocs/wwwroot/Files/Urun/";
-                    ftpInfo.Username = "admin";
-                    ftpInfo.Password = "8e28l!dX";
+                    ftpInfo.Url = "ftp://admin.kiracelektrik.com.tr//files/uploads/urun";
+                    ftpInfo.Username = "admin1";
+                    ftpInfo.Password = "_67TOBtflkt?5sym";
                     break;
 
                 case "Haber":
 
-                    ftpInfo.Url = "ftp://bayi.kiracelektrik.com.tr//httpdocs/wwwroot/Files/Haber/";
-                    ftpInfo.Username = "admin";
-                    ftpInfo.Password = "8e28l!dX";
+                    ftpInfo.Url = "ftp://admin.kiracelektrik.com.tr//files/uploads/dokuman";
+                    ftpInfo.Username = "admin1";
+                    ftpInfo.Password = "_67TOBtflkt?5sym";
                     break;
 
-                case "AdminInBayi":
+                case "Kampanya":
 
-                    ftpInfo.Url = "ftp://bayi.kiracelektrik.com.tr//httpdocs/wwwroot/Files/Admin/";
-                    ftpInfo.Username = "admin";
-                    ftpInfo.Password = "8e28l!dX";
+                    ftpInfo.Url = "ftp://admin.kiracelektrik.com.tr//files/uploads/urun";
+                    ftpInfo.Username = "admin1";
+                    ftpInfo.Password = "_67TOBtflkt?5sym";
                     break;
 
                 case "Dokumanlar":
 
-                    ftpInfo.Url = "ftp://bayi.kiracelektrik.com.tr//httpdocs/wwwroot/Files/Dokumanlar/";
-                    ftpInfo.Username = "admin";
-                    ftpInfo.Password = "8e28l!dX";
+                    ftpInfo.Url = "ftp://admin.kiracelektrik.com.tr//files/uploads/dokuman";
+                    ftpInfo.Username = "admin1";
+                    ftpInfo.Password = "_67TOBtflkt?5sym";
                     break;
 
                 default:

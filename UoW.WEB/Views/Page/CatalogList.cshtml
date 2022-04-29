@@ -33,7 +33,7 @@
                             <h4 class="card-title mt-0">@itemKatalog.KatalogAdi</h4>
                             <h6 class="card-subtitle font-14 text-muted">@itemKatalog.EklenmeTarih.ToShortDateString() @itemKatalog.EklenmeTarih.ToShortTimeString()</h6>
                         </div>
-                        <img class="img-fluid" src="https://bayi.kiracelektrik.com.tr/Files/Dokumanlar/@itemKatalog.Onizleme" alt="@itemKatalog.KatalogAdi">
+                        <img class="img-fluid" src="https://admin.kiracelektrik.com.tr/files/uploads/dokuman/@itemKatalog.Onizleme" alt="@itemKatalog.KatalogAdi">
                         <div class="card-body">
                             <a href="@Url.Action("DownloadDocument", "Home", new { ID = itemKatalog.ID })" class="card-link">Katalogu indirmek için tıklayınız</a>
                         </div>

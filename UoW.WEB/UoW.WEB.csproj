@@ -14,6 +14,10 @@
     <Compile Remove="wwwroot\assets\images\product\**" />
     <Compile Remove="wwwroot\assets\images\small\**" />
     <Compile Remove="wwwroot\assets\images\users\**" />
+    <Compile Remove="wwwroot\css\**" />
+    <Compile Remove="wwwroot\Files\**" />
+    <Compile Remove="wwwroot\js\**" />
+    <Compile Remove="wwwroot\lib\**" />
     <Content Remove="wwwroot\assets\images\brands\**" />
     <Content Remove="wwwroot\assets\images\clients\**" />
     <Content Remove="wwwroot\assets\images\companies\**" />
@@ -23,6 +27,10 @@
     <Content Remove="wwwroot\assets\images\product\**" />
     <Content Remove="wwwroot\assets\images\small\**" />
     <Content Remove="wwwroot\assets\images\users\**" />
+    <Content Remove="wwwroot\css\**" />
+    <Content Remove="wwwroot\Files\**" />
+    <Content Remove="wwwroot\js\**" />
+    <Content Remove="wwwroot\lib\**" />
     <EmbeddedResource Remove="wwwroot\assets\images\brands\**" />
     <EmbeddedResource Remove="wwwroot\assets\images\clients\**" />
     <EmbeddedResource Remove="wwwroot\assets\images\companies\**" />
@@ -32,6 +40,10 @@
     <EmbeddedResource Remove="wwwroot\assets\images\product\**" />
     <EmbeddedResource Remove="wwwroot\assets\images\small\**" />
     <EmbeddedResource Remove="wwwroot\assets\images\users\**" />
+    <EmbeddedResource Remove="wwwroot\css\**" />
+    <EmbeddedResource Remove="wwwroot\Files\**" />
+    <EmbeddedResource Remove="wwwroot\js\**" />
+    <EmbeddedResource Remove="wwwroot\lib\**" />
     <None Remove="wwwroot\assets\images\brands\**" />
     <None Remove="wwwroot\assets\images\clients\**" />
     <None Remove="wwwroot\assets\images\companies\**" />
@@ -41,6 +53,10 @@
     <None Remove="wwwroot\assets\images\product\**" />
     <None Remove="wwwroot\assets\images\small\**" />
     <None Remove="wwwroot\assets\images\users\**" />
+    <None Remove="wwwroot\css\**" />
+    <None Remove="wwwroot\Files\**" />
+    <None Remove="wwwroot\js\**" />
+    <None Remove="wwwroot\lib\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -362,109 +378,6 @@
     <None Include="wwwroot\assets\libs\twitter-bootstrap-wizard\jquery.bootstrap.wizard.min.js" />
     <None Include="wwwroot\assets\libs\twitter-bootstrap-wizard\prettify.css" />
     <None Include="wwwroot\assets\libs\twitter-bootstrap-wizard\prettify.js" />
-    <None Include="wwwroot\css\search.css" />
-    <None Include="wwwroot\css\site.css" />
-    <None Include="wwwroot\favicon.ico" />
-    <None Include="wwwroot\Files\Admin\5687201402397.jpg" />
-    <None Include="wwwroot\Files\Admin\aras211100199.jpg" />
-    <None Include="wwwroot\Files\Admin\aras215624663.jpg" />
-    <None Include="wwwroot\Files\Admin\aras215905912.jpg" />
-    <None Include="wwwroot\Files\Admin\avatar-2202117193.jpg" />
-    <None Include="wwwroot\Files\Admin\avatar-3201935928.jpg" />
-    <None Include="wwwroot\Files\Admin\avatar-4202045129.jpg" />
-    <None Include="wwwroot\Files\Admin\avatar-5205256687.jpg" />
-    <None Include="wwwroot\Files\Admin\avatar-6201434847.jpg" />
-    <None Include="wwwroot\Files\Admin\avatar-6202054203.jpg" />
-    <None Include="wwwroot\Files\Admin\avatar-6202439532.jpg" />
-    <None Include="wwwroot\Files\Admin\default.jpg" />
-    <None Include="wwwroot\Files\Admin\img-5205448309.png" />
-    <None Include="wwwroot\Files\Admin\mng211131052.jpg" />
-    <None Include="wwwroot\Files\Admin\new_userpp200657939.jpg" />
-    <None Include="wwwroot\Files\Admin\new_userpp202229665.jpg" />
-    <None Include="wwwroot\Files\Admin\new_userpp202915749.jpg" />
-    <None Include="wwwroot\Files\Admin\new_userpp203217028.jpg" />
-    <None Include="wwwroot\Files\Admin\pp.jpg" />
-    <None Include="wwwroot\Files\Admin\ptt-kargo211124014.jpg" />
-    <None Include="wwwroot\Files\Admin\surat211140796.jpg" />
-    <None Include="wwwroot\Files\Admin\yurtici211112707.jpg" />
-    <None Include="wwwroot\Files\Bayi\aplus200913487.jpg" />
-    <None Include="wwwroot\Files\Bayi\avatar-3203534675.jpg" />
-    <None Include="wwwroot\Files\Bayi\avatar-5210136318.jpg" />
-    <None Include="wwwroot\Files\Bayi\avatar-5210541739.jpg" />
-    <None Include="wwwroot\Files\Bayi\avatar-5212916288.jpg" />
-    <None Include="wwwroot\Files\Bayi\avatar-5212941072.jpg" />
-    <None Include="wwwroot\Files\Bayi\avatar-6213107745.jpg" />
-    <None Include="wwwroot\Files\Bayi\avatar-7203710147.jpg" />
-    <None Include="wwwroot\Files\Bayi\avatar-8203929736.jpg" />
-    <None Include="wwwroot\Files\Bayi\beko201140594.jpg" />
-    <None Include="wwwroot\Files\Bayi\bplus200037933.png" />
-    <None Include="wwwroot\Files\Bayi\germany203300790.jpg" />
-    <None Include="wwwroot\Files\Bayi\img-3204208590.png" />
-    <None Include="wwwroot\Files\Bayi\img-4204226652.png" />
-    <None Include="wwwroot\Files\Bayi\img-4204310155.png" />
-    <None Include="wwwroot\Files\Bayi\img-4205200989.png" />
-    <None Include="wwwroot\Files\Bayi\img-4205202002.png" />
-    <None Include="wwwroot\Files\Bayi\img-4215751194.png" />
-    <None Include="wwwroot\Files\Bayi\img-5202227177.png" />
-    <None Include="wwwroot\Files\Bayi\img-5204406713.png" />
-    <None Include="wwwroot\Files\Bayi\img-6200528918.png" />
-    <None Include="wwwroot\Files\Bayi\img-6201926018.png" />
-    <None Include="wwwroot\Files\Bayi\img-6204320516.png" />
-    <None Include="wwwroot\Files\Bayi\img-6211557899.png" />
-    <None Include="wwwroot\Files\Bayi\img-8200433918.png" />
-    <None Include="wwwroot\Files\Bayi\img-8200444467.png" />
-    <None Include="wwwroot\Files\Bayi\italy204459024.jpg" />
-    <None Include="wwwroot\Files\Bayi\logo4204732282.png" />
-    <None Include="wwwroot\Files\Bayi\logo4204903771.png" />
-    <None Include="wwwroot\Files\Bayi\logo4205029493.png" />
-    <None Include="wwwroot\Files\Bayi\pp.jpg" />
-    <None Include="wwwroot\Files\Urun\11409202314042.png" />
-    <None Include="wwwroot\Files\Urun\11409204359022.png" />
-    <None Include="wwwroot\Files\Urun\11409_600x600202314041.png" />
-    <None Include="wwwroot\Files\Urun\11409_600x600204359021.png" />
-    <None Include="wwwroot\Files\Urun\1165336215301414.jpg" />
-    <None Include="wwwroot\Files\Urun\1210200511.jpg" />
-    <None Include="wwwroot\Files\Urun\2211610555.jpg" />
-    <None Include="wwwroot\Files\Urun\9489203527730.jpg" />
-    <None Include="wwwroot\Files\Urun\ampul203653823.jpg" />
-    <None Include="wwwroot\Files\Urun\Brand_1_Cover.jpg" />
-    <None Include="wwwroot\Files\Urun\Ekran Alıntısı.JPG" />
-    <None Include="wwwroot\Files\Urun\elektrik212313149.jpg" />
-    <None Include="wwwroot\Files\Urun\elektrik212313149.png" />
-    <None Include="wwwroot\Files\Urun\elektrik212313149213433534.jpg" />
-    <None Include="wwwroot\Files\Urun\elektrik212313149213433534.png" />
-    <None Include="wwwroot\Files\Urun\evelektriği203706201.jpg" />
-    <None Include="wwwroot\Files\Urun\image-21ghostsiii_00354570215239220.jpg" />
-    <None Include="wwwroot\Files\Urun\indir.jpg" />
-    <None Include="wwwroot\Files\Urun\instagram_cover212957864.png" />
-    <None Include="wwwroot\Files\Urun\instagram_cover213158260.png" />
-    <None Include="wwwroot\Files\Urun\kabloaksesuar203748910.jpg" />
-    <None Include="wwwroot\Files\Urun\KOMPAK-29630--80-100A-3289.png" />
-    <None Include="wwwroot\Files\Urun\LAMP_150x150205854180.jpg" />
-    <None Include="wwwroot\Files\Urun\LAMP_600X600205852806.jpg" />
-    <None Include="wwwroot\Files\Urun\led_150x150205211290.png" />
-    <None Include="wwwroot\Files\Urun\led_600x600205211289.png" />
-    <None Include="wwwroot\Files\Urun\logo-light %281%29.png" />
-    <None Include="wwwroot\Files\Urun\logoicon.png" />
-    <None Include="wwwroot\Files\Urun\nyaf-1203816827.jpg" />
-    <None Include="wwwroot\Files\Urun\philipsss214749269.png" />
-    <None Include="wwwroot\Files\Urun\pil203719736.jpg" />
-    <None Include="wwwroot\Files\Urun\pp.jpg" />
-    <None Include="wwwroot\Files\Urun\priz203659862.png" />
-    <None Include="wwwroot\Files\Urun\salter.jpg" />
-    <None Include="wwwroot\Files\Urun\salter202737485.jpg" />
-    <None Include="wwwroot\Files\Urun\Schneider-Electric-Social213436715.png" />
-    <None Include="wwwroot\Files\Urun\Veksis.pdf" />
-    <None Include="wwwroot\Files\Urun\y9N4DNfp_400x400214625023.png" />
-    <None Include="wwwroot\Files\Urun\yangınalarmı203726035.jpg" />
-    <None Include="wwwroot\js\jssearch.js" />
-    <None Include="wwwroot\js\site.js" />
-    <None Include="wwwroot\lib\bootstrap\LICENSE" />
-    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
-    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
-    <None Include="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt" />
-    <None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
-    <None Include="wwwroot\lib\jquery\LICENSE.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -479,11 +392,6 @@
   <ItemGroup>
     <ProjectReference Include="..\UoW.ADMIN\UoW.ADMIN.csproj" />
     <ProjectReference Include="..\UoW.DATA\UoW.DATA.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\Files\Haber\" />
-    <Folder Include="wwwroot\Files\Dokumanlar\" />
   </ItemGroup>
 
 </Project>

@@ -278,10 +278,10 @@ namespace UoW.ADMIN.Controllers
                 newNews.Icerik = news.Icerik;
 
                 if (file != null)
-                    newNews.HaberOnizlemeFoto = SaveImageProcess.ImageInsert(file, "Bayi");
+                    newNews.HaberOnizlemeFoto = SaveImageProcess.ImageInsert(file, "Haber");
 
                 if (detailFile != null)
-                    newNews.HaberFoto = SaveImageProcess.ImageInsert(detailFile, "Bayi");
+                    newNews.HaberFoto = SaveImageProcess.ImageInsert(detailFile, "Haber");
 
                 await _unitOfWorkHaber.Repository.Add(newNews);
                 _unitOfWorkHaber.Repository.Save();
@@ -382,11 +382,11 @@ namespace UoW.ADMIN.Controllers
                 getHaber.KullaniciID = getUser.ID;
 
                 if (file != null)
-                    getHaber.HaberOnizlemeFoto = SaveImageProcess.ImageInsert(file, "Bayi");
+                    getHaber.HaberOnizlemeFoto = SaveImageProcess.ImageInsert(file, "Haber");
                 else
 
                 if (DetailFile != null)
-                    getHaber.HaberFoto = SaveImageProcess.ImageInsert(DetailFile, "Bayi");
+                    getHaber.HaberFoto = SaveImageProcess.ImageInsert(DetailFile, "Haber");
                 else
 
                 _unitOfWorkHaber.Repository.Update(getHaber);
